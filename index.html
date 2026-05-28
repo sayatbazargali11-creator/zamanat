@@ -3105,7 +3105,11 @@ body.preloader-active {
         @media (max-width: 450px) { .ai-window-box { width: calc(100vw - 40px); right: -10px; height: 500px; } }
 
 
-        /* Контейнер всей системы */
+     /* ==========================================================================
+   СИСТЕМА УВЕДОМЛЕНИЙ И АДАПТИВНАЯ ШАПКА (ОТ И ДО)
+   ========================================================================== */
+
+/* Контейнер всей системы */
 .notification-container {
     position: relative;
     display: inline-block;
@@ -3122,6 +3126,9 @@ body.preloader-active {
     padding: 8px;
     border-radius: 50%;
     transition: background 0.2s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .notification-trigger:hover {
     background: rgba(0, 0, 0, 0.05);
@@ -3135,7 +3142,7 @@ body.preloader-active {
     position: absolute;
     top: 2px;
     right: 2px;
-    background: #ff3b30; /* Яркий Apple-red цвет */
+    background: #ff3b30;
     color: white;
     font-size: 11px;
     font-weight: 600;
@@ -3159,7 +3166,7 @@ body.preloader-active {
     border-radius: 16px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     border: 1px solid rgba(0, 0, 0, 0.06);
-    display: none; /* Скрыто по умолчанию */
+    display: none;
     flex-direction: column;
     z-index: 1000;
     overflow: hidden;
@@ -3192,26 +3199,12 @@ body.preloader-active {
     font-weight: 600;
     color: #1d1d1f;
 }
-.notif-header button {
-    background: transparent;
-    border: none;
-    color: #ff9500; /* Ваш фирменный Premium Orange */
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: opacity 0.2s;
-}
-.notif-header button:hover {
-    opacity: 0.7;
-}
 
 /* Тело с уведомлениями */
 .notif-body {
     max-height: 380px;
     overflow-y: auto;
 }
-
-/* Скроллбар для списка */
 .notif-body::-webkit-scrollbar {
     width: 6px;
 }
@@ -3245,7 +3238,7 @@ body.preloader-active {
     border-bottom: none;
 }
 
-/* Метка непрочитанного сообщения (точка справа) */
+/* Метка непрочитанного сообщения (синяя точка) */
 .notif-item.unread::after {
     content: '';
     position: absolute;
@@ -3254,11 +3247,10 @@ body.preloader-active {
     transform: translateY(-50%);
     width: 7px;
     height: 7px;
-    background-color: #007aff; /* Синяя точка непрочитанного */
+    background-color: #007aff;
     border-radius: 50%;
 }
 
-/* Иконки типов */
 .notif-icon {
     font-size: 16px;
     margin-top: 2px;
@@ -3266,7 +3258,6 @@ body.preloader-active {
     align-items: flex-start;
 }
 
-/* Контент внутри сообщения */
 .notif-content {
     display: flex;
     flex-direction: column;
@@ -3281,14 +3272,14 @@ body.preloader-active {
     font-weight: 400;
 }
 .notif-item.unread .notif-text {
-    font-weight: 500; /* Жирный текст для непрочитанных */
+    font-weight: 500;
 }
 .notif-time {
     font-size: 11px;
     color: #86868b;
 }
 
-/* Анимация покачивания колокольчика */
+/* Анимация колокольчика */
 @keyframes bellShake {
     0%, 100% { transform: rotate(0); }
     15% { transform: rotate(15deg); }
@@ -3298,6 +3289,37 @@ body.preloader-active {
 }
 .shake-animation {
     animation: bellShake 0.5s ease-in-out;
+}
+
+/* Выравнивание элементов в шапке (Десктоп) */
+.header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+}
+
+/* Общий правый контейнер для мобильного режима */
+.header-controls-mobile {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Небольшой аккуратный отступ между колокольчиком и 3 линиями */
+}
+
+/* АДАПТИВ ДЛЯ ТЕЛЕФОНОВ (Экран меньше 768px) */
+@media (max-width: 767px) {
+    /* Фиксируем выпадающее окно новостей, чтобы оно не ломало разметку телефона */
+    .notification-dropdown {
+        position: fixed;
+        top: 70px; /* Смещение вниз под шапку. Настройте под высоту вашего хедера */
+        left: 12px;
+        right: 12px;
+        width: auto;
+        max-width: none;
+        border-radius: 14px;
+        transform-origin: top center;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.2);
+    }
 }
     </style>
 </head>
@@ -3332,35 +3354,42 @@ body.preloader-active {
             <span class="logo-dot"></span>
         </div>
         
-        <button class="menu-toggle" id="menu-toggle" onclick="toggleMobileMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-
-       <nav id="main-nav">
-    <a onclick="handleNavMobile('home')" id="nav-home" class="active">Басты бет</a>
-    <a onclick="handleNavMobile('tests')" id="nav-tests">Тесттер аймағы</a>
-    <a onclick="handleNavMobile('about')" id="nav-about">Біз туралы</a>
-    <a onclick="handleNavMobile('history')" id="nav-history">Менің нәтижелерім</a>
-
-    <div class="notification-container" id="notification-wrapper">
-        <button class="notification-trigger" onclick="toggleNotifications(event)">
-            <i class="fa-solid fa-bell"></i>
-            <span class="notification-badge" id="notif-badge">0</span>
-        </button>
         
-        <div class="notification-dropdown" id="notification-box">
-            <div class="notif-header">
-                <h4>Хабарландырулар</h4>
 
+        <nav id="main-nav">
+            <a onclick="handleNavMobile('home')" id="nav-home" class="active">Басты бет</a>
+            <a onclick="handleNavMobile('tests')" id="nav-tests">Тесттер аймағы</a>
+            <a onclick="handleNavMobile('about')" id="nav-about">Біз туралы</a>
+            <a onclick="handleNavMobile('history')" id="nav-history">Менің нәтижелерім</a>
+        </nav>
+
+
+
+
+        <div class="header-controls-mobile">
+                <button class="menu-toggle" id="menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <div class="notification-container" id="notification-wrapper">
+                <button class="notification-trigger" onclick="toggleNotifications(event)">
+                    <i class="fa-solid fa-bell"></i>
+                    <span class="notification-badge" id="notif-badge">0</span>
+                </button>
+                
+                <div class="notification-dropdown" id="notification-box">
+                    <div class="notif-header">
+                        <h4>Хабарландырулар</h4>
+                    </div>
+                    <div class="notif-body" id="notif-items-list">
+                        <div class="notif-empty">Жаңа хабарландырулар жоқ</div>
+                    </div>
+                </div>
             </div>
-            <div class="notif-body" id="notif-items-list">
-                <div class="notif-empty">Жаңа хабарландырулар жоқ</div>
-            </div>
+
+        
         </div>
-    </div>
-</nav>
     </div>
 </header>
 
@@ -5617,7 +5646,7 @@ const NotificationSystem = {
         this.list = document.getElementById('notif-items-list');
         this.box = document.getElementById('notification-box');
 
-        // Отображаем уже существующие в базе уведомления
+        // Отображаем сохраненные в локальной памяти уведомления
         this.render();
 
         // Закрытие окна при клике в любое другое место экрана
@@ -5638,14 +5667,14 @@ const NotificationSystem = {
     },
 
     /**
-     * Метод для добавления нового уведомления вручную из любого места вашего кода
+     * Универсальный метод добавления уведомлений вручную
      * @param {string} text - Текст уведомления
      * @param {string} type - Тип ('info', 'success', 'warning', 'danger')
      */
     add(text, type = 'info') {
         const notifications = this.getNotifications();
 
-        // ПРОВЕРКА НА ДУБЛИКАТ: Если уведомление с таким текстом уже есть, не дублируем его
+        // Проверка на дубликат: если такое сообщение уже добавлено, выходим
         const isDuplicate = notifications.some(notif => notif.text === text);
         if (isDuplicate) {
             return; 
@@ -5656,13 +5685,13 @@ const NotificationSystem = {
             text: text,
             type: type,
             time: new Date().toLocaleTimeString('kk-KZ', { hour: '2-digit', minute: '2-digit' }),
-            unread: true // Новое уведомление всегда изначально непрочитанное
+            unread: true
         };
 
-        notifications.unshift(newNotif); // Добавляем в начало списка
+        notifications.unshift(newNotif); // Добавляем наверх списка
         this.saveNotifications(notifications);
         
-        // Красивый эффект покачивания колокольчика при получении нового сообщения
+        // Покачивание колокольчика
         const trigger = document.querySelector('.notification-trigger i');
         if (trigger) {
             trigger.classList.add('shake-animation');
@@ -5672,10 +5701,9 @@ const NotificationSystem = {
 
     render() {
         const notifications = this.getNotifications();
-        // Считаем только реально НЕПРОЧИТАННЫЕ сообщения для красного бейджа
         const unreadCount = notifications.filter(n => n.unread).length;
 
-        // Обновление красного индикатора количества
+        // Обновление счетчика количества
         if (unreadCount > 0) {
             this.badge.textContent = unreadCount;
             this.badge.style.display = 'flex';
@@ -5683,7 +5711,6 @@ const NotificationSystem = {
             this.badge.style.display = 'none';
         }
 
-        // Очищаем контейнер перед рендером
         this.list.innerHTML = '';
 
         if (notifications.length === 0) {
@@ -5691,7 +5718,7 @@ const NotificationSystem = {
             return;
         }
 
-        // Выводим список уведомлений
+        // Рендерим элементы
         notifications.forEach(notif => {
             const item = document.createElement('div');
             item.className = `notif-item ${notif.type} ${notif.unread ? 'unread' : ''}`;
@@ -5703,7 +5730,6 @@ const NotificationSystem = {
                 </div>
             `;
             
-            // Клик на конкретное уведомление делает его прочитанным (убирает синюю точку)
             item.onclick = () => this.markAsRead(notif.id);
             this.list.appendChild(item);
         });
@@ -5725,14 +5751,12 @@ const NotificationSystem = {
     }
 };
 
-// Функция открытия/закрытия шторки уведомлений
+// Переключатель отображения окна
 function toggleNotifications(event) {
     event.stopPropagation();
     const box = document.getElementById('notification-box');
     box.classList.toggle('show');
 
-    // Когда пользователь открывает шторку, помечаем ВСЕ текущие сообщения прочитанными,
-    // чтобы при следующем открытии или перезагрузке они больше не горели как "новые"
     if (box.classList.contains('show')) {
         let notifications = NotificationSystem.getNotifications();
         notifications = notifications.map(n => ({ ...n, unread: false }));
@@ -5740,26 +5764,15 @@ function toggleNotifications(event) {
     }
 }
 
-// Запуск системы при загрузке страницы
+// Запуск при полной загрузке DOM
 document.addEventListener('DOMContentLoaded', () => {
-    // Инициализируем систему
+    // Инициализация интерфейса
     NotificationSystem.init();
 
-    // Добавляем ТОЛЬКО ОДНО приветственное сообщение.
-    // Защита от дублирования не даст ему создаваться повторно при обновлении страницы.
+    // Добавляется только ОДНО приветственное сообщение. 
+    // Защита от дублей предотвратит повторное появление при обновлении страницы.
     NotificationSystem.add("ZAMANAT платформасына қош келдіңіз!", "info");
-    NotificationSystem.add("Платформада маңызды жаңалық: Пайдаланушы интерфейсі жаңартылды!", "info");
-
-NotificationSystem.add("Жаңалық: Қазақстан тарихы курсына жаңа ҰБТ тестілері қосылды. Қазір тексеріп көріңіз!", "success");
-
-NotificationSystem.add("Маңызды жаңалық: Жақында платформада техникалық жұмыстар жүргізіледі.", "warning");
 });
-
-
-
-
-
-
 
     </script>
 </body>
