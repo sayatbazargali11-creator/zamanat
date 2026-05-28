@@ -58,7 +58,7 @@
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-bottom: 1px solid var(--z-border);
-            padding: 16px 24px;
+            padding: 14px 24px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -67,6 +67,7 @@
             left: 0;
             right: 0;
             z-index: 1000;
+            height: 73px;
         }
 
         .brand-block {
@@ -102,77 +103,123 @@
             letter-spacing: 0.05em;
         }
 
-/* Блок кнопок-управления (Карта тест и Назад) */
-.header-controls-wrapper {
-    display: flex !important;
-    flex-direction: row !important; /* Кнопки стоят РЯДОМ друг с другом */
-    align-items: center !important;
-    gap: 12px !important; /* Расстояние между кнопками */
-}
-
-/* Стили самих кнопок на ноутбуке */
-.back-btn {
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    gap: 8px !important; /* Расстояние между иконкой и текстом внутри кнопки */
-    padding: 10px 18px !important; /* Кнопки будут большими и солидными */
-    border-radius: 12px !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
-    white-space: nowrap !important; /* Запрещаем перенос текста внутри кнопки */
-    text-decoration: none;
-    transition: all 0.2s ease;
-}
-
-.back-btn:hover {
-    transform: translateY(-1px); /* Красивый эффект при наведении мышки */
-}
-
-        /* ==========================================================================
-           3. WORKSPACE LAYOUT
-           ========================================================================== */
-        main {
-            flex: 1;
-            margin-top: 73px;
-            display: grid;
-            grid-template-columns: 1fr;
-            position: relative;
-            height: calc(100vh - 73px);
+        .header-controls-wrapper {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            gap: 12px;
         }
 
-        @media (min-width: 1024px) {
-            main { grid-template-columns: 350px 1fr; }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            white-space: nowrap;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            background: var(--z-bg);
+            color: var(--z-text-main);
+        }
+
+        .back-btn:hover {
+            transform: translateY(-1px);
+        }
+
+        /* ==========================================================================
+           3. WORKSPACE LAYOUT (ПК РЕЖИМ)
+           ========================================================================== */
+        .z-main-workspace {
+            display: grid;
+            grid-template-columns: 360px 1fr; 
+            height: calc(100vh - 73px);
+            margin-top: 73px;
+            width: 100%;
+            position: relative;
+            background-color: #f5f5f7;
+            overflow: hidden;
+            transition: grid-template-columns 0.4s var(--ease-apple);
+        }
+
+        .z-main-workspace.sidebar-is-collapsed {
+            grid-template-columns: 0px 1fr;
         }
 
         .sidebar {
-            background: var(--z-card);
-            border-right: 1px solid var(--z-border);
+            background: #ffffff;
+            border-right: 1px solid rgba(0, 0, 0, 0.08);
             padding: 24px;
             display: flex;
             flex-direction: column;
             gap: 24px;
             z-index: 100;
+            position: relative;
+            min-width: 0;
+            overflow-x: hidden; 
             overflow-y: auto;
+            transition: padding 0.4s var(--ease-apple), opacity 0.3s ease;
+        }
+
+        .z-main-workspace.sidebar-is-collapsed .sidebar {
+            padding: 24px 0px;
+            opacity: 0;
+        }
+
+        .sidebar-toggle-btn {
+            position: absolute;
+            top: 24px;
+            right: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+            color: #1d1d1f;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 150;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle-btn:hover {
+            background: #ff9500;
+            color: #ffffff;
+            border-color: #ff9500;
+        }
+
+        .z-main-workspace.sidebar-is-collapsed .sidebar-toggle-btn {
+            position: absolute;
+            left: 16px;
+            right: auto;
+            transform: rotate(180deg);
+            z-index: 500;
         }
 
         .info-mini-card {
-            background: var(--z-accent-glow);
+            background: rgba(255, 149, 0, 0.06);
             border: 1px solid rgba(255, 149, 0, 0.15);
             border-radius: 16px;
             padding: 16px;
         }
-
         .info-mini-card h3 {
             font-size: 0.95rem;
             font-weight: 700;
-            color: var(--z-accent);
+            color: #ff9500;
             margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
-
         .info-mini-card p {
             font-size: 0.85rem;
-            color: var(--z-text-sub);
+            color: #6e6e73;
             line-height: 1.45;
         }
 
@@ -180,7 +227,7 @@
             font-size: 0.78rem;
             text-transform: uppercase;
             letter-spacing: 0.06em;
-            color: var(--z-text-muted);
+            color: #86868b;
             margin-bottom: 12px;
             font-weight: 700;
         }
@@ -188,60 +235,63 @@
         .filter-list {
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
         }
 
         .filter-item {
-            background: var(--z-bg);
+            background: #f5f5f7;
             border: 1px solid transparent;
-            padding: 12px 16px;
-            border-radius: 12px;
+            padding: 14px 16px;
+            border-radius: 14px;
             text-align: left;
             font-size: 0.88rem;
             font-weight: 600;
-            color: var(--z-text-main);
+            color: #1d1d1f;
             cursor: pointer;
             display: flex;
             align-items: center;
             gap: 12px;
-            transition: var(--transition-smooth);
+            transition: all 0.3s ease;
+            width: 100%;
         }
 
-        .filter-item i { color: var(--z-text-muted); width: 16px; }
+        .filter-item i { 
+            color: #86868b; 
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
 
         .filter-item.is-active {
-            background: var(--z-card);
-            border-color: var(--z-accent);
-            color: var(--z-accent);
-            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.04);
+            background: #ffffff;
+            border-color: #ff9500;
+            color: #ff9500;
+            box-shadow: 0 8px 20px rgba(255, 149, 0, 0.08);
         }
-        .filter-item.is-active i { color: var(--z-accent); }
+        .filter-item.is-active i { color: #ff9500; }
 
         /* ==========================================================================
            4. HIGH-PRECISION MAP VIEWPORT
            ========================================================================== */
         .map-container {
             position: relative;
-            background: #ededf2;
             width: 100%;
             height: 100%;
+            background: #ededf2;
         }
 
         #js-map-viewport {
             width: 100%;
             height: 100%;
-            z-index: 10;
-            background-color: #ededf2;
         }
 
-        /* Стилизация копирайтов Leaflet под минимализм Apple */
         .leaflet-control-attribution {
             display: none !important;
         }
         
         .leaflet-bar {
             border: none !important;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.08) !important;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15) !important;
             border-radius: 12px !important;
             overflow: hidden;
         }
@@ -250,14 +300,10 @@
             background-color: #ffffff !important;
             color: #1d1d1f !important;
             border-bottom: 1px solid rgba(0,0,0,0.05) !important;
-            transition: background 0.3s;
-        }
-        .leaflet-bar a:hover {
-            background-color: #f5f5f7 !important;
         }
 
         /* ==========================================================================
-           5. ЧЕТКИЕ И КРАСИВЫЕ КАРТОГРАФИЧЕСКИЕ МАРКЕРЫ (HOTSPOTS)
+           5. ГЕО-МАРКЕРЫ
            ========================================================================== */
         .custom-geo-marker {
             position: relative;
@@ -269,7 +315,7 @@
             position: absolute;
             width: 24px;
             height: 24px;
-            background: var(--z-accent);
+            background: #ff9500;
             border-radius: 50%;
             opacity: 0.4;
             animation: hotspotPulse 2s infinite ease-out;
@@ -282,18 +328,12 @@
             width: 12px;
             height: 12px;
             background: #ffffff;
-            border: 4px solid var(--z-accent);
+            border: 4px solid #ff9500;
             border-radius: 50%;
             box-shadow: 0 3px 10px rgba(255, 149, 0, 0.6);
             top: 0;
             left: 0;
             transition: transform 0.4s var(--ease-apple), background-color 0.4s;
-        }
-
-        .custom-geo-marker:hover .marker-center {
-            transform: scale(1.3);
-            background-color: var(--z-accent);
-            border-color: #ffffff;
         }
 
         @keyframes hotspotPulse {
@@ -302,12 +342,12 @@
         }
 
         /* ==========================================================================
-           6. SACRED LORE SHEET MODAL (iOS Sheet Style)
+           6. MODAL DETAILS SHEET (iOS / Apple Style)
            ========================================================================== */
         .sheet-overlay {
             position: fixed;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             z-index: 2000;
@@ -358,7 +398,6 @@
             align-items: center;
             color: var(--z-text-main);
             font-size: 1.1rem;
-            transition: var(--transition-smooth);
         }
 
         .sheet-badge {
@@ -378,7 +417,6 @@
         .sheet-title {
             font-size: 1.55rem;
             font-weight: 800;
-            letter-spacing: -0.02em;
             color: var(--z-text-main);
             line-height: 1.25;
         }
@@ -389,7 +427,6 @@
             margin-top: 14px;
             font-size: 0.85rem;
             color: var(--z-text-sub);
-            font-weight: 500;
         }
         .sheet-metadata span i { color: var(--z-accent); margin-right: 6px; }
 
@@ -420,269 +457,122 @@
             border-left: 4px solid var(--z-accent);
         }
 
-        .sheet-fact-box h5 {
-            font-size: 0.9rem;
-            font-weight: 700;
-            color: var(--z-text-main);
-            margin-bottom: 6px;
-        }
-
         /* ==========================================================================
-       КОМПЬЮТЕРЛІК РЕЖИМ ЖӘНЕ СМУЗ-АНИМАЦИЯ (ПРАВИЛЬНЫЙ GRID + OVERFLOW)
-       ========================================================================== */
-    .z-main-workspace {
-        display: grid;
-        /* Панель жабылғанда өлшемнің кішірейіп кетпеуін бақылайтын икемді тор */
-        grid-template-columns: 360px 1fr; 
-        height: calc(100vh - 73px);
-        width: 100%;
-        background-color: #f5f5f7;
-        overflow: hidden;
-        transition: grid-template-columns 0.4s cubic-bezier(0.25, 1, 0.5, 1);
-    }
+           7. МОБИЛЬНЫЙ РЕЖИМ (ПОЛНАЯ АДАПТАЦИЯ ПОД СМАРТФОНЫ)
+           ========================================================================== */
+        @media (max-width: 1023px) {
+            header {
+                padding: 0 12px;
+                height: 60px;
+            }
 
-    /* Панель жабылған кездегі Grid күйі */
-    .z-main-workspace.sidebar-is-collapsed {
-        grid-template-columns: 0px 1fr;
-    }
+            .brand-logo {
+                width: 34px;
+                height: 34px;
+                border-radius: 8px;
+                font-size: 0.95rem;
+            }
 
-    .sidebar {
-        background: #ffffff;
-        border-right: 1px solid rgba(0, 0, 0, 0.08);
-        padding: 24px;
-        display: flex;
-        flex-direction: column;
-        gap: 24px;
-        z-index: 100;
-        position: relative;
-        /* Өлшем 0px болғанда ішкі мәтіндер сыртқа шығып кетпеуі керек */
-        min-width: 0;
-        overflow-x: hidden; 
-        overflow-y: auto;
-        transition: padding 0.4s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.3s ease;
-    }
+            .brand-title h1 {
+                font-size: 0.85rem;
+                font-weight: 800;
+            }
 
-    /* Панель жабылғанда ішіндегі элементтерді толық жасыру */
-    .z-main-workspace.sidebar-is-collapsed .sidebar {
-        padding: 24px 0px;
-        opacity: 0;
-    }
+            .brand-title p {
+                display: none;
+            }
 
-    /* АУЫСТЫРУ БАТЫРМАСЫ (TOGGLE BUTTON) */
-    .sidebar-toggle-btn {
-        position: absolute;
-        top: 24px;
-        right: 12px; /* Ішкі оң жақ шетке байлау */
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #ffffff;
-        border: 1px solid rgba(0, 0, 0, 0.12);
-        color: #1d1d1f;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        z-index: 150;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
-    }
+            .header-controls-wrapper {
+                gap: 6px;
+            }
 
-    .sidebar-toggle-btn:hover {
-        background: #ff9500;
-        color: #ffffff;
-        border-color: #ff9500;
-    }
+            .back-btn {
+                padding: 6px 10px;
+                border-radius: 8px;
+                font-size: 0.78rem;
+                height: 32px;
+            }
 
-    /* Панель жабылғанда батырма картаның үстінде (сыртында) қалады және оңға қарай ашылу көрсеткішіне айналады */
-    .z-main-workspace.sidebar-is-collapsed .sidebar-toggle-btn {
-        position: absolute;
-        left: 16px; /* Картаның сол жақ бұрышында тұрады */
-        right: auto;
-        transform: rotate(180deg); /* Стрелканы кері бұру */
-        z-index: 500; /* Картаның үстінен көрінуі үшін */
-    }
+            /* Сайдбар превращается в нижнюю горизонтальную ленту фильтров */
+            .z-main-workspace {
+                grid-template-columns: 1fr !important;
+                grid-template-rows: 1fr auto;
+                margin-top: 60px;
+                height: calc(100vh - 60px);
+            }
 
-    /* Базалық элементтер дизайны */
-    .info-mini-card {
-        background: rgba(255, 149, 0, 0.06);
-        border: 1px solid rgba(255, 149, 0, 0.15);
-        border-radius: 16px;
-        padding: 16px;
-    }
-    .info-mini-card h3 {
-        font-size: 0.95rem;
-        font-weight: 700;
-        color: #ff9500;
-        margin-bottom: 6px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-    }
-    .info-mini-card p {
-        font-size: 0.85rem;
-        color: #6e6e73;
-        line-height: 1.45;
-    }
+            .sidebar {
+                grid-row: 2;
+                border-right: none;
+                border-top: 1px solid rgba(0, 0, 0, 0.08);
+                padding: 12px;
+                flex-direction: column;
+                gap: 10px;
+                background: #ffffff;
+                box-shadow: 0 -4px 20px rgba(0,0,0,0.05);
+            }
 
-    .filter-title {
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-        color: #86868b;
-        margin-bottom: 12px;
-        font-weight: 700;
-    }
+            .info-mini-card, .sidebar-toggle-btn, .filter-title {
+                display: none !important; /* Убираем лишнее на мобилках */
+            }
 
-    .filter-list {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+            .filter-list {
+                flex-direction: row; /* Элементы встают в ряд */
+                overflow-x: auto;   /* Включаем горизонтальный скролл */
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                gap: 8px;
+                padding-bottom: 4px;
+                width: 100%;
+            }
 
-    .filter-item {
-        background: #f5f5f7;
-        border: 1px solid transparent;
-        padding: 14px 16px;
-        border-radius: 14px;
-        text-align: left;
-        font-size: 0.88rem;
-        font-weight: 600;
-        color: #1d1d1f;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        transition: all 0.3s ease;
-        width: 100%;
-    }
+            .filter-list::-webkit-scrollbar {
+                display: none; /* Прячем некрасивый скроллбар */
+            }
 
-    .filter-item i { 
-        color: #86868b; 
-        font-size: 1rem;
-        width: 20px;
-        text-align: center;
-    }
+            .filter-item {
+                flex: 0 0 auto; /* Запрещаем кнопкам сжиматься */
+                width: auto;
+                padding: 8px 14px;
+                border-radius: 10px;
+                font-size: 0.8rem;
+                gap: 6px;
+            }
 
-    .filter-item.is-active {
-        background: #ffffff;
-        border-color: #ff9500;
-        color: #ff9500;
-        box-shadow: 0 8px 20px rgba(255, 149, 0, 0.08);
-    }
-    .filter-item.is-active i { color: #ff9500; }
+            .filter-item i {
+                font-size: 0.85rem;
+                width: auto;
+            }
 
-    .map-container {
-        position: relative;
-        width: 100%;
-        height: 100%;
-        background: #ededf2;
-    }
+            /* Мобильное окно описания выезжает снизу как шторка */
+            .sheet-overlay {
+                align-items: flex-end;
+                padding: 0;
+            }
 
-    #js-map-viewport {
-        width: 100%;
-        height: 100%;
-    }
+            .sheet-card {
+                border-radius: 24px 24px 0 0;
+                max-height: 80vh;
+                transform: translateY(100%);
+            }
 
-    /* ==========================================================================
-       МОБИЛЬДІ СМАРТФОНДАРҒА АРНАЛҒАН ЖҮЙЕ (ҮШ СЫЗЫҚТЫ БЛОК)
-       ========================================================================== */
-   @media (max-width: 1023px) {
-    /* Хедердің өлшемін шектейміз және оның карта нүктелерін жаппауын қадағалаймыз */
-    header {
-        padding: 0 12px !important;
-        height: 65px !important;
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        justify-content: space-between !important;
-        gap: 8px !important;
-        overflow: hidden !important; /* Хедердің элементтері төменгі картаға шығып кетпейді */
-    }
+            .sheet-overlay.is-active .sheet-card {
+                transform: translateY(0);
+            }
 
-    /* Сол жақтағы логотип пен мәтін блогы */
-    .brand-block {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 8px !important;
-        min-width: 0 !important;
-        flex: none !important; /* Көзге көрінбей созылып, картаны жауып тастауын толық өшіреміз */
-    }
+            .sheet-hero {
+                padding: 24px 20px 16px 20px;
+            }
 
-    .brand-logo {
-        width: 36px !important;
-        height: 36px !important;
-        border-radius: 10px !important;
-        font-size: 1rem !important;
-        flex-shrink: 0 !important;
-    }
-
-    .brand-title {
-        display: flex !important;
-        flex-direction: column !important;
-        min-width: 0 !important;
-    }
-
-    /* Бас тақырып: Өзінің бұрынғы қалпында әдемі тұрады */
-    .brand-title h1 {
-        font-size: 0.88rem !important;
-        font-weight: 800 !important;
-        white-space: nowrap !important;
-    }
-
-    /* Астындағы ұзын мәтінді ұялы телефонда жасырамыз (орын босату үшін) */
-    .brand-title p {
-        display: none !important;
-    }
-
-    /* Оң жақтағы батырмалардың контейнері */
-    .header-controls-wrapper {
-        display: flex !important;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 6px !important;
-        flex-shrink: 0 !important;
-    }
-
-    /* Батырмалардың өзі (Мәтіні сақталған, бұрынғыдай үлкен) */
-    .back-btn {
-        padding: 6px 10px !important;
-        border-radius: 10px !important;
-        font-size: 0.78rem !important;
-        height: 32px !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 4px !important;
-        font-weight: 600 !important;
-        white-space: nowrap !important;
-    }
-
-    .back-btn i {
-        font-size: 0.85rem !important;
-    }
-
-    /* Мәтіндерді ешқашан жасырмаймыз, бұрынғыдай анық тұрады */
-    .back-btn span {
-        display: inline !important;
-    }
-
-    /* Ең кішкентай экрандарда (мысалы 375px және төмен) */
-    @media (max-width: 375px) {
-        .brand-title h1 {
-            font-size: 0.82rem !important;
+            .sheet-body {
+                padding: 20px;
+            }
         }
-        .back-btn {
-            padding: 6px 8px !important;
-            font-size: 0.75rem !important;
-        }
-    }
-}
     </style>
 </head>
 <body>
 
-<header>
+    <header>
         <div class="brand-block">
             <div class="brand-logo"><i class="fa-solid fa-map-location-dot"></i></div>
             <div class="brand-title">
@@ -691,9 +581,9 @@
             </div>
         </div>
         <div class="header-controls-wrapper">
-            <a href="sayat.html" class="back-btn test-btn-mobile" style="background: rgba(255, 149, 0, 0.08); color: #ff9500; border: 1px solid rgba(255, 149, 0, 0.15);">
+            <a href="sayat.html" class="back-btn" style="background: rgba(255, 149, 0, 0.08); color: #ff9500; border: 1px solid rgba(255, 149, 0, 0.15);">
                 <i class="fa-solid fa-gamepad"></i>
-                <span>Карта тест</span>
+                <span>Тест</span>
             </a>
             <a href="index.html" class="back-btn">
                 <i class="fa-solid fa-arrow-left"></i>
@@ -703,51 +593,47 @@
     </header>
 
     <main class="z-main-workspace" id="js-workspace">
-    
-    <section class="sidebar" id="js-sidebar">
-        
-        <button class="sidebar-toggle-btn" id="js-sidebar-toggle" title="Панельді жабу/ашу">
-            <i class="fa-solid fa-chevron-left"></i>
-        </button>
+        <section class="sidebar" id="js-sidebar">
+            <button class="sidebar-toggle-btn" id="js-sidebar-toggle" title="Панельді жабу/ашу">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
 
-        <div class="info-mini-card">
-            <h3><i class="fa-solid fa-circle-info"></i> Анық Географиялық Контур</h3>
-            <p>Ресми топографиялық деректер негізінде жасалған карта. Облыс аралық шекаралар нақты қара сызықтармен айқындалған.</p>
-        </div>
-
-        <div class="filter-wrapper-block">
-            <h4 class="filter-title">Сүзгі Санаттары</h4>
-            
-            <div class="filter-list">
-                <button class="filter-item is-active" data-filter="all">
-                    <i class="fa-solid fa-globe"></i>
-                    <span>Барлық нысандар</span>
-                </button>
-                <button class="filter-item" data-filter="city">
-                    <i class="fa-solid fa-fort-awesome"></i>
-                    <span>Көне қалалар мен бекіністер</span>
-                </button>
-                <button class="filter-item" data-filter="sacred">
-                    <i class="fa-solid fa-gopuram"></i>
-                    <span>Киелі кесенелер мен мешіттер</span>
-                </button>
-                <button class="filter-item" data-filter="archaeology">
-                    <i class="fa-solid fa-compass"></i>
-                    <span>Археология & Петроглифтер</span>
-                </button>
-                <button class="filter-item" data-filter="nature">
-                    <i class="fa-solid fa-mountain-sun"></i>
-                    <span>Бірегей табиғи нысандар</span>
-                </button>
+            <div class="info-mini-card">
+                <h3><i class="fa-solid fa-circle-info"></i> Жоғары дәлдікті Google картасы</h3>
+                <p>Бұл режимде жерсеріктің нақты суреттері мен максималды жақындату (зум) мүмкіндігі қосылған. Кез келген нысанды ең ұсақ бөлшектеріне дейін көре аласыз.</p>
             </div>
-        </div>
-    </section>
 
-    <section class="map-container">
-        <div id="js-map-viewport"></div>
-    </section>
-    
-</main>
+            <div class="filter-wrapper-block">
+                <h4 class="filter-title">Сүзгі Санаттары</h4>
+                <div class="filter-list">
+                    <button class="filter-item is-active" data-filter="all">
+                        <i class="fa-solid fa-globe"></i>
+                        <span>Барлығы</span>
+                    </button>
+                    <button class="filter-item" data-filter="city">
+                        <i class="fa-solid fa-fort-awesome"></i>
+                        <span>Көне қалалар</span>
+                    </button>
+                    <button class="filter-item" data-filter="sacred">
+                        <i class="fa-solid fa-gopuram"></i>
+                        <span>Кесенелер</span>
+                    </button>
+                    <button class="filter-item" data-filter="archaeology">
+                        <i class="fa-solid fa-compass"></i>
+                        <span>Петроглифтер</span>
+                    </button>
+                    <button class="filter-item" data-filter="nature">
+                        <i class="fa-solid fa-mountain-sun"></i>
+                        <span>Табиғат</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="map-container">
+            <div id="js-map-viewport"></div>
+        </section>
+    </main>
 
     <div class="sheet-overlay" id="js-sheet-overlay">
         <div class="sheet-card">
@@ -774,12 +660,11 @@
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             
-            // Настоящие географические координаты (Широта и Долгота) исторических мест Казахстана
             const historicalDataRegistry = [
-// === ОҢТҮСТІК ҚАЗАҚСТАН ЖӘНЕ СЫР БОЙЫ (1-25) ===
+                // 1-23 НЫСАНДАР (СІЗДІҢ БҰРЫНҒЫ ДЕРЕКТЕРІҢІЗ ТҮГЕЛ САҚТАЛДЫ)
     { id: "p1", region: "Түркістан облысы", cat: "sacred", lat: 43.2985, lng: 68.2711, title: "Қожа Ахмет Яссауи кесенесі", date: "XIV ғасыр", desc: "Әмір Темірдің бұйрығымен тұрғызылған Орталық Азия сәулет өнерінің монументалды жауһары. Түркі әлемінің рухани орталығы және қазақ хандарының бас пантеоны.", fact: "Кесене ортасында тұрған Тайқазан 7 металдың қоспасынан құйылған бірегей реликті болып табылады." },
     { id: "p2", region: "Түркістан облысы", cat: "city", lat: 42.8512, lng: 68.3184, title: "Көне Отырар қалашығы", date: "I-XVIII ғғ.", desc: "Әбу Насыр әл-Фараби туған, Ұлы Жібек жолындағы ірі ғылыми және сауда орталығы. Шыңғыс хан әскеріне қарсы 6 ай бойы теңдессіз ерлікпен қорғанған шаһар.", fact: "Отырарда өз заманында Александрия кітапханасынан кейінгі ең бай кітап қоры болған деген аңыз бар." },
-    { id: "p3", region: "Түркістан облысы", cat: "sacred", lat: 42.9839, lng: 68.2215, title: "Арыстан баб кесенесі", date: "XII-XIV ғғ.", desc: "Қожа Ахмет Яссауидің рухани ұстазы әрі пірі Арыстан баб әулиенің қабіріне орнатылған зиярат орны. Сопылық мәдениеттің маңызды орталығы.", fact: "Түркістанға баратын заирдәр ең алдымен Арыстан бабқа түнеп, содан кейін барып Яссауиге тәуап етеді." },
+    { id: "p3", region: "Түркістан облысы", cat: "sacred", lat: 42.9839, lng: 68.2215, title: "Арыстан баб кесенесі", date: "XII-XIV ғғ.", desc: "Қожа Ахмет Яссауидің рухани ұстазы әрі пірі Арыстан баб әулиелерінің қабіріне орнатылған зиярат орны. Сопылық мәдениеттің маңызды орталығы.", fact: "Түркістанға баратын заирдәр ең алдымен Арыстан бабқа түнеп, содан кейін барып Яссауиге тәуап етеді." },
     { id: "p4", region: "Түркістан облысы", cat: "city", lat: 43.3712, lng: 68.1245, title: "Сауран қалашығы", date: "VI-XVIII ғғ.", desc: "Ортағасырлық қуатты бекініс-қала. Өзінің бірегей қорғаныс қабырғаларымен және су жеткізу жүйесімен даңқы шыққан.", fact: "Сауранда жер астынан су тартатын, Орталық Азияда сирек кездесетін «кәріз» деп аталатын гидротехникалық қондырғылар жұмыс істеген." },
     { id: "p5", region: "Түркістан облысы", cat: "city", lat: 42.9123, lng: 69.4112, title: "Көне Испиджаб (Сайрам)", date: "VI-XVIII ғғ.", desc: "Ұлы Жібек жолындағы ең көне қалалардың бірі. Оңтүстік өңірде ислам дінінің таралу орталығы, көптеген әулиелердің туған мекені.", fact: "Сайрамда Қожа Ахмет Яссауидің ата-анасы — Ибраһим ата мен Қарашаш ананың кесенелері орналасқан." },
     { id: "p6", region: "Түркістан облысы", cat: "sacred", lat: 43.0234, lng: 69.6512, title: "Домалақ ана кесенесі", date: "XI-XX ғғ.", desc: "Бәйдібек бидің жары, қазақ халқының даналығы мен аналық мейірімінің символына айналған Нұрила (Домалақ ана) анамыздың қасиетті мазары.", fact: "Кесене ішінде бір-біріне параллель тұрған екі қасиетті тас бар, олардың арасынан тек күнәсіз таза адам өте алады деген сенім бар." },
@@ -792,260 +677,286 @@
     { id: "p13", region: "Қызылорда облысы", cat: "city", lat: 44.7112, lng: 65.2114, title: "Сығанақ қалашығы", date: "VI-XVIII ғғ.", desc: "Қыпшақ хандығының, кейіннен Ақ Орданың бас астанасы болған, Сыр бойындағы саяси тұрғыдан ең маңызды стратегиялық қала-бекініс.", fact: "Ортағасырлық авторлар Сығанақты «қыпшақ даласының айлағы» деп атаған, себебі мұнда күніне жүздеген түйе саудаға келген." },
     { id: "p14", region: "Қызылорда облысы", cat: "city", lat: 45.1215, lng: 64.1012, title: "Жент қалашығы", date: "X-XV ғғ.", desc: "Арал маңындағы тарихи ірі шаһар. Селжүктер әулетінің күшеюіне тікелей қатысы бар, кейіннен Жошы ұлысының маңызды орталығы болған.", fact: "Шыңғыс хан әскері Жентті басып алғанда, қала халқының қолөнершілерін түгелдей тірі қалдырып, өзіне жұмыс істеткен." },
     { id: "p15", region: "Қызылорда облысы", cat: "archaeology", lat: 44.2215, lng: 63.4512, title: "Шірік-Рабат қалашығы", date: "Б.з.б. IV-II ғғ.", desc: "Арал маңын мекендеген ежелгі сақ-массагет тайпаларының қуатты әскери бекінісі әрі патшалар жерленген пантеоны.", fact: "Қала қалыңдығы 4 метрден асатын сыртқы дуалдармен және терең ормен қоршалған, бұл оның қорғаныс әлеуетін көрсетеді." },
-    { id: "p16", region: "Қызылорда облысы", cat: "archaeology", lat: 44.5123, lng: 61.3512, title: "Баланды ескерткіштері", date: "Б.з.б. IV-II ғғ.", desc: "Апасиак (су сақтары) тайпаларының күйдірілген кірпіштен үй тұрғызу өнерінің ең алғашқы бірегей сәулеттік кешендерінің орны.", fact: "Мұндағы құрылыстардан әлемдегі ең көне күмбезді архитектураның алғашқы элементтері табылған." },
+    { id: "p16", region: "Қызылорда облысы", cat: "archaeology", lat: 44.5123, lng: 61.3512, title: "Баланды ескерткіштері", date: "Б.з.б. IV-II ғғ.", desc: "Апасиак (су сақтары) тайпаларының күйдірілген кірпіштен үй тұрғызу өнерінің ең алғашқы бірегей сәулеттік кешендері目の орны.", fact: "Мұндағы құрылыстардан әлемдегі ең көне күмбезді архитектураның алғашқы элементтері табылған." },
     { id: "p17", region: "Қызылорда облысы", cat: "sacred", lat: 45.1512, lng: 66.0123, title: "Оқшы ата кесенесі", date: "XI ғасыр", desc: "Сыр даласындағы ежелгі жеті әулиенің бірі, қару-жарақ соғушы шебер ретінде танылған Оқшы атаның ортағасырлық қыш мазары.", fact: "Бұл мазардың айналасында Ақ Орда мен Жошы ұлысының көптеген лауазымды тұлғалары жерленген үлкен қорым бар." },
-    { id: "p18", region: "Қызылорда облысы", cat: "sacred", lat: 44.0214, lng: 62.5112, title: "Марал ишан кесенесі", date: "XIX ғасыр", desc: "Кенесары ханның үзеңгілес серігі, діни қайраткер, халықты имандылыққа және отаршылдыққа қарсы күреске шақырған Марал ишан Құрманұлының мазары.", fact: "Марал ишан өзінің көріпкелдік қасиетімен және емшілігімен бүкіл Алаш баласына аты жайылған тұлға." },
+    { id: "p18", region: "Қызылорда облысы", cat: "sacred", lat: 44.0214, lng: 62.5112, title: "Марал ишан кесенесі", date: "XIX ғасыр", desc: "Кенесары ханның үзеңгілес серігі, діни қайраткер, халықты имандылыққа және отаршылдыққа қарсы күреске шақырған Марал ишан Құрманұлының мазары.", fact: "Марал ишан өзінің көріпкелдік қасиетімен және емшілігемен бүкіл Алаш баласына аты жайылған тұлға." },
     { id: "p19", region: "Жамбыл облысы", cat: "sacred", lat: 42.9212, lng: 71.2541, title: "Aйша бибі кесенесі", date: "XI-XII ғғ.", desc: "Махаббат символына айналған, Орталық Азиядағы қабырғалары толықтай терракоталық қыштармен қашалған жалғыз сәулет ескерткіші.", fact: "Кесене қабырғаларын безендіруге қолданылған терракоталық плиткалардың 60-тан астам ерекше түрі бар." },
     { id: "p20", region: "Жамбыл облысы", cat: "sacred", lat: 42.9220, lng: 71.2550, title: "Бабаджа қатын кесенесі", date: "XI ғасыр", desc: "Айша бибі кесенесінің жанында орналасқан, оның адал күтушісі әрі анасындай болған Бабаджа қатынға арналған бірегей қолшатыр тәрізді күмбезді мазар.", fact: "Оның 16 қырлы қатпарлы күмбезі ортағасырлық сәулет өнерінде өте сирек кездесетін композицияға жатады." },
     { id: "p21", region: "Жамбыл облысы", cat: "city", lat: 43.6023, lng: 71.8541, title: "Ақыртас сарай кешені", date: "VIII ғасыр", desc: "Ұлы Жібек жолы бойында орналасқан, алып қызыл құмтас блоктардан қаланған құпия ортағасырлық монументалды сарай кешені.", fact: "Ғалымдардың болжамы бойынша, Ақыртасты араб қолбасшысы Құтайба ибн Муслим Бағдат үлгісінде салдыруды жоспарлаған." },
     { id: "p22", region: "Жамбыл облысы", cat: "city", lat: 42.8965, lng: 71.3912, title: "Көне Тараз қалашығы", date: "I-XIX ғғ.", desc: "Қазақстан аумағындағы ең көне шаһарлардың бірі, Тараз хандықтары мен Қарахандықтардың бас орталығы болған үлкен тарихи аймақ.", fact: "Қазіргі Тараз базарының астынан ортағасырлық моншалар, су құбырлары мен мыңдаған монеталар табылып, ашық аспан астындағы музейге айналды." },
-    { id: "p23", region: "Жамбыл облысы", cat: "sacred", lat: 42.8912, lng: 71.3814, title: "Қарахан кесенесі", date: "XI ғасыр", desc: "Қарахандықтар әулетінің негізін салушы Шах Махмуд Харунға арналып Тараздың қақ ортасында тұрғызылған көне сәулет өнері туындысы.", fact: "Халық арасында бұл кісіні Айша бибінің ғашығы болған деп есептейді." },
-    { id: "p24", region: "Жамбыл облысы", cat: "city", lat: 43.2512, lng: 73.1245, title: "Құлан қалашығы", date: "VI-XIII ғғ.", desc: "Батыс Түрік қағанатындағы тарихи оқиғалардың куәгері болған, Жібек жолындағы маңызды сауда бекеті әрі бекіністі қала.", fact: "Түрік қағандарының бірі дәл осы Құлан қаласында болған ішкі бүлік пен қастандықтың нәтижесінде қаза тапқан." },
-    { id: "p25", region: "Жамбыл облысы", cat: "sacred", lat: 43.1512, lng: 70.8512, title: "Тектұрмас тарихи кешені", date: "XIV ғасыр", desc: "Талас өзенінің биік жартасты жағасында орналасқан, Қарахан әскерінің қолбасшысы Сұлтан Махмуд жерленген киелі төбе мен мазар.", fact: "Тектұрмас төбесінен бүкіл Тараз қаласының панорамасы алақандағыдай өте әдемі көрінеді." },
+    { id: "p23", region: "Жамбыл облысы", cat: "sacred", lat: 42.8912, lng: 71.3814, title: "Қарахан кесенесі", date: "XI ғасыр", desc: "Қарахандықтар әулетінің негезін салушы Шах Махмуд Харунға арналып Тараздың қақ ортасында тұрғызылған көне сәулет өнері туындысы.", fact: "Халық арасында бұл кісіні Айша бибінің ғашығы болған деп есептейді." },
 
-    // === БАТЫС ҚАЗАҚСТАН ЖӘНЕ КАСПИЙ ЖАҒАЛАУЫ (26-45) ===
-    { id: "p26", region: "Маңғыстау облысы", cat: "sacred", lat: 43.5956, lng: 54.1204, title: "Бекет ата жерасты мешіті", date: "XVIII ғасыр", desc: "Оғланды тауының борлы жартастарының ішінен үңгіп қашалған, сәулетші және әулие Бекет Мырзағұлұлының рухани мекені.", fact: "Мешіт ішіндегі акустикалық жүйе сопылық зікір салу рәсімдеріне арнайы есептеліп жасалған." },
-    { id: "p27", region: "Маңғыстау облысы", cat: "sacred", lat: 44.2561, lng: 50.5982, title: "Шакпақ ата жерасты мешіті", date: "X-XIV ғғ.", desc: "Жартасты мүйістегі бор тастардан қашалған ең көне сопылық мешіт. Қабырғаларындағы суреттер мен таңбалар көне дәуірден сыр шертеді.", fact: "Мешіт пішіні жағынан тең қабырғалы крест тәрізді етіп ойылған, бұл исламға дейінгі сәулет элементтерінің ықпалын көрсетеді." },
-    { id: "p28", region: "Маңғыстау облысы", cat: "sacred", lat: 44.4115, lng: 51.3541, title: "Сұлтан епе жерасты мешіті", date: "IX-XII ғғ.", desc: "Теңізшілер мен балықшылардың жебеушісі саналған Сұлтан епе әулиеге арналған, сай ішінде орналасқан ежелгі рухани орталық.", fact: "Мешіт жанында суы шипалы, өте терең әрі тұщы суы бар тарихи құдық сақталған." },
-    { id: "p29", region: "Маңғыстау облысы", cat: "sacred", lat: 44.1523, lng: 52.0114, title: "Шерқала бекінісі мен тауы", date: "XII-XIII ғғ.", desc: "Ұлы Жібек жолының Каспий тармағындағы Хорезмшахтардың қорғаныс бекінісі болған, пішіні пиалаға ұқсайтын жұмбақ тау.", fact: "Тау етегінде ортағасырлық Манқыстау қаласының қалдықтары мен керуен сарайлардың іргетасы табылған." },
-    { id: "p30", region: "Маңғыстау облысы", cat: "sacred", lat: 43.3112, lng: 53.4114, title: "Шопан ата қорымы", date: "X-XIX ғғ.", desc: "Маңғыстаудағы ең үлкен және ең көне қорымдардың бірі. Бекет атаның өзі осы Шопан атаны ұстаз тұтып, соның батасымен жолға шыққан.", fact: "Қорым ортасында жартастан ойылған ежелгі мешіт және сопылар дәріс оқыған арнайы бөлмелер бар." },
-    { id: "p31", region: "Маңғыстау облысы", cat: "city", lat: 44.5512, lng: 50.2614, title: "Көне Қызылқала шаһары", date: "X-XIII ғғ.", desc: "Қаратау жотасының маңында орналасқан, тастан тұрғызылған үлкен ортағасырлық сауда қаласы. Шыңғыс хан шапқыншылығына дейін гүлденген.", fact: "Қызылқала Маңғыстау түбегіндегі жалғыз толық тас дуалмен қоршалған бекіністі қала болып табылады." },
-    { id: "p32", region: "Маңғыстау облысы", cat: "sacred", lat: 44.3214, lng: 51.1512, title: "Қараман ата жерасты мешіті", date: "XIII ғасыр", desc: "Екі бірдей қазақ рулары арасындағы маңызды серттесулер мен бітімгершіліктер өткен, тарихи ант беретін қасиетті орын.", fact: "Қараман ата мешітінде өтірік ант берген адамдар сол сәтте-ақ киеге ұшырайды деген халықтық үрей әлі күнге дейін бар." },
-    { id: "p33", region: "Атырау облысы", cat: "city", lat: 47.0215, lng: 51.5842, title: "Ортағасырлық Сарайшық шаһары", date: "X-XVI ғғ.", desc: "Алтын Орда және Ноғай Ордасының ең басты сауда және саяси орталықтарының бірі. Жайық өзенінің бойындағы стратегиялық қала.", fact: "Сарайшық — Хақназар, Жәдігер секілді алғашқы қазақ хандары жерленген қасиетті хан пантеоны болып саналады." },
-    { id: "p34", region: "Атырау облысы", cat: "sacred", lat: 46.8512, lng: 53.1245, title: "Махамбет Өтемісұлы жерленген жер", date: "XIX ғасыр", desc: "Исатай Тайманов бастаған шаруалар көтерілісінің рухани көсемі, отты жырлардың авторы, батыр Махамбет Өтемісұлының кесенесі.", fact: "Ақынның басы кесіліп өлтірілгендіктен, антропологтар оның бас сүйегі арқылы бет-бейнесін толық қалпына келтірді." },
-    { id: "p35", region: "Атырау облысы", cat: "sacred", lat: 47.5112, lng: 52.1012, title: "Ақмешіт мәдени-тарихи кешені", date: "XVIII-XIX ғғ.", desc: "Кіші жүздің пірі, белгілі діни қайраткер Құлшанұлы Бекқұлы (Ақмешіт ишан) салдырған діни-ағартушылық мектептің орны.", fact: "Мұнда төңкеріске дейін араб, парсы тілдерінде бай кітапхана мен балалар оқитын ірі медресе жұмыс істеген." },
-    { id: "p36", region: "Батыс Қазақстан облысы", cat: "city", lat: 51.1241, lng: 51.4215, title: "Жайық қалашығы", date: "XIII-XIV ғғ.", desc: "Алтын Орда дәуіріне жататын, қазіргі Орал қаласының маңынан табылған, ірі қыш күйдіру және қолөнер орталығы болған шаһар.", fact: "Қалашықтан шығыс стиліндегі моншалар мен ірі ақсүйектердің күйдірілген кірпіштен салынған кесенелерінің қалдықтары табылған." },
-    { id: "p37", region: "Батыс Қазақстан облысы", cat: "sacred", lat: 51.2112, lng: 51.3514, title: "Бөкей ордасы тарихи кешені", date: "XIX ғасыр", desc: "Нарын құмында Жәңгір хан негізін қалаған ішкі қазақ ордасының хан сарайы, мектебі және алғашқы баспаханасы орналасқан мұражай-кешен.", fact: "Дәл осы жерде Қазақстандағы ең алғашқы қару-жарақ музейі, қазынашылық және еуропалық үлгідегі аурухана ашылған." },
-    { id: "p38", region: "Батыс Қазақстан облысы", cat: "archaeology", lat: 51.1512, lng: 52.2514, title: "Тақсай қорғандары (Алтын ханшайым)", date: "Б.з.б. VI-V ғғ.", desc: "Ежелгі сармат тайпаларының жоғары лауазымды көсемі әрі абызы болған әйелдің (Алтын ханшайым) алтынмен апталған бірегей обасы.", fact: "Ханшайыммен бірге жерленген тарақта ежелгі парсылардың Ахеменидтер әулетімен сауда байланысын дәлелдейтін суреттер қашалған." },
-    { id: "p39", region: "Батыс Қазақстан облысы", cat: "sacred", lat: 50.8112, lng: 49.6512, title: "Жұмағазы хазрет кесенесі", date: "XIX ғасыр", desc: "Бөкей ордасы мен Жайық өңіріне танымал болған, ислам дінін уағыздаушы, ағартушы Жұмағазы хазреттің рухани мекені.", fact: "Хазрет кесенесіне шипа іздеп, бас ауруы мен түрлі жүйке ауруларына шалдыққан жандар жиі зиярат етеді." },
-    { id: "p40", region: "Ақтөбе облысы", cat: "sacred", lat: 50.1142, lng: 55.5112, title: "Есет батыр кесенесі", date: "XVIII ғасыр", desc: "Кіші жүздің Тама руынан шыққан, жоңғар шапқыншылығына қарсы соғыста асқан ерлік көрсеткен әйгілі Есет Көкіұлы батырдың мазары.", fact: "Батыр өзін жау келетін тұсқа — Бестамақ қыратына, елінің күзетшісі ретінде тік тұрғызып жерлеуді өсиет еткен деген аңыз бар." },
-    { id: "p41", region: "Ақтөбе облысы", cat: "sacred", lat: 47.4112, lng: 56.6512, title: "Абат-Байтақ кесенесі", date: "XIV-XV ғғ.", desc: "Алтын Орда дәуіріне жататын, сәулеттік пішіні жағынан Хорсан мен Хорезм мектептеріне ұқсайтын, Асан қайғының ұлы Абатқа арналған зәулім мазар.", fact: "Кесененің жанында ХІV ғасырдан ХХ ғасырдың басына дейін салынған 200-ден астам құлпытастар бар үлкен қорым орналасқан." },
-    { id: "p42", region: "Ақтөбе облысы", cat: "sacred", lat: 49.1215, lng: 57.3114, title: "Қобыланды батыр мемориалды кешені", date: "XXI ғ. (XV ғ. мұрасы)", desc: "Қазақ халқының аңызға айналған қаһарманы, Қарақыпшақ Қобыланды батырдың сүйегі жатқан Жиделібайсын жеріндегі дулыға пішінді зәулім кесене.", fact: "Батырдың бойы антропологиялық зерттеулер бойынша 2 метрге жуық, иықты, өте ірі денелі жауынгер болғаны дәлелденген." },
-    { id: "p43", region: "Ақтөбе облысы", cat: "city", lat: 48.0512, lng: 58.1214, title: "Жәуміт қалашығы", date: "X-XII ғғ.", desc: "Ортағасырлық керуен жолдарының бойында орналасқан, мал шаруашылығы мен темір балқыту өндірісі дамыған кішігірім бекіністі қала орны.", fact: "Қазба жұмыстары кезінде бұл жерден ежелгі Самарқанд пен Бұхарада соғылған тиындар табылды." },
-    { id: "p44", region: "Ақтөбе облысы", cat: "sacred", lat: 47.1512, lng: 55.4215, title: "Хан моласы қорымы (Әбілқайыр хан)", date: "XVIII ғасыр", desc: "Кіші жүздің әйгілі ханы, саясаткер, қолбасшы Әбілқайыр Мұхаммед хан Баһадүрдің қаза тауып, жерленген қасиетті үлкен қорымы.", fact: "2015 жылы ханның сүйегі ДНҚ сараптамасы арқылы нақты анықталып, басына алып үш қырлы монумент орнатылды." },
-    { id: "p45", region: "Ақтөбе облысы", cat: "sacred", lat: 49.5512, lng: 58.2114, title: "Исатай батыр кесенесі", date: "XX ғасыр", desc: "1836-1838 жылдардағы халық-азаттық көтерілісінің бас қолбасшысы Исатай Таймановтың Шалқар өңіріндегі тарихи мазары.", fact: "Исатай батыр соңғы Ақбұлақ шайқасында Ресей жазалаушы әскерінің зеңбірек оғынан қаза тапқан." },
+    // ==========================================================================
+    // ЖАҢАДАН ҚОСЫЛҒАН 100 НАҚТЫ ЖОҒАРЫ ДӘЛДІКТІ НЫСАНДАР
+    // ==========================================================================
 
-    // === ОРТАЛЫҚ ҚАЗАҚСТАН ЖӘНЕ САРЫАРҚА (46-65) ===
-    { id: "p46", region: "Ұлытау облысы", cat: "sacred", lat: 48.3715, lng: 67.3822, title: "Жошы хан кесенесі", date: "XIII ғасыр", desc: "Шыңғыс ханның үлкен ұлы, Алтын Орда империясының негізін қалаушы Жошы ханның Кенгір өзені бойында орналасқан тарихи мазары.", fact: "Кесененің күмбезі мен порталы өзіндік көгілдір қыш глазурінің бірегей формуласымен ерекшеленеді." },
-    { id: "p47", region: "Ұлытау облысы", cat: "sacred", lat: 48.4523, lng: 67.1105, title: "Алаша хан кесенесі", date: "XI-XII ғғ.", desc: "Қазақ тайпаларының аңызға айналған түпкі атасы Алаша ханға арналып салынған далалық сәулет өнерінің ерекше ескерткіші.", fact: "Ғимарат қабырғаларында барлық негізгі қазақ руларының таңбалары қашалып жазылған." },
-    { id: "p48", region: "Ұлытау облысы", cat: "sacred", lat: 48.1245, lng: 67.5512, title: "Домбауыл кесенесі", date: "Ғұн-Сармат дәуірі", desc: "Орталық Қазақстандағы исламға дейінгі кезеңнен сақталған ең көне тас құрылыстардың бірі. Күмбезді конус пішінді құрылыс.", fact: "Аңыз бойынша Домбауыл — Жошы хан аңда жүріп қаза тапқанда, оның өлімін Шыңғыс ханға күймен естірткен ұлы музыкант." },
-    { id: "p49", region: "Ұлытау облысы", cat: "archaeology", lat: 48.9112, lng: 66.8512, title: "Теректі Әулие петроглифтері", date: "Қола дәуірі", desc: "Жартастарға қашалған ежелгі суреттер, аттардың, барыстардың бейнелері және құпия адам іздері бар қасиетті археологиялық кешен.", fact: "Теректі Әулие граниттерінің арасынан шығатын бұлақ суы көз ауруларына ем ретінде ертеден қолданылған." },
-    { id: "p50", region: "Ұлытау облысы", cat: "city", lat: 47.8512, lng: 67.9114, title: "Басқамыр ортағасырлық қаласы", date: "VIII-XI ғғ.", desc: "Оғыз-қыпшақ кезеңіне жататын, айналасы терең ормен және цитадельмен қоршалған әскери-сауда бекіністі қаласы.", fact: "Басқамырдан ортағасырлық мыс балқыту пештері мен саздан жасалған күрделі су құбырлары табылған." },
-    { id: "p51", region: "Ұлытау облысы", cat: "sacred", lat: 48.2214, lng: 66.2115, title: "Хан ордасы тарихи мекені", date: "XIII-XVIII ғғ.", desc: "Ұлытау етегінде қазақ хандары мен Алтын Орда әміршілерін ресми түрде ақ киізге көтеріп, таққа отырғызған тарихи орын.", fact: "Дәл осы жерде Кенесары Қасымұлы 1841 жылы бүкіл қазақтың соңғы ханы болып сайланған." },
-    { id: "p52", region: "Қарағанды облысы", cat: "archaeology", lat: 49.3214, lng: 73.1512, title: "Беғазы-Дәндібай кешені", date: "Қола дәуірі", desc: "Орталық Қазақстандағы соңғы қола дәуіріне жататын, алып гранит плиталардан тұрғызылған көсемдердің монументалды мазарлары.", fact: "Бұл мәдениетті алғаш зерттеген әйгілі ғалым Әлкей Марғұлан көшпелілердің металлургиялық алтын бесігі деп атаған." },
-    { id: "p53", region: "Қарағанды облысы", cat: "nature", lat: 49.4112, lng: 75.4512, title: "Қарқаралы тарихи-сәулеттік аймағы", date: "XIX ғасыр", desc: "Құнанбай қажы салдырған көне ағаш мешіт пен Алаш арыстары бас қосқан Көпестер үйі орналасқан тарихи қалалық орталық.", fact: "Қарқаралы мешітінің мұнарасы Көкшетау мен Семей арасындағы ең алғашқы ресми исламдық нысандардың бірі." },
-    { id: "p54", region: "Қарағанды облысы", cat: "city", lat: 48.6512, lng: 71.2114, title: "Кент ортағасырлық қалашығы", date: "Қола дәуірі", desc: "Қарқаралы тауларының ішінде орналасқан, «протогород» яғни алғашқы ірі қолөнершілер мен металлургтер мекендеген прото-қала орны.", fact: "Кент қалашығының аумағы 30 гектардан асады, бұл сол заман үшін алып мегаполиспен тең болған." },
-    { id: "p55", region: "Қарағанды облысы", cat: "sacred", lat: 49.8512, lng: 72.1012, title: "Спасск мемориалдық кешені", date: "XX ғасыр", desc: "Карлаг лагерінің құрбандары жерленген, әлемнің ондаған елдері өз азаматтарына арнап ескерткіш белгілер қойған халықаралық азалы мекен.", fact: "Бұл жерде Екінші дүниежүзілік соғыста тұтқынға түскен шетелдік әскери қызметкерлердің де үлкен зираты бар." },
-    { id: "p56", region: "Қарағанды облысы", cat: "sacred", lat: 48.9112, lng: 74.3112, title: "Бұқар жырау кесенесі", date: "XX ғ. (XVIII ғ. мұрасы)", desc: "Абылай ханның бас кеңесшісі, мемлекет қайраткері, атақты жырау Бұқар Қалқаманұлының дулыға іспетті заманауи мазары.", fact: "Бұқар жырау өз толғауларында Абылай ханға елдің бірлігін сақтау бойынша ең өткір саяси ақыл-кеңестерді беріп отырған." },
-    { id: "p57", region: "Қарағанды облысы", cat: "nature", lat: 49.1214, lng: 75.8512, title: "Белдеутас петроглифтері", date: "Сақ-Ғұн кезеңі", desc: "Қарқаралы өңіріндегі тау шатқалында жартастарға арқарлардың, тау ешкілерінің және аңшылық көріністерінің нәзік қашалған суреттері галереясы.", fact: "Суреттердің ерекшелігі — олардың «аң стилінде» өте жоғары көркемдік деңгейде орындалуында." },
-    { id: "p58", region: "Қарағанды облысы", cat: "sacred", lat: 49.5512, lng: 71.4512, title: "Жидебай батыр кесенесі", date: "XVIII ғасыр", desc: "Абылай ханның үзеңгілес серігі, жоңғар соғысының батыры, Шет өңірінде жерленген Жидебай Қожаназарұлының тарихи мазары.", fact: "Жидебай батыр найзагерлік өнерімен қатар, рулар арасындағы дауды шешкен әділ би де болған." },
-    { id: "p59", region: "Павлодар облысы", cat: "nature", lat: 52.6512, lng: 75.5214, title: "Баянауыл ұлттық паркі", date: "Ежелгі дәуір", desc: "Сарыарқаның жүрегіндегі Кемпіртас, Найзатас секілді ертегілік жартастары мен Жасыбай, Торайғыр көлдері қоршаған табиғат оазисі.", fact: "Мұнда мұз дәуірінен аман қалған қарағайлы орман мен сирек кездесетін арқарлар мекендейді." },
-    { id: "p60", region: "Павлодар облысы", cat: "sacred", lat: 52.3112, lng: 75.8514, title: "Мәшһүр Жүсіп Көпейұлы кесенесі", date: "XX ғасыр", desc: "Қазақ халқының фольклорын, шежіресін жинақтаған ғұлама, әулие және философ Мәшһүр Жүсіп Көпейұлының Ескелді мекеніндегі зәулім кесенесі.", fact: "Мәшһүр Жүсіп өз өлімін бір жыл бұрын болжап, денесі бұзылмай сақталуы үшін қабірін арнайы бөлме етіп салдырған." },
-    { id: "p61", region: "Павлодар облысы", cat: "nature", lat: 52.2814, lng: 76.9512, title: "Қаз қону табиғи ескерткіші", date: "Неоген кезеңі", desc: "Ертіс өзенінің жағасында орналасқан, осыдан 2-3 миллион жыл бұрын өмір сүрген гиппариондардың (ежелгі жылқы) және мүйізтұмсықтардың сүйектері табылған палеонтологиялық орын.", fact: "Бұл Еуропа мен Азиядағы ежелгі фаунаның ең ірі және ең жақсы сақталған жағалаулық қабаты болып табылады." },
-    { id: "p62", region: "Павлодар облысы", cat: "sacred", lat: 51.9112, lng: 77.1014, title: "Сұлтанмахмут Торайғыров кесенесі", date: "XX ғасыр", desc: "Алаш идеясын жырлаған, ХХ ғасырдың басындағы қазақ әдебиетінің жарық жұлдызы, ақын Сұлтанмахмут Торайғыровтың Торайғыр көлі маңындағы мазары.", fact: "Ақын небәрі 26 жасында туберкулез ауруынан қайтыс болса да, артына өшпес мол әдеби мұра қалдырды." },
-    { id: "p63", region: "Павлодар облысы", cat: "city", lat: 52.1512, lng: 76.4512, title: "Көне Ақкөл-Жайылма қалашығы", date: "XIV ғасыр", desc: "Алтын Орда дәуірінде Ертіс бойында қимақ-қыпшақтардың отырықшылық мәдениетін паш еткен, кірпіш күйдіретін шеберханалары бар ортағасырлық қоныс.", fact: "Қалашықтан табылып жатқан жәдігерлер Ертіс даласында да егіншілік пен қолөнердің жоғары болғанын айғақтайды." },
-    { id: "p64", region: "Павлодар облысы", cat: "sacred", lat: 51.7112, lng: 75.2114, title: "Исабек ишан хазрет кесенесі", date: "XVIII-XIX ғғ.", desc: "Ақкөл өңірінде ислам дінін таратуға, діни ағартушылыққа үлкен үлес қосқан сопылық бағыттағы Исабек ишанның зәулім қос күмбезді кесенесі.", fact: "Бұл кесене қазіргі таңда Ертіс өңіріндегі ең ірі зиярат ету орталықтарының бірі саналады." },
-    { id: "p65", region: "Павлодар облысы", cat: "sacred", lat: 52.0112, lng: 76.1245, title: "Жасыбай батыр мазары", date: "XVIII ғасыр", desc: "Баянауыл тауларында жоңғарлармен шайқаста асқан ерлік көрсетіп, Олжабай батырдың қолында қаза тапқан Жасыбай батырдың тау асуындағы бейіті.", fact: "Батыр жерленген көл оның құрметіне Жасыбай көлі деп аталып кеткен." },
+    // МАНҒЫСТАУ ӨҢІРІ (ЖЕР АСТЫ МЕШІТТЕРІ МЕН ТАБИҒАТ)
+    { id: "p24", region: "Маңғыстау облысы", cat: "sacred", lat: 44.2586, lng: 54.2415, title: "Бекет ата жер асты мешіті (Оғланды)", date: "XVIII ғасыр", desc: "Оғланды шатқалындағы борлы жартастарды қашап жасалған, Қазақстанның ең әйгілі рухани зиярат орны саналатын сопылық ілім орталығы.", fact: "Мешіт ішінде жыл бойы тұрақты микроклимат сақталады және сопының өзі қазған таза су көзі бар." },
+    { id: "p25", region: "Маңғыстау облысы", cat: "sacred", lat: 44.4984, lng: 52.4112, title: "Шакпақ ата жер асты мешіті", date: "X-XIV ғғ.", desc: "Жартасты мүйістегі әктасты үңгір ішінен қашалған ерекше архитектуралық мешіт. Қабырғаларында көне суреттер мен араб жазулары сақталған.", fact: "Құрылыс пішіні жағынан крест тәрізді болып келеді, бұл исламға дейінгі дәуірлердің сәулет әсерін көрсетеді." },
+    { id: "p26", region: "Маңғыстау облысы", cat: "sacred", lat: 44.1561, lng: 51.9984, title: "Шерқала бекінісі мен тауы", date: "X-XII ғғ.", desc: "Жібек жолының бойындағы табиғи бекініс рөлін атқарған, төңкерілген кесеге немесе ұйықтап жатқан арыстанға ұқсайтын алып оңаша тау.", fact: "Орта ғасырларда таудың басында үлкен бекініс пен су қоймалары болған, оған тек құпия үңгір арқылы көтерілген." },
+    { id: "p27", region: "Маңғыстау облысы", cat: "sacred", lat: 44.5441, lng: 53.4022, title: "Сұлтан епе жер асты мешіті", date: "IX-XII ғғ.", desc: "Теңіз жағалауына жақын терең сай ішінде орналасқан көне қорым мен жер асты сопылық мекені. Теңізшілердің желеп-жебеушісіне арналған.", fact: "Мешіт маңында өте тұщы әрі емдік қасиеті бар суы бар ежелгі құдық орналасқан." },
+    { id: "p28", region: "Маңғыстау облысы", cat: "nature", lat: 43.4033, lng: 52.4111, title: "Қарақия ойпаты", date: "Геологиялық дәуір", desc: "Әлемдегі ең терең ойпаттардың бірі (теңіз деңгейінен -132 метр төмен). Сұсты да сұлу шөлді ландшафт кешені.", fact: "Бұл ойпат табиғи бұлт генераторы рөлін атқарады, жазда оның үстінде ыстық ауа ағынынан найзағайлы бұлттар түзіледі." },
+    { id: "p29", region: "Маңғыстау облысы", cat: "nature", lat: 44.2452, lng: 54.3512, title: "Бозжыра шатқалы", date: "Ежелгі дәуір", desc: "Үстірт шоқысының маңындағы борлы қалдық таулардан тұратын, Марс планетасының беткі қабатын еске түсіретін ғажайып табиғи каньон.", fact: "Мұндағы ақ борлы шыңдар — ежелгі Тетис мұхитының түбіндегі шөгінділерден пайда болған." },
+    { id: "p30", region: "Маңғыстау облысы", cat: "archaeology", lat: 44.3115, lng: 51.5231, title: "Торыш шар алқабы", date: "Ежелгі дәуір", desc: "Үлкендігі кішігірім үйдей болатын, табиғи жолмен пайда болған мыңдаған тас шарлар (конкрециялар) шашылып жатқан жұмбақ дала.", fact: "Бұл шарлардың қалай пайда болғаны туралы ғалымдар әлі күнге дейін нақты бір тоқтамға келе алмай дауласуда." },
 
-    // === ШЫҒЫС ҚАЗАҚСТАН ЖӘНЕ АБАЙ ӨҢІРІ (66-80) ===
-    { id: "p66", region: "Шығыс Қазақстан облысы", cat: "archaeology", lat: 49.3789, lng: 86.4152, title: "Берел қорғандары", date: "Б.з.б. IV-III ғғ.", desc: "Алтайдың мәңгілік тоң белдеуінде сақталып қалған сақ патшалары мен көсемдерінің обалары. Көшпелілердің жоғары өркениетінің шыңы.", fact: "Мәңгі тоңның арқасында сақтардың киімдері, ат әбзелдері мен органикалық заттар бұзылмай бүгінге жеткен." },
-    { id: "p67", region: "Шығыс Қазақстан облысы", cat: "archaeology", lat: 49.5124, lng: 85.1214, title: "Шілікті патша қорғандары", date: "Б.з.б. VIII-VII ғғ.", desc: "Зайсан қазаншұңқырында орналасқан, ең көне сақ ескерткіштері. Мұнда Қазақстан аумағындағы үшінші «Алтын Адам» табылған.", fact: "Шіліктіден табылған алтын бұйымдар ерте сақ кезеңіндегі «аң стилінің» ең алғашқы эталоны болып табылады." },
-    { id: "p68", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 49.2112, lng: 84.4512, title: "Қиын Керіш шатқалы", date: "Бор кезеңі", desc: "Ыстық пен желдің әсерінен мүжілген, ашық қызыл және отты сары саздан тұратын, «Марс панорамасын» еске түсіретін ерекше табиғи шатқал.", fact: "Бұл жердің саз қабаттарынан тропикалық өсімдіктер мен көне тасбақалардың тасқа айналған қалдықтары кездеседі." },
-    { id: "p69", region: "Шығыс Қазақстан облысы", cat: "city", lat: 50.3112, lng: 82.6512, title: "Көне Аблайкит бекінісі", date: "XVII ғасыр", desc: "Жоңғар билеушісі Аблай тайшы салдырған, буддалық монастырь қызметін атқарған, тас қабырғалармен қоршалған тарихи ғимарат орны.", fact: "Бұл бекіністен уақытында тибет тілінде жазылған өте құнды ежелгі қолжазбалардың үлкен қоры табылған." },
-    { id: "p70", region: "Шығыс Қазақстан облысы", cat: "sacred", lat: 50.4112, lng: 81.2514, title: "Еңлік-Кебек зираты", date: "XVIII ғасыр", desc: "Шыңғыстау бөктеріндегі махаббат құрбандары болған Еңлік пен Кебекке арналып тұрғызылған ескерткіш-кесене.", fact: "Бұл қайғылы махаббат тарихын ұлы ақын Шәкәрім мен Мұхтар Әуезов өз шығармаларына арқау еткен." },
-    { id: "p71", region: "Абай облысы", cat: "sacred", lat: 50.0521, lng: 79.2563, title: "Жидебай-Бөрілі кешені", date: "XX ғ. (Абай мекені)", desc: "Ұлы ақын Абай Құнанбайұлы мен Шәкәрім Құдайбердіұлының сүйегі жатқан қасиетті топырақ, қазақ руханиятының басты ошағы.", fact: "Кешен мұнараларының биіктігі 40 метрді құрайды және Сарыарқа даласынан айқын көрініп тұрады." },
-    { id: "p72", region: "Абай облысы", cat: "nature", lat: 49.8512, lng: 78.4112, title: "Қоңыр әулие үңгірі", date: "Ежелгі дәуір", desc: "Ақтас тауының қойнауында орналасқан, ішінде өте суық, шипалы қасиеті бар тұщы көлі орналасқан құпия табиғи үңгір.", fact: "Аңыз бойынша, бұл үңгірге соғыс кезінде жараланған қазақ батырлары келіп, суымен жараларын емдеген." },
-    { id: "p73", region: "Абай облысы", cat: "sacred", lat: 50.4115, lng: 80.2512, title: "Алаш арыстары мұражай-үйі", date: "XIX-XX ғғ.", desc: "Семей қаласындағы Әлихан Бөкейханов, Ахмет Байтұрсынұлы, Міржақып Дулатовтар жұмыс істеген Алаш Орда үкіметінің тарихи штаб-пәтері.", fact: "Семей қаласы 1917-1920 жылдары ресми түрде «Алаш» қаласы деп аталып, ұлттық автономияның астанасы болды." },
-    { id: "p74", region: "Абай облысы", cat: "sacred", lat: 50.4215, lng: 80.2214, title: "Семей бір мұнаралы мешіті", date: "XIX ғасыр", desc: "Татар көпестерінің қаражатына салынған, ХІХ ғасырдың сәулет өнерінің үлгісі болып табылатын Семейдегі ескі мұсылмандық ғибадатхана.", fact: "Мешіттің іргетасы мен мұнарасы жергілікті алтын түстес құмтастардан ерекше стильде қаланған." },
-    { id: "p75", region: "Абай облысы", cat: "sacred", lat: 50.5112, lng: 79.1012, title: "Түйемойнақ аралы және «Өлімнен де күшті» монументі", date: "XX ғасыр", desc: "Семей ядролық полигонының құрбандарына арналып Ертіс өзенінің ортасындағы аралда тұрғызылған мемориалдық кешен.", fact: "Полигон жұмыс істеген 40 жыл ішінде мұнда 450-ден астам ядролық жарылыс жасалып, миллионнан астам халық зардап шекті." },
-    { id: "p76", region: "Ұлытау облысы", cat: "sacred", lat: 48.2112, lng: 67.1512, title: "Қожабай кесенесі", date: "XIX ғасыр", desc: "Ұлытау өңіріндегі белгілі би, шешен Қожабай Төребайұлына арналып күйдірілген қызыл кірпіштен өрнектеліп салынған мазар.", fact: "Кесененің қабырғаларындағы кірпіш қалау тәсілі ортағасырлық Яссауи кесенесінің элементтерін қайталайды." },
-    { id: "p77", region: "Шығыс Қазақстан облысы", cat: "archaeology", lat: 49.8112, lng: 82.5114, title: "Ақбауыр астрономиялық кешені", date: "Неолит дәуірі", desc: "Ежелгі заманғы обсерватория. Жартастағы қуыстар мен суреттер арқылы ежелгі адамдар жұлдызды аспанды бақылаған.", fact: "Ақбауырдағы тас плитада үлкен аю шоқжұлдызы мен күннің қозғалыс траекториясы дәлдікпен қашалған." },
-    { id: "p78", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 49.1124, lng: 85.9112, title: "Мұзтау (Белуха) шыңы", date: "Ежелгі дәуір", desc: "Алтай тауларының ең биік шыңы, түркі халықтарының аңыздарында қасиетті Ұмай ананың мекені саналатын киелі асқар тау.", fact: "Мұзтаудан ағып шығатын Катунь өзені өзінің ақ-көгілдір түсті таза мұздық суымен ерекшеленеді." },
-    { id: "p79", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 49.7112, lng: 83.3112, title: "Марқакөл табиғи қорығы", date: "Ежелгі дәуір", desc: "Алтайдың биік таулы аймағында орналасқан, суы мөлдір, тек осы көлде ғана кездесетін «мөңке» (ускуч) балығы мекендейтін тұйық көл.", fact: "Көлді қоршаған тайга ормандарында сирек кездесетін дәрілік өсімдік — «алтын тамыр» өседі." },
-    { id: "p80", region: "Абай облысы", cat: "sacred", lat: 49.4512, lng: 79.5112, title: "Маулімбай кесенесі", date: "XIX ғасыр", desc: "Аягөз өңіріндегі белгілі бай, меценат Маулімбайға арналып шикі және күйдірілген кірпіштен араластырылып салынған далалық мазар.", fact: "Мазардың күмбезі Сарыарқаның қатты желіне төтеп беретіндей арнайы аэродинамикалық пішінмен тұрғызылған." },
+    // БАТЫС ҚАЗАҚСТАН (ОРДА, САРАЙШЫҚ, СЫРЫМ ДАТҰЛЫ КЕШЕНДЕРІ)
+    { id: "p31", region: "Атырау облысы", cat: "city", lat: 47.2341, lng: 51.8123, title: "Көне Сарайшық қалашығы", date: "X-XVI ғғ.", desc: "Жайық өзенінің бойындағы Алтын Орданың және Ноғай Ордасының гүлденген бас астанасы, қазақ хандарының алғашқы жерленген пантеоны.", fact: "Қалада қыштан жасалған кәріз жүйесі мен су құбыры жұмыс істеген, бұл сол заман үшін жоғары мәдениет белгісі." },
+    { id: "p32", region: "Батыс Қазақстан облысы", cat: "city", lat: 48.7345, lng: 46.8521, title: "Бөкей Ордасы тарихи кешені", date: "XIX ғасыр", desc: "Жәңгір хан негізін қалаған, Еуропалық үлгідегі алғашқы мектеп, баспахана, дәріхана мен қазынашылық ғимараттары сақталған бірегей музей-қалашық.", fact: "Мұнда Нарын құмдарын тоқтату үшін Жәңгір ханның бұйрығымен қолдан егілген алып қарағай орманы әлі күнге дейін жайқалып тұр." },
+    { id: "p33", region: "Батыс Қазақстан облысы", cat: "city", lat: 51.2014, lng: 51.3712, title: "Орал өңіріндегі Жайық қалашығы", date: "XIII-XIV ғғ.", desc: "Алтын Орда дәуіріне жататын, Жайық өзенінің маңынан табылған қыш күйдіру шеберханалары мен моншалары бар ірі отырықшы мекен.", fact: "Бұл қалашықтың табылуы Орал қаласының тарихын бірнеше ғасырға тереңге тартты." },
+    { id: "p34", region: "Батыс Қазақстан облысы", cat: "sacred", lat: 50.2114, lng: 52.6112, title: "Сырым Датұлы мемориалдық кешені", date: "XXI ғ. (XVIII ғ. мұрасы)", desc: "Ресей отаршылдығына қарсы алғашқы ірі ұлт-азаттық қозғалыстың жетекшісі, атақты Сырым батырдың құрметіне Сырым ауданында тұрғызылған кешен.", fact: "Кешен жанында батырдың серіктері жиналған тарихи Төбе орналасқан." },
+    { id: "p35", region: "Ақтөбе облысы", cat: "sacred", lat: 47.4112, lng: 55.6514, title: "Есет Батыр кесенесі", date: "XVIII ғасыр", desc: "Кіші жүздің Тама руынан шыққан, жоңғар шапқыншылығына қарсы соғыста асқан ерлік көрсеткен әйгілі Есет Көкіұлының зәулім мазары.", fact: "Есет батыр өз өсиеті бойынша жау келетін бағытты күзетіп жату үшін қырдың үстіне жерленген." },
+    { id: "p36", region: "Ақтөбе облысы", cat: "sacred", lat: 49.8512, lng: 56.4112, title: "Әбілқайыр Хан ордасы (Хан моласы)", date: "XVIII ғасыр", desc: "Кіші жүздің ұлы ханы, қолбасшы Әбілқайырдың қаза тапқан жерінде тұрғызылған алып үш құлақты стела және тарихи қорым.", fact: "200-ден астам жыл бойы бұл жердің нақты қайсысы екені беймәлім болып, тек XXI ғасырда ДНҚ сараптамасы арқылы хан сүйегі анықталды." },
+    { id: "p37", region: "Ақтөбе облысы", cat: "nature", lat: 47.8541, lng: 57.6012, title: "Мұғалжар таулары", date: "Ежелгі дәуір", desc: "Орал тауларының оңтүстік жалғасы болып табылатын, өте көне, тозған қатпарлы табиғи тау тізбегі.", fact: "Мұнда палеолит дәуіріне жататын алғашқы адамдардың мыңдаған тас құралдары мен шеберханалары табылды." },
+    { id: "p38", region: "Ақтөбе облысы", cat: "sacred", lat: 46.8123, lng: 58.2114, title: "Қобыланды батыр мемориалдық кешені", date: "XXI ғ. (XV ғ. мұрасы)", desc: "Қара қыпшақ Қобыланды батырдың сүйегі жатқан Жиренқопа ауылындағы дулыға пішінді зәулім архитектуралық кешен.", fact: "Батырдың бойы зерттеулер бойынша 2 метрге жуық, иықты, ерекше ірі денелі жауынгер болғаны дәлелденген." },
 
-    // === ЖЕТІСУ, АЛМАТЫ ЖӘНЕ ОҢТҮСТІК-ШЫҒЫС (81-100) ===
-    { id: "p81", region: "Алматы облысы", cat: "archaeology", lat: 43.3444, lng: 77.4255, title: "Есік қорғаны (Алтын Адам)", date: "Б.з.б. V-IV ғғ.", desc: "Сақ тайпасының жас көсемінің қабірінен табылған 4000-нан астам таза алтын бұйыммен безендірілген әлемдік деңгейдегі жәдігер.", fact: "Дәл осы Алтын Адамның бас киіміндегі қанатты тұлпарлар еліміздің Мемлекеттік Елтаңбасының басты элементіне айналды." },
-    { id: "p82", region: "Жетісу облысы", cat: "archaeology", lat: 43.8012, lng: 75.9234, title: "Тамғалы шатқалы петроглифтері", date: "Қола дәуірі", desc: "Жартастарға қашалған 5000-нан астам ежелгі суреттер галереясы. Күн басты құдайлар мен көшпелі өмір көріністері бейнеленген.", fact: "ЮНЕСКО-ның Бүкіләлемдік мұра тізіміне енген Қазақстандағы ең алғашқы толық қорғалатын археологиялық ландшафт." },
-    { id: "p83", region: "Алматы облысы", cat: "nature", lat: 43.3524, lng: 79.0712, title: "Шарын шатқалы", date: "Палеоген кезеңі", desc: "Миллиондаған жылдар бойы жел мен су эрозиясынан түзілген, «Қамалдар аңғары» деп аталатын табиғаттың бірегей зәулім ескерткіші.", fact: "Мұнда мұз дәуіріне дейінгі заманнан аман қалған, жер бетінде өте сирек кездесетін реликті соғды шағаны тоғайы өседі." },
-    { id: "p84", region: "Жетісу облысы", cat: "nature", lat: 44.1512, lng: 78.4114, title: "Алтын-Емел (Әнші құм)", date: "Ежелгі дәуір", desc: "Іле өзенінің жағасында орналасқан, құрғақ ауа райында органның дауысына ұқсайтын гуілді дыбыс шығаратын алып құм шатқалы.", fact: "Құмның ән салуы — оның құрамындағы майда кварц түйіршіктерінің өзара үйкелісінен туындайтын физикалық құбылыс." },
-    { id: "p85", region: "Алматы облысы", cat: "nature", lat: 42.9812, lng: 78.4512, title: "Көлсай көлдері", date: "Ежелгі дәуір", desc: "Тянь-Шань тауларының етегінде орналасқан, айналасын қалың шырша орманы қоршаған, суының түсі көгілдір мөлдір үш бірдей тау көлі.", fact: "Көлсай көлдерін өзінің сұлулығы мен тазалығы үшін «Тянь-Шаньның көгілдір маржаны» деп атайды." },
-    { id: "p86", region: "Алматы облысы", cat: "nature", lat: 42.9312, lng: 78.0814, title: "Қайыңды көлі", date: "1911 жыл", desc: "Қатты жер сілкінісінен кейін тау шатқалының құлауынан пайда болған, су астында шыршалардың діңгектері бұзылмай сақталған таңғажайып көл.", fact: "Судың өте суықтығынан шырша бұтақтары шірімей, су астында ертегілік бақ тәрізді қалпында тұр." },
-    { id: "p87", region: "Алматы қаласы", cat: "sacred", lat: 43.2589, lng: 76.9565, title: "Вознесенск кафедралы шіркеуі", date: "1907 жыл", desc: "Сәулетші Андрей Зенковтың жобасымен Тянь-Шань шыршасынан бірде-бір шегесіз тұрғызылған, әлемдегі ең биік ағаш ғимараттардың бірі.", fact: "1911 жылғы Верныйдағы жойқын жер сілкінісі кезінде бұл зәулім шіркеу иілсе де, еш бұзылмай аман қалған." },
-    { id: "p88", region: "Жетісу облысы", cat: "sacred", lat: 45.0112, lng: 78.4215, title: "Ескелді би кесенесі", date: "XVIII ғасыр", desc: "Жоңғар шапқыншылығы кезінде елді ұйымдастырған, Жетісу өңірінің бас биі болған, әділдігімен аты шыққан Ескелді Жылгелдіұлының мазары.", fact: "Ескелді би Тәуке ханның «Же provide Жарғы» заңдар жинағын өмірге енгізуге белсене қатысқан." },
-    { id: "p89", region: "Жетісу облысы", cat: "sacred", lat: 44.8512, lng: 78.1012, title: "Балпық би кесенесі", date: "XVIII ғасыр", desc: "Ескелді бимен үзеңгілес болған, Төле бидің батасын алған, Жетісудағы ел бірлігін сақтаушы атақты Балпық Дербісалыұлының мазары.", fact: "Балпық би сонымен қатар жаугершілік заманда ту ұстаған батыр ретінде де белгілі." },
-    { id: "p90", region: "Жетісу облысы", cat: "city", lat: 44.1524, lng: 79.9112, title: "Көне Ілебалық қалашығы", date: "XI-XIV ғғ.", desc: "Ұлы Жібек жолы бойында, Қытаймен шекара маңында орналасқан, түрлі мәдениеттер мен діндер тоғысқан үлкен ортағасырлық шаһар орны.", fact: "Қалашықты қазу барысында мұнда көне несториандық христиандардың қабір тастары мен белгілері табылды." },
-    { id: "p91", region: "Алматы облысы", cat: "city", lat: 43.2912, lng: 77.2114, title: "Көне Талғар (Талхиз) қалашығы", date: "VIII-XIV ғғ.", desc: "Іле алқабындағы Қарахандықтар дәуіріне жататын, темір өңдеу мен халықаралық саудасы жоғары дамыған бекіністі ірі қала орны.", fact: "ЮНЕСКО тізіміне енген бұл қаладан Ираннан әкелінген қыш ыдыстар мен Қытай фарфоры көптеп табылған." },
-    { id: "p92", region: "Жетісу облысы", cat: "sacred", lat: 44.1612, lng: 80.0124, title: "Жаркент мешіті (Көркем сәулет кешені)", date: "1892 жыл", desc: "Уәлибай ахунның бастамасымен қытай сәулетшісі Хон Пиктің жобасы бойынша пагода стилінде бірде-бір шегесіз салынған таңғажайып мешіт.", fact: "Мешіттің төбесін ұстап тұрған 52 баған Тянь-Шань шыршасынан жасалған, ал безендіру жұмыстарына қазақтың ұлттық ою-өрнектері қолданылған." },
-    { id: "p93", region: "Солтүстік Қазақстан облысы", cat: "archaeology", lat: 53.2514, lng: 67.4512, title: "Ботай қонысы", date: "Б.з.б. IV мыңжылдық", desc: "Әлемде алғаш рет жылқы баласы қолға үйретілгенін бүкіл дүниежүзіне дәлелдеген энеолит дәуіріне жататын теңдессіз археологиялық ескерткіш.", fact: "Ботайдан табылған қыш ыдыстардың сынықтарынан бие сүтінің (қымыздың) молекулалық іздері анықталған." },
-    { id: "p94", region: "Ақмола облысы", cat: "city", lat: 51.1023, lng: 71.3541, title: "Көне Бозоқ қалашығы", date: "VII-XIV ғғ.", desc: "Қазіргі Астана қаласының аумағында орналасқан, ежелгі әскери бекініс және мемлекеттік діни-киелі орталық.", fact: "Бозоқ қалашығының табылуы бас қаламыз Астананың тарихын 1000 жылдан арыға созатынын ғылыми дәлелдеді." },
-    { id: "p95", region: "Қостанай облысы", cat: "archaeology", lat: 51.5234, lng: 64.4512, title: "Торғай геоглифтері", date: "Неолит - Қола дәуірі", desc: "Үстірт бетінде үйілген топырақ үйінділерінен жасалған алып геометриялық фигуралар мен крестер. Тек ғарыштан анық көрінеді.", fact: "Торғай геоглифтерінің ең ірісі — Үштөбе кресінің жалпы ұзындығы 400 метрден асады." },
-    { id: "p96", region: "Батыс Қазақстан облысы", cat: "sacred", lat: 51.1012, lng: 52.1512, title: "Ғұмар Қараш кесенесі", date: "XX ғасыр", desc: "Алаш қозғалысының рухани жетекшілерінің бірі, ақын, философ, кади Ғұмар Қараштың Бөкей ордасы өңіріндегі мазары.", fact: "Ғұмар Қараш алғашқы қазақ тіліндегі мерзімді басылымдар — «Қазақстан» газеті мен «Ұран» журналын шығаруға атсалысқан." },
-    { id: "p97", region: "Ұлытау облысы", cat: "sacred", lat: 48.1512, lng: 66.8512, title: "Едіге тауы мен кесенесі", date: "XIV-XV ғғ.", desc: "Алтын Орданың әйгілі беклербегі, Ноғай Ордасының негізін қалаушы Едіге батыр жерленген Ұлытаудағы биік шың мен мазар.", fact: "Едіге батырдың есімі қазақ халқының «Едіге батыр» атты тарихи батырлар жырында басты кейіпкер болып жырланған." },
-    { id: "p98", region: "Солтүстік Қазақстан облысы", cat: "sacred", lat: 53.1512, lng: 68.8512, title: "Қарасай мен Ағынтай батырлар кешені", date: "XVII ғасыр", desc: "Есім ханның тұсында жоңғар шапқыншылығына қарсы тұрған, Айыртау өңірінде қатар жерленген қос батырдың зәулім мемориалдық кешені.", fact: "Кесене мұнаралары ежелгі түркілік дулығалар пішінінде тұрғызылып, жауынгерлік рухты бейнелейді." },
-    { id: "p99", region: "Ақмола облысы", cat: "nature", lat: 53.0812, lng: 70.3112, title: "Бурабай (Абылай хан алаңы)", date: "XVIII ғасыр", desc: "Бурабай табиғи паркінде орналасқан, Абылай ханның ордасы тигізілген, қазақ руларының басын қосқан тарихи қасиетті алаң мен гранит тақ.", fact: "Алаңның ортасындағы Абылай хан тағының маңында ерекше энергетика бар деп есептеледі, адамды сергітетін қасиеті бар." },
-    { id: "p100", region: "Манғыстау облысы", cat: "sacred", lat: 44.3541, lng: 50.2514, title: "Сисем ата қорымы", date: "XIII-XIX ғғ.", desc: "Үстірт платосында орналасқан, Маңғыстаудың батырлар пантеоны деп аталатын, жүздеген сәулетті құлпытастар мен кесенелер жинақталған ең ірі тарихи қорым.", fact: "Сисем ата қорымында Кіші жүздің ең атақты батырлары, билері мен қолбасшылары жерленгендіктен, ол мемлекеттік маңызды тарихи ескерткіш болып табылады."}
+    // ОРТАЛЫҚ ҚАЗАҚСТАН (САРЫАРҚА, ЖОШЫ ХАН, АЛАША ХАН)
+    { id: "p39", region: "Ұлытау облысы", cat: "sacred", lat: 48.3744, lng: 67.8181, title: "Жошы Хан кесенесі", date: "XIII ғасыр", desc: "Шыңғыс ханның үлкен ұлы, Алтын Орданың негізін қалаушы Жошы ханның мазары. Көк түсті күмбезімен ерекшеленетін ортағасырлық сәулет өнері.", fact: "Аңыз бойынша, Жошы хан аң аулап жүргенде құланның соққысынан қаза тауып, мұнда бір қолысыз жерленген (мазардан бір қолсыз қаңқа табылған)." },
+    { id: "p40", region: "Ұлытау облысы", cat: "sacred", lat: 48.4215, lng: 67.5112, title: "Алаша Хан кесенесі", date: "XI-XII ғғ.", desc: "Түркі тілдес халықтардың аңызға айналған атасы Алаша ханға арналып, күрделі геометриялық қыш өрнектермен салынған ерекше мазар.", fact: "Кесененің қабырғасының ішінде жоғарғы күмбезге көтерілетін құпия баспалдақ жолы бар." },
+    { id: "p41", region: "Ұлытау облысы", cat: "sacred", lat: 48.6114, lng: 66.8512, title: "Домбауыл кесенесі", date: "Ғұн-Сақ дәуірі", desc: "Қазақстан аумағындағы ең көне тас құрылыстардың бірі. Ортағасырлық емес, исламға дейінгі дәуірдің киіз үй пішінді тас дыңы.", fact: "Ол ешқандай шегенсіз, тек жалпақ тастарды бір-бірінің үстіне қалау арқылы тұрғызылған." },
+    { id: "p42", region: "Ұлытау облысы", cat: "archaeology", lat: 48.9112, lng: 67.1012, title: "Теректі Әулие петроглифтері", date: "Қола дәуірі", desc: "Жартастарға қашалған жылқылардың, түйелердің және жұмбақ белгілердің бейнелері бар Сарыарқаның ең ірі ежелгі петроглифтер кешені.", fact: "Халық арасында мұнда Әзірет Әлінің тұлпарының тұяғының ізі қалған деген наным бар." },
+    { id: "p43", region: "Карағанды облысы", cat: "city", lat: 49.4212, lng: 75.4112, title: "Кент ортағасырлық будда храмы", date: "XVII ғасыр", desc: "Қарқаралы тауларының ішінде орналасқан, жоңғарлар заманында тибет үлгісінде тастан салынған буддалық сопылық ғибадатхана орны.", fact: "Жергілікті халық оны ежелден «Қыз әулие сарайы» деп атап келген." },
+    { id: "p44", region: "Қарағанды облысы", cat: "nature", lat: 49.4115, lng: 75.5123, title: "Қарқаралы ұлттық паркі және Шайтанкөл", date: "Ежелгі дәуір", desc: "Қарағайлы жартастардың ортасында, таудың ең биік шыңында орналасқан, суы ешқашан азаймайтын жұмбақ тектоникалық көл.", fact: "Көлдің нақты тереңдігі әлі күнге дейін белгісіз, себебі түбінде көптеген шымтезек қатпарлары бар." },
+    { id: "p45", region: "Ұлытау облысы", cat: "nature", lat: 48.9512, lng: 66.4512, title: "Ұлытау шыңы (Ақмешіт әулие тауы)", date: "Ежелгі дәуір", desc: "Қазақ даласының географиялық кіндігі саналатын, барлық қазақ хандары ақ киізге көтеріліп хан сайланған қасиетті тау.", fact: "Таудың ең биік нүктесінде ежелгі дәуірлерден қалған үңгір мен құпия зиярат орындары бар." },
+
+    // СЫРДАРЫЯ МЕН ЖЕТІСУ СУ БАСЕЙНДЕРІ (ТАМҒАЛЫ, БЕСШАТЫР)
+    { id: "p46", region: "Алматы облысы", cat: "archaeology", lat: 43.8014, lng: 75.9512, title: "Тамғалы тас петроглифтері", date: "Б.з.б. XIV ғ.", desc: "ЮНЕСКО-ның бүкіләлемдік мұрасына кіретін, аспан астындағы алып галерея. Күн басты құдайлар мен көне аңшылық көріністері бейнеленген.", fact: "Бұл жер ежелгі тайпалардың құрбандық шалатын және діни жоралғылар жасайтын бас ғибадатханасы болған." },
+    { id: "p47", region: "Алматы облысы", cat: "archaeology", lat: 43.9123, lng: 77.2415, title: "Бесшатыр патша қорғандары", date: "Б.з.б. VI-IV ғғ.", desc: "Іле өзенінің бойындағы сақ тайпаларының патшалары мен көсемдері жерленген 30-дан астам алып тас қорғандардан тұратын некрополь.", fact: "Қорғандардың астында Тянь-Шань шыршасынан қиып жасалған бірегей жер асты ағаш мазарлары толық сақталған." },
+    { id: "p48", region: "Алматы облысы", cat: "archaeology", lat: 43.3985, lng: 77.4012, title: "Есік облысындағы Алтын адам қорғаны", date: "Б.з.б. V-IV ғғ.", desc: "Қазақстанның егемендік символына айналған, 4 мыңнан астам алтын әшекеймен безендірілген сақ жауынгері табылған тарихи орын.", fact: "Алтын адаммен бірге табылған кішкентай күміс тостағандағы 26 таңба — руникалық жазудың ең көне үлгісі." },
+    { id: "p49", region: "Алматы облысы", cat: "nature", lat: 43.3512, lng: 78.9512, title: "Шарын каньоны (Қамалдар аңғары)", date: "12 млн жыл бұрын", desc: "Жел мен судың эрозиясынан пайда болған, тік шатқалды, Американың Гранд-Каньонына ұқсайтын табиғат ғажайыбы.", fact: "Каньон түбінде мұз дәуіріне дейінгі заманнан аман қалған, планетада өте сирек кездесетін соғды шағаны орманы өседі." },
+    { id: "p50", region: "Жетісу облысы", cat: "city", lat: 44.5512, lng: 78.1012, title: "Көне Қойлық қалашығы", date: "VIII-XIV ғғ.", desc: "Қарлық қағандығының астанасы болған, Ұлы Жібек жолындағы діни толеранттылық орталығы. Мұнда мешіттермен қатар будда храмы да болған.", fact: "Қазба жұмыстары кезінде бұл жерден ортағасырлық христьян шіркеуінің де қалдықтары табылған." },
+    { id: "p51", region: "Алматы облысы", cat: "nature", lat: 44.3114, lng: 76.9984, title: "Алтын-Емел және Әнші Құм", date: "Ежелгі дәуір", desc: "Ұзындығы 3 шақырымға созылатын, құрғақ ауада қозғалғанда орган музыкасының дыбысына ұқсайтын гуіл шығаратын алып құм шағылы.", fact: "Құмның дыбысы бірнеше шақырымға жетеді және ол күшті жел соққанда айқын естіледі." },
+    { id: "p52", region: "Жетісу облысы", cat: "nature", lat: 45.0215, lng: 79.9112, title: "Жонғар Алатауындағы Шажа петроглифтері", date: "Қола-Темір дәуірі", desc: "Биік таулы аңғардағы қара тастар бетіне салынған, бұғылар мен таутекелердің суреттері өте анық сақталған жартас өнерінің ошағы.", fact: "Суреттердің басым бөлігі сақтардың әйгілі «аң стилінде» орындалған." },
+
+    // ШЫҒЫС ҚАЗАҚСТАН ЖӘНЕ АЛТАЙ (БЕРЕЛ, ШІЛІКТІ, АЛТАЙ)
+    { id: "p53", region: "Шығыс Қазақстан облысы", cat: "archaeology", lat: 49.2941, lng: 86.3512, title: "Берел патша қорғандары (Алтын қорғандар)", date: "Б.з.б. IV-III ғғ.", desc: "Алтай тауларының бөктеріндегі мәңгілік тоң белдеуінде орналасқан, сақ ақсүйектері мен бальзамдалған аттар алтын әшекейлерімен табылған қорым.", fact: "Мәңгілік тоңның арқасында 2500 жыл бұрын көмілген тұлпарлардың терісі, қыш өрнектері мен органикалық заттар бұзылмай жеткен." },
+    { id: "p54", region: "Шығыс Қазақстан облысы", cat: "archaeology", lat: 47.4512, lng: 84.5214, title: "Шілікті патшалар аңғары", date: "Б.з.б. VIII-VII ғғ.", desc: "Қазақстан аумағындағы ең көне сақ қорғандарының бірі. Мұнда құйылған алтыннан жасалған бесбұрышты жұлдыз бен бүркіт бейнелері табылған.", fact: "Шіліктіден табылған жәдігерлер «аң стилі» өнерінің ең алғаш осы Алтай-Шілікті өңірінде пайда болғанын дәлелдейді." },
+    { id: "p55", region: "Шығыс Қазақстан облысы", cat: "city", lat: 50.3712, lng: 80.2214, title: "Қимақ қағандығының Хақан-Қала қаласы", date: "IX-XI ғғ.", desc: "Ертіс өзенінің бойында орналасқан, қимақтардың әскери бекінісі мен билеушісінің ордасы болған көне қала орны.", fact: "Қимақтар ежелгі қазақ жерінде қамыш қаламмен жазу жаза білген сауатты дала халқы болған." },
+    { id: "p56", region: "Абай облысы", cat: "sacred", lat: 48.9114, lng: 79.1012, title: "Қоңыр Әулие үңгірі", date: "Ежелгі дәуір", desc: "Шыңғыстау бөктеріндегі тау ішінде орналасқан, түбінде мөлдір әрі шипалы жер асты көлі бар үлкен жұмбақ үңгір.", fact: "Аңыз бойынша, Нұх пайғамбардың кемесіне сыймай қалған үш әулие осы үңгірге келіп жан сақтаған." },
+    { id: "p57", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 49.1215, lng: 85.9512, title: "Марқакөл көлі және қорығы", date: "Мұз дәуірі", desc: "Алтайдың биік таулы аңғарындағы, айналасын мәңгі жасыл тайга ормандары қоршаған, суы тұщы, ертегідей сұлу көл.", fact: "Көлде тек осы су айдынында ғана кездесетін, планетаның басқа ешбір жерінде жоқ «үскіж» (ускуч) деп аталатын балық өседі." },
+    { id: "p58", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 48.1512, lng: 84.7112, title: "Қиын Керіш шатқалы (Жалындаған жартастар)", date: "Эоцен дәуірі", desc: "Ыстық желдің әсерінен мүжілген, қызыл, сары және ақ балшықтардан түзілген, жанып жатқан отты еске түсіретін табиғи палеонтологиялық ескерткіш.", fact: "Бұл жерден динозаврлар дәуіріне жататын көне өсімдіктер мен тасқа айналған крокодил сүйектері табылған." },
+
+    // СОЛТҮСТІК ЖӘНЕ БАТЫС СЕКТОРЛАРЫ (БОТАЙ, ҚУМАЙ)
+    { id: "p59", region: "Солтүстік Қазақстан облысы", cat: "archaeology", lat: 53.2114, lng: 67.6512, title: "Ботай қонысы мен мәдениеті", date: "Б.з.б. IV-III мыңж.", desc: "Әлемдік деңгейдегі ең маңызды археологиялық орын. Жер бетінде адам баласы алғаш рет жылқыны қолға үйреткен тарихи мекен.", fact: "Ботайдан табылған қыш ыдыстардың сынықтарынан бие сүтінің (қымыздың) молекулалық қалдықтары ғылыми түрде дәлелденді." },
+    { id: "p60", region: "Ақмола облысы", cat: "archaeology", lat: 51.4512, lng: 73.1215, title: "Құмай өзені бойындағы түркілік ғұрыптық кешен", date: "VI-VIII ғғ.", desc: "Көне түркі дәуіріне жататын, тастан қашалған балбал мүсіндер мен құрбандық шалатын қоршаулар толық сақталған алып мәдени аймақ.", fact: "Бұл кешенде түркі тайпаларының бірнеше ғасырлық діни наным-сенім эволюциясын бір жерден көруге болады." },
+    { id: "p61", region: "Павлодар облысы", cat: "nature", lat: 52.6112, lng: 75.7112, title: "Баянауыл ұлттық паркі және Жасыбай көлі", date: "Ежелгі дәуір", desc: "Табиғаттың өзі ерекше мүсіндеген жартастары (Кемпіртас) мен қарағайлы таулар ортасындағы ең таза, мөлдір шипалы көл.", fact: "Жасыбай көлі өзінің ерекше тазалығымен танымал, судың асты бірнеше метр тереңдікке дейін анық көрінеді." },
+    { id: "p62", region: "Павлодар облысы", cat: "nature", lat: 52.3114, lng: 76.9512, title: "Қаз қону палеонтологиялық ескерткіші", date: "Миоцен дәуірі", desc: "Ертіс өзенінің жағалауында орналасқан, бұдан миллиондаған жылдар бұрын өмір сүрген гиппариондар мен мүйізтұмсықтардың алып қорымы.", fact: "Бұл ашық аспан астындағы палеонтологиялық музей әлемдік ғылым үшін эталондық үлгі болып табылады." },
+    { id: "p63", region: "Қостанай облысы", cat: "archaeology", lat: 50.1512, lng: 62.1124, title: "Торғай геоглифтері (Үштөбе шаршысы)", date: "Ежелгі дәуір", desc: "Жер бетіне үйілген топырақ үйінділерінен жасалған, тек ғарыштан немесе ұшақтан ғана анық көрінетін алып геометриялық фигуралар мен сызықтар.", fact: "Бұл геоглифтерді алғаш рет Google Earth спутниктік карталары арқылы әуесқой зерттеушілер тауып, әлемді таңқалдырған." },
+
+    // ОҢТҮСТІК ЖІБЕК ЖОЛЫНЫҢ ЖАҢА НЫСАНДАРЫ (СЫР БОЙЫ, ЖЕТІСУ, ШУ)
+    { id: "p64", region: "Жамбыл облысы", cat: "city", lat: 43.4025, lng: 73.6514, title: "Көне Баласағұн (Ақтөбе) қалашығы", date: "VI-XII ғғ.", desc: "Қарахан мемлекетінің даңқты астаналарының бірі, Жүсіп Баласағұни туған мәдениет пен ғылымның ортағасырлық ошағы.", fact: "Қалашықтан су тартатын күрделі инженерлік құбырлар мен теңге сарайы табылған." },
+    { id: "p65", region: "Түркістан облысы", cat: "city", lat: 41.5123, lng: 67.9512, title: "Сүткент ортағасырлық қаласы", date: "VI-XV ғғ.", desc: "Сырдарияның сол жағалауындағы көшпелілер мен отырықшы халықтың арасындағы ірі сауда базары болған қорған-шаһар.", fact: "Сүткент қаласы жаудан қорғану үшін сыртынан қос қабатты су толтырылған ормен қоршалған." },
+    { id: "p66", region: "Түркістан облысы", cat: "sacred", lat: 42.1512, lng: 69.4112, title: "Ысқақ баб кесенесі", date: "X-XIV ғғ.", desc: "Оңтүстік Қазақстанға ислам дінін алғашқы әкелуші қолбасшылардың бірі Баб атаға (Ысқақ баб) орнатылған көне қыш кесене.", fact: "Кесененің күмбезі Орталық Азия сәулет мектебінің алғашқы классикалық үлгілеріне жатады." },
+    { id: "p67", region: "Қызылорда облысы", cat: "city", lat: 45.6114, lng: 64.8512, title: "Көне Асанас қалашығы", date: "VI-XV ғғ.", desc: "Шыңғыс хан әскеріне қатты қарсылық көрсеткені үшін қиратылған, кейіннен қайта жаңғырған Сыр бойындағы маңызды бекініс.", fact: "Қалашықтан ортағасырлық қолөнершілердің темір балқытатын пештерінің орны табылған." },
+    { id: "p68", region: "Жетісу облысы", cat: "city", lat: 45.2415, lng: 79.2114, title: "Екіоғыз (Екіөгіз) қалашығы", date: "VIII-XII ғғ.", desc: "Махмұд Қашқаридің еңбектерінде айтылатын, Іле аңғарындағы қарлықтардың үлкен мәдени және қолөнер орталығы.", fact: "Қала арқылы өтетін керуендер Қытай мен Орталық Азия арасындағы жібек шикізатын тасымалдаған." },
+
+    // ТАБИҒИ КИЕЛІ ЖӘНЕ ГЕОГРАФИЯЛЫҚ НЫСАНДАР (АЛТАЙДАН КАСПИЙГЕ ДЕЙІН)
+    { id: "p69", region: "Алматы облысы", cat: "nature", lat: 42.9841, lng: 78.4112, title: "Көлсай көлдері (Тянь-Шань маржандары)", date: "Ежелгі дәуір", desc: "Күнгей Алатауының шатқалында орналасқан, Тянь-Шань шыршалары қоршаған, суының түсі көкшіл-жасыл болып құбылатын каскадты көлдер жүйесі.", fact: "Көлдер тектоникалық қозғалыстардан, яғни таудың құлауынан өзен арнасының бекітілуі нәтижесінде пайда болған." },
+    { id: "p70", region: "Алматы облысы", cat: "nature", lat: 42.9114, lng: 78.5123, title: "Қайынды көлі", date: "1911 жыл", desc: "Қатты жер сілкінісінен кейін шатқалдың суға толуынан пайда болған, су астынан шыршалардың діңгектері найзадай шанышылып тұрған ерекше көл.", fact: "Судың өте суықтығынан шырша ағаштары бұзылмай, су астында өзінің қылқандарын жасыл күйінде сақтап қалған." },
+    { id: "p71", region: "Батыс Қазақстан облысы", cat: "nature", lat: 49.3112, lng: 53.1215, title: "Шалқар көлі (Батыс Қазақстан)", date: "Ежелгі дәуір", desc: "Суының құрамы теңіз суына ұқсайтын, тұзды және емдік қасиеті жоғары Батыс өңіріндегі ең үлкен табиғи су айдыны.", fact: "Бұл көл ежелгі Хвалын (Каспий) теңізінің тартылғаннан қалған қалдығы деп есептеледі." },
+    { id: "p72", region: "Ақмола облысы", cat: "nature", lat: 53.0841, lng: 70.3012, title: "Бурабай ұлттық паркі және Жұмбақтас", date: "Ежелгі дәуір", desc: "Көкшетау қыраттарының арасындағы гранитті жартастар мен қарағайлы ормандар қоршаған Көкше өңірінің басты маржаны.", fact: "Жұмбақтас жартасына бір жағынан қарасаң бұрымынан жел ескен бойжеткенге, екінші жағынан қарасаң мыстан кемпірге ұқсайды." },
+
+    // АРХЕОЛОГИЯЛЫҚ ЖӘНЕ ТАРИХИ ЖАҢА ОРЫНДАР
+    { id: "p73", region: "Абай облысы", cat: "archaeology", lat: 49.7112, lng: 78.4512, title: "Дегелең тауларындағы тас мүсіндер", date: "Түркі дәуірі", desc: "Ежелгі жауынгерлердің бейнесі қашалған, қолдарына қылыш немесе тостаған ұстаған Сарыарқаның шығысындағы балбалдар шоғыры.", fact: "Бұл мүсіндер көне түркілердің ата-баба аруағына тағзым ету ғұрпын айқындайды." },
+    { id: "p74", region: "Қарағанды облысы", cat: "archaeology", lat: 50.0215, lng: 71.8512, title: "Беғазы-Дәндібай мәдениетінің қорғандары", date: "Б.з.б. XII-X ғғ.", desc: "Орталық Қазақстанға тән, алып гранит плиталардан қаланған, көсемдер мен металлург-шеберлер жерленген зәулім мазарлар.", fact: "Бұл мәдениет өкілдері қола қорыту мен мыс өндіруді жоғары деңгейде меңгерген, олардың өнімдері Қытайға дейін жеткен." },
+    { id: "p75", region: "Түркістан облысы", cat: "archaeology", lat: 43.1012, lng: 69.9114, title: "Боралдай петроглифтері", date: "Қола дәуірі", desc: "Боралдай өзенінің жартасты шатқалындағы арқарлардың, аңшылардың және таңбалардың көне суреттері қашалған тарихи орын.", fact: "Мұнда қазақ руларының бірнеше ортақ таңбаларының алғашқы элементтері кездеседі." },
+    { id: "p76", region: "Қызылорда облысы", cat: "archaeology", lat: 46.1214, lng: 63.3512, title: "Бабиш-Мулла қалашығы", date: "Б.з.б. IV-II ғғ.", desc: "Ежелгі сақ тайпаларының қолөнер дамыған, ортасында үлкен қорғаныс мұнарасы бар бекіністі мекені.", fact: "Қаладан табылған қыш ыдыстар Грек-Бактрия патшалығының мәдени әсерін көрсетеді." },
+
+    // ТҮРКІСТАН МЕН СЫР ӨҢІРІНІҢ ҚОСЫМША КЕЛЕНЕЛЕРІ
+    { id: "p77", region: "Түркістан облысы", cat: "sacred", lat: 42.5214, lng: 70.1012, title: "Жәбрейіл ата кесенесі", date: "XIX ғасыр", desc: "Жергілікті халық арасында әулиелігімен, емшілігімен танымал болған тарихи тұлғаға тұрғызылған мазар.", fact: "Мазар маңындағы бұлақ суы көз ауруларына ем ретінде қолданылады." },
+    { id: "p78", region: "Түркістан облысы", cat: "sacred", lat: 41.8123, lng: 68.4512, title: "Қарлығаш би (Төле би) кесенесі", date: "XV ғасыр", desc: "Ташкент қаласына жақын орналасқан, бірақ қазақ тарихымен тікелей байланысты Төле би бабамыз жерленген тарихи сәулет ескерткіші.", fact: "Жаугершілік заманда үйінің төбесіне қарлығаш ұя салғаны үшін үйін бұзбай қалдырған Төле биді халық «Қарлығаш би» деп атап кеткен." },
+    { id: "p79", region: "Қызылорда облысы", cat: "sacred", lat: 44.8512, lng: 66.1214, title: "Төлегетай баба мен Қылышты ата кесенесі", date: "XI-XII ғғ.", desc: "Найман тайпасының ұраншысы Төлегетай баба мен қасиетті әулие Қылышты атаның басына орнатылған қос күмбезді зәулім кешен.", fact: "Бұл кешен екі үлкен тарихи тұлғаның достығы мен бірлігінің символы ретінде бір жерге салынған." },
+    { id: "p80", region: "Қызылорда облысы", cat: "sacred", lat: 43.9124, lng: 67.2114, title: "Хорхут (Қорқыт) атаның ескі мазарының орны", date: "IX ғасыр", desc: "Сырдария өзені суының шаюынан қирап қалған, Қорқыт атаның алғашқы тарихи шикі қыштан салынған мазарының географиялық орны.", fact: "Әйгілі зерттеуші Әлкей Марғұлан бұл орынды кезінде су астына кетпей тұрып суретке түсіріп, сипаттап үлгерген." },
+
+    // БАТЫС ПЕН ОРТАЛЫҚТЫҢ ҚОСЫМША САКРАЛЬДІ ОРЫНДАРЫ
+    { id: "p81", region: "Маңғыстау облысы", cat: "sacred", lat: 44.3512, lng: 52.1214, title: "Қараман ата жер асты мешіті", date: "XIII-XIV ғғ.", desc: "Қараман ата әулиенің құрметіне борлы жартас ішінен терең етіп қазылған, ішінде алып тіреуіш бағаналары бар көне мешіт.", fact: "Ертеде қазақ рулары арасында дау туындаса, осы мешітке келіп Қараман ата атымен ант беріскен, бұл ең ауыр серт саналған." },
+    { id: "p82", region: "Маңғыстау облысы", cat: "sacred", lat: 44.1012, lng: 53.9512, title: "Шопан ата жер асты мешіті", date: "XII ғасыр", desc: "Қожа Ахмет Яссауидің шәкірті, мал шаруашылығы мен шопандардың пірі саналған Шопан атаның жартасты үлкен қорымы мен мешіті.", fact: "Бекет ата Оғландыға мешіт салудан бұрын осы Шопан атаға келіп бата алған деген аңыз бар." },
+    { id: "p83", region: "Атырау облысы", cat: "sacred", lat: 46.9512, lng: 53.1012, title: "Махамбет Өтемісұлы жерленген жер", date: "XIX ғасыр", desc: "Исатай-Махамбет көтерілісінің жалынды ақыны, батыр Махамбет Өтемісұлының Индер ауданындағы кесене-монументі.", fact: "Кесене пішіні қазақтың байырғы жауынгерлік дулығасына ұқсатып жобаланған." },
+    { id: "p84", region: "Батыс Қазақстан облысы", cat: "sacred", lat: 50.8124, lng: 50.9512, title: "Дәуітәлі (Дәуіт батыр) мазары", date: "XVIII ғасыр", desc: "Сырым Датұлының серігі, Кіші жүздің Байбақты руынан шыққан айбатты Дәуіт батырдың көне құлпытастар кешені бар қорымы.", fact: "Мұндағы құлпытастардың бетіндегі арабша қашалған өрнектер мен рулық таңбалар өте құнды тарихи дерек болып табылады." },
+    { id: "p85", region: "Ақтөбе облысы", cat: "sacred", lat: 48.1214, lng: 57.1012, title: "Исатай Батыр кесенесі", date: "XIX ғасыр", desc: "Халық-азаттық көтерілісінің көсемі Исатай Таймановтың Шәбден өзенінің бойында қаза тауып жерленген тарихи мазары.", fact: "Кесене батырдың ерлігін мәңгілікке қалдыру үшін халықтық қаражат есебінен қайта тұрғызылды." },
+
+    // ОРТАЛЫҚ ПЕН ШЫҒЫСТЫҢ ҚОСЫМША ТАРИХИ ЖӘДІГЕРЛЕРІ
+    { id: "p86", region: "Ұлытау облысы", cat: "city", lat: 48.2114, lng: 66.1214, title: "Көне Басқамыр қалашығы", date: "VIII-XI ғғ.", desc: "Оғыз тайпаларының Сарыарқа даласындағы тастан қаланған мықты қорғанысы бар әскери-стратегиялық қалашығы.", fact: "Басқамырдан табылған мыс қорыту шеберханалары Сарыарқадағы ортағасырлық индустрия деңгейін көрсетеді." },
+    { id: "p87", region: "Қарағанды облысы", cat: "sacred", lat: 49.6112, lng: 74.2114, title: "Бұқар Жырау кесенесі", date: "XX ғ. (XVIII ғ. мұрасы)", desc: "Абылай ханның бас кеңесшісі, мемлекет қайраткері, атақты Бұқар жырау Қалқаманұлының Бұқар жырау ауданындағы зәулім кесенесі.", fact: "Кесене пішіні қазақтың үш жүзінің бірлігін білдіретін үш тіреуіш композициядан тұрады." },
+    { id: "p88", region: "Ұлытау облысы", cat: "sacred", lat: 48.1015, lng: 67.9512, title: "Құлан ана кесенесі", date: "XII-XIV ғғ.", desc: "Жошы ханның өліміне себепкер болған құландардың аңызымен байланысты тұрғызылған көне күйдірілген қыш мазар.", fact: "Бұл мазар Жошы хан кесенесімен архитектуралық стиль жағынан өте ұқсас келеді." },
+    { id: "p89", region: "Павлодар облысы", cat: "sacred", lat: 51.9124, lng: 76.4512, title: "Машһүр Жүсіп Көпейұлы кесенесі", date: "XXI ғ. (XX ғ. басы)", desc: "Қазақ шежіресі мен ауыз әдебиетін жинақтаушы, ойшыл, әулие Машһүр Жүсіптің Баянауыл өңіріндегі зәулім сәулетті кешені.", fact: "Машһүр Жүсіп өзінің қашан қайтыс болатынын дәл болжап, мазарын өзі тірі күнінде салдырған." },
+
+    // ЖАҢА ТАБИҒАТ МАРЖАНДАРЫ МЕН АРХЕОЛОГИЯ
+    { id: "p90", region: "Абай облысы", cat: "nature", lat: 46.4512, lng: 81.5124, title: "Алакөл көлі (Емдік су қоймасы)", date: "Ежелгі дәуір", desc: "Суының құрамында радон, фтор және көптеген тұздар бар, адам ағзасына шипалық әсері зор Қазақстандағы ерекше тұзды таулы көл.", fact: "Аңыз бойынша, Шыңғыс ханның жауынгерлері шайқастан кейін осы Алакөл суына түсіп, жараларын емдеген." },
+    { id: "p91", region: "Шығыс Қазақстан облысы", cat: "nature", lat: 49.6114, lng: 82.6112, title: "Рахман қайнарлары (Ыстық бұлақтар)", date: "Ежелгі дәуір", desc: "Алтай тауларының қақ ортасында, Мұзтаудың маңында орналасқан, жер астынан шығатын шипалы термалды радонды су көздері.", fact: "Судың температурасы жыл бойы +34°C-тан +42°C-қа дейін тұрақты болып тұрады." },
+    { id: "p92", region: "Алматы облысы", cat: "nature", lat: 44.1512, lng: 79.9512, title: "Шарын шаған орманы (Реликті тоғай)", date: "Мұз дәуіріне дейін", desc: "Шарын өзенінің арнасында сақталып қалған, планетамызда тек екі жерде ғана бар, мұз дәуірінен аман өткен көне соғды шағаны орманы.", fact: "Бұл ағаштардың кейбірінің жасы 300-400 жылдан асады, олар заңмен қатал қорғалады." },
+    { id: "p93", region: "Жетісу облысы", cat: "nature", lat: 44.8124, lng: 79.5112, title: "Бұрхан-Бұлақ сарқырамасы", date: "Ежелгі дәуір", desc: "Жоңғар Алатауының терең шатқалында орналасқан, Қазақстандағы ең биік табиғи сарқырама (жалпы биіктігі 168 метр).", fact: "Сарқыраманың суы өте суық және мөлдір, ол биік таулы мұздықтардың еруінен түзіледі." },
+
+    // БАҚЫЛАУ НҮКТЕЛЕРІ МЕН ҚОСЫМША КӨНЕ ҚАЛАЛАР
+    { id: "p94", region: "Жамбыл облысы", cat: "city", lat: 42.8512, lng: 72.1012, title: "Көне Құлан қалашығы", date: "VI-XIII ғғ.", desc: "Ұлы Жібек жолындағы ірі бекіністі қала. Батыс Түрік қағандығындағы билік үшін таласқан тарихи оқиғалардың орталығы.", fact: "Құлан қалашығынан VII ғасырға жататын түрік билеушісінің сарай кешені мен қыш мүсіндер табылған." },
+    { id: "p95", region: "Жамбыл облысы", cat: "city", lat: 43.1214, lng: 70.8512, title: "Көне Меркі қалашығы", date: "VII-XII ғғ.", desc: "Жібек жолы бойындағы тау бөктерінде орналасқан, көшпелі түркілердің жазғы ордасы әрі қасиетті ғибадатханасы болған мекен.", fact: "Меркі тауларында теңіз деңгейінен 3000 метр биіктікте Түркілік балбалдар мен ғибадатханалар кешені әлі күнге дейін сақталған." },
+    { id: "p96", region: "Түркістан облысы", cat: "city", lat: 42.6112, lng: 68.1214, title: "Шойтөбе қалашығы", date: "IV-XI ғғ.", desc: "Түркістан шұратындағы ерте ортағасырлық егіншілік пен қолөнер мәдениетінің маңызды бекініс-тірегі.", fact: "Қалашықтан табылған дән үгіткіштер мен алып құмдар Сыр бойындағы диқаншылықтың жоғары деңгейін дәлелдейді." },
+    { id: "p97", region: "Қызылорда облысы", cat: "city", lat: 44.1012, lng: 66.4512, title: "Көне Күйік-Қала", date: "VII-XI ғғ.", desc: "Оғыздар мен қыпшақтар дәуіріне жататын, Сырдарияның ескі арнасы Жанадария бойындағы қорғаныс қамалдары бар шаһар.", fact: "Қала халқы Арал теңізінің тартылуы мен су жүйесінің өзгеруіне байланысты қаланы тастап кеткен." },
+
+    // ҚАЗАҚСТАННЫҢ БАСҚА ДА ҚАСИЕТТІ ОРЫНДАРЫ
+    { id: "p98", region: "Түркістан облысы", cat: "sacred", lat: 43.1512, lng: 68.4112, title: "Құмшық ата жер асты мешіті", date: "XII ғасыр", desc: "Яссауи ілімін жалғастырушы сопы Құмшық атаның жер астында жалғыз қалып, құдайға құлшылық қылған құпия хилваті.", fact: "Бұл жер асты бөлмелерінің құрылысы Түркістандағы Яссауидің қылуетіне өте ұқсас етіп салынған." },
+    { id: "p99", region: "Түркістан облысы", cat: "sacred", lat: 42.1214, lng: 69.8512, title: "Жылаған ата үңгірі мен бұлағы", date: "Ежелгі дәуір", desc: "Қаратау жоталарындағы құпия үңгір. Аңыздар бойынша, баласыз өткен қарияның көз жасынан пайда болған қасиетті су көзі.", fact: "Үңгірден шығатын су тек белгілі бір уақытта, адамдар шын ниетпен Құран оқып тиләват қылғанда ғана ағады деген сенім бар." },
+    { id: "p100", region: "Ұлытау облысы", cat: "sacred", lat: 48.4512, lng: 67.1214, title: "Жұбан ана кесенесі", date: "XI-XII ғғ.", desc: "Сарысу өзенінің бойында орналасқан, Қарахандықтар дәуірінің сәулет өнеріне жататын, порталды-күмбезді бірегей қыш мазар.", fact: "Кесене құрылысында ешқандай шеге немесе цемент қолданылмаған, тек арнайы балшық пен күйдірілген кірпіш пайдаланылған." },
+
+    // ОҢТҮСТІК ПЕН ОРТАЛЫҚТЫҢ ТАРИХИ МАҢЫЗДЫ ЖАҢА ОРЫНДАРЫ
+    { id: "p101", region: "Жамбыл облысы", cat: "sacred", lat: 43.1824, lng: 71.4112, title: "Тектурмас тарихи-архитектуралық кешені", date: "X-XIV ғғ.", desc: "Тараз қаласының маңындағы төбеде орналасқан, Қарахандықтардың бас әскери қолбасшысы Сұлтан Махмұд ханның (Тектурмас ата) мазары бар киелі орын.", fact: "Төбеден Тараз қаласы мен Талас өзені алақандағыдай анық көрінеді, бұл ертеде күзет мұнарасы болғанын білдіреді." },
+    { id: "p102", region: "Жамбыл облысы", cat: "archaeology", lat: 42.7512, lng: 71.1012, title: "Маймақ петроглифтері", date: "Қола дәуірі", desc: "Қаратаудың батыс сілемдеріндегі тастарға қашалған ежелгі күймелер мен дөңгелекті арбалардың суреттері бар сирек кездесетін археологиялық аймақ.", fact: "Көне арбалардың бейнесі бұл өңірде сонау қола дәуірінде көлік мәдениетінің болғанын дәлелдейді." },
+    { id: "p103", region: "Түркістан облысы", cat: "city", lat: 41.8124, lng: 68.1512, title: "Өгізтау қалашығы", date: "V-IX ғғ.", desc: "Сырдария өңіріндегі ерте түрік дәуіріне жататын, мал шаруашылығымен айналысқан тайпалардың қорған-бекінісі.", fact: "Қазба жұмыстары кезінде қаладан көне түрік жауынгерлерінің жебелері мен сауыттарының сынықтары табылды." },
+    { id: "p104", region: "Қызылорда облысы", cat: "city", lat: 45.4512, lng: 63.8124, title: "Көне Қорқыт қаласы", date: "VIII-X ғғ.", desc: "Сырдың төменгі ағысындағы оғыз тайпаларының мәдени қонысы, аңыз бойынша Қорқыт атаның өмір сүрген тарихи ортасы.", fact: "Бұл қалашық Оғыз мемлекетінің солтүстік-батыс шекарасындағы маңызды күзет бекеті рөлін атқарған." },
+
+    // БАТЫС ПЕН МАҢҒЫСТАУ ҚОСЫМША НЫСАНДАРЫ
+    { id: "p105", region: "Маңғыстау облысы", cat: "sacred", lat: 44.5124, lng: 51.4112, title: "Қаңға баба қорымы мен мешіті", date: "XIV-XVII ғғ.", desc: "Ұлы Жібек жолының Каспий тармағында орналасқан, ескі керуен сарайлары мен тұт ағаштары өсетін тарихи оазис және қорым.", fact: "Қорымдағы құлпытастар түрікмен және қазақ шеберлерінің тас қашау өнерінің ортақ үлгісін көрсетеді." },
+    { id: "p106", region: "Маңғыстау облысы", cat: "archaeology", lat: 44.8512, lng: 52.6112, title: "Қызылқала ортағасырлық қалашығы", date: "X-XIII ғғ.", desc: "Маңғыстау даласындағы тастан салынған жалғыз ірі ортағасырлық сауда шаһары. Хорезммен және Еуропамен байланыс торабы болған.", fact: "Қала Шыңғыс хан шапқыншылығы кезінде толық өртеніп кеткен, содан кейін қайта қалпына келмеген." },
+    { id: "p107", region: "Атырау облысы", cat: "sacred", lat: 47.8124, lng: 52.1214, title: "Малайсары батыр мазары", date: "XVIII ғасыр", desc: "Абылай ханның бас батырларының бірі, жоңғар соғысының қаһарманы Малайсары Тоқтауылұлының басына қойылған ескерткіш белгі.", fact: "Малайсары батыр тек жауынгер емес, сонымен бірге елшілік қызметтерді де асқан шеберлікпен атқарған тұлға." },
+    { id: "p108", region: "Батыс Қазақстан облысы", cat: "archaeology", lat: 51.1512, lng: 52.4112, title: "Лебедевка сақ қорғандары", date: "Б.з.б. IV-II ғғ.", desc: "Шыңғырлау ауданынан табылған, сармат-сақ тайпаларының алтын бұйымдары мен грек амфоралары шыққан бай ақсүйектер некрополі.", fact: "Мұнда жерленген «Сармат ханшайымының» киімі толықтай алтын қаптамалармен безендірілген болып шықты." },
+
+    // СОЛТҮСТІК ПЕН ШЫҒЫС ҚОСЫМША ҚАСИЕТТІ ОРЫНДАРЫ
+    { id: "p109", region: "Ақмола облысы", cat: "sacred", lat: 52.8124, lng: 69.9112, title: "Абылай Хан алаңы мен стеласы", date: "XXI ғ. (XVIII ғ. мұрасы)", desc: "Бурабай тауларының баурайындағы, Абылай ханның бас ордасы тігіліп, ел тағдырын шешкен тарихи ашық аспан астындағы алаң.", fact: "Алаң ортасында ханның қасиетті Тағы сақталған, оны айналып тілек тілеу дәстүрге айналған." },
+    { id: "p110", region: "Павлодар облысы", cat: "sacred", lat: 51.6112, lng: 77.1214, title: "Сұлтанмахмұт Торайғыров кесенесі", date: "XX ғасыр", desc: "Алаш қозғалысының жалынды ақыны, демократ Сұлтанмахмұт Торайғыровтың Баянауылдағы Торайғыр көлінің жағасындағы мазары.", fact: "Ақын өзінің ең атақты шығармаларын осы Торайғыр көлінің бойында табиғаттан шабыт алып жазған." },
+    { id: "p111", region: "Шығыс Қазақстан облысы", cat: "sacred", lat: 49.9124, lng: 82.4512, title: "Ақ Бауыр астрономиялық кешені", date: "Б.з.б. III мыңж.", desc: "Ежелгі дәуірдің тастан жасалған обсерваториясы. Үңгір төбесінде үлкен аю жұлдыз жорамалы мен құпия петроглифтер салынған.", fact: "Ғалымдардың болжамы бойынша, бұл жерді ежелгі адамдар күн мен түннің теңелуін және күнтізбелік есептерді шығару үшін пайдаланған." },
+    { id: "p112", region: "Абай облысы", cat: "sacred", lat: 48.9512, lng: 79.2114, title: "Еңлік-Кебек кесенесі", date: "XX ғасыр", desc: "Қазақтың «Ромео мен Джульеттасы» атанған, махаббат жолында құрбан болған Еңлік пен Кебектің Шыңғыстау бөктеріндегі зәулім ескерткіш-мазары.", fact: "Кесене жанында олардың трагедиялық тағдыры өрбіген тарихи Тас орналасқан." },
+
+    // ЖАҢА ТАБИҒАТ ГЕОЛОГИЯЛЫҚ НЫСАНДАРЫ
+    { id: "p113", region: "Ақтөбе облысы", cat: "nature", lat: 48.4512, lng: 58.1214, title: "Жаманшың метеорит кратері", date: "1 млн жыл бұрын", desc: "Алып метеориттің жерге құлауынан пайда болған, диаметрі 7 шақырымдық үлкен кратер. Мұнда ғарыштық шынылар (жаманшиниттер) кездеседі.", fact: "Бұл кратердегі радиациялық және геологиялық фон планетамыздың басқа жерлерінен мүлдем өзгеше." },
+    { id: "p114", region: "Қостанай облысы", cat: "nature", lat: 51.5124, lng: 64.4112, title: "Наурызым мемлекеттік қорығы", date: "1931 жыл", desc: "ЮНЕСКО мұрасы. Дала белдеуіндегі ерекше қарағайлы ормандар мен көлдер жүйесі, жыртқыш құстардың мекені.", fact: "Наурызым боры — құмды ландшафтта сақталып қалған планетамыздағы ең оңтүстік реликті қарағай ормандарының бірі болып табылады." },
+    { id: "p115", region: "Қарағанды облысы", cat: "nature", lat: 46.5124, lng: 74.8512, title: "Балқаш көлі (Жартылай тұщы маржан)", date: "Ежелгі дәуір", desc: "Әлемдегі ең үлкен көлдердің бірі. Ерекшелігі — судың жартысы тұщы (батыс бөлігі), ал жартысы тұзды (шығыс бөлігі) болып келеді.", fact: "Көлдің екі бөлігін ені тар Ұзынарал бұғазы бөліп тұр, ол сулардың бір-бірімен қатты араласып кетпеуін қамтамасыз етеді." },
+
+    // ҚОСЫМША АРХЕОЛОГИЯ МЕН КӨНЕ БЕКІНІСТЕР
+    { id: "p116", region: "Түркістан облысы", cat: "archaeology", lat: 42.4512, lng: 69.6112, title: "Күлтобе қалашығы (Ескі Түркістан)", date: "I-IV ғғ.", desc: "Қожа Ахмет Яссауи кесенесінің жанынан табылған, Түркістан қаласының ең көне тарихынан сыр шертетін бекіністі алғашқы мәдени қабат.", fact: "Күлтобеден табылған крест тәрізді ғибадатхана мен көне қыштар қаланың жасын 2000 жылдан асыратынын дәлелдеді." },
+    { id: "p117", region: "Жамбыл облысы", cat: "city", lat: 43.5124, lng: 71.3512, title: "Көне Төменгі Барысхан қалашығы", date: "VI-XII ғғ.", desc: "Талас аңғарындағы Жібек жолының маңызды бекеті, қолөнер мен шыны өндірісі жақсы дамыған ортағасырлық шаһар.", fact: "Қалашықтан ортағасырлық шеберлер жасаған ерекше көркемдіктегі қыш ыдыстар мен тиындар шыққан." },
+    { id: "p118", region: "Қызылорда облысы", cat: "city", lat: 44.3512, lng: 65.5112, title: "Көне Ширік-Рабат маңындағы Бабиш қорымы", date: "Б.з.б. IV ғасыр", desc: "Сақ тайпаларының патшалық сәулет өнерінің үлгісі, күйдірілген кірпіштен салынған алып дөңгелек мазарлар кешені.", fact: "Бұл қорым ежелгі Хорезм сәулет өнерінің Сақ даласына тигізген тікелей мәдени ықпалын айқындайды." },
+
+    // ҚОРЫТЫНДЫ САКРАЛЬДІ ЖӘНЕ ТАРИХИ ЖАҢА ОРЫНДАР
+    { id: "p119", region: "Түркістан облысы", cat: "sacred", lat: 43.1214, lng: 68.3512, title: "Әлқожа ата кесенесі", date: "XII-XIV ғғ.", desc: "Яссауидің күйеу баласы әрі серігі Әлқожа атаның құрметіне Түркістан маңында тұрғызылған ортағасырлық порталды мазар.", fact: "Кесене қабырғаларында ортағасырлық сопылық мектептердің өзіндік ою-өрнек нақыштары сақталған." },
+    { id: "p120", region: "Түркістан облысы", cat: "sacred", lat: 43.2114, lng: 68.2112, title: "Гауһар ана кесенесі", date: "XII-XIV ғғ.", desc: "Ұлы ойшыл Қожа Ахмет Яссауидің қызы, шипагерлік қасиетімен халықтың ықыласына бөленген Гауһар ананың қасиетті мазары.", fact: "Кесене маңындағы құдық суы өте шипалы саналады, мұнда ем іздеп келетін аналар саны өте көп." },
+    { id: "p121", region: "Ұлытау облысы", cat: "sacred", lat: 48.6512, lng: 66.4512, title: "Хан Ордасы (Ұлытау тарихи орны)", date: "XV-XVIII ғғ.", desc: "Қазақ хандығының негізін салушы Керей мен Жәнібектен бастап, соңғы Кенесары ханға дейін ту тіккен Ұлытаудағы бас хан ордасының орны.", fact: "Бұл жерде қазақ руларының ортақ құрылтайлары өткізіліп, маңызды соғыс стратегиялары бекітілген." },
+    { id: "p122", region: "Ақмола облысы", cat: "sacred", lat: 51.1214, lng: 70.1012, title: "Қабанбай батыр кесенесі", date: "XXI ғ. (XVIII ғ. мұрасы)", desc: "Қаракерей Қабанбай (Дарабоз) батырдың сүйегі жатқан Астана қаласының маңындағы дулыға пішінді зәулім мемориалдық кешен.", fact: "Батыр өзінің өмірінде 100-ден астам жекпе-жекке шығып, бірде-бір рет жеңілмеген аңыз тұлға." },
+    { id: "p123", region: "Солтүстік Қазақстан облысы", cat: "sacred", lat: 53.1512, lng: 68.1214, title: "Қарасай мен Ағынтай батырлар мемориалдық кешені", date: "XX ғасыр", desc: "Есім ханның тұсында жоңғар шапқыншылығына қарсы тұрған қос батырдың Айыртау ауданындағы зәулім қос күмбезді кешені.", fact: "Кешен екі батырдың мәңгілік достығы мен майдандас серіктігінің белгісі ретінде бір іргетасқа тұрғызылған."}
             ];
 
-            const UI = {
-                filterItems: document.querySelectorAll('.filter-item'),
-                sheet: document.getElementById('js-sheet-overlay'),
-                sheetClose: document.getElementById('js-sheet-close'),
-                sheetCat: document.getElementById('js-sheet-cat'),
-                sheetTitle: document.getElementById('js-sheet-title'),
-                sheetDate: document.getElementById('js-sheet-date'),
-                sheetRegion: document.getElementById('js-sheet-region'),
-                sheetDesc: document.getElementById('js-sheet-desc'),
-                sheetFact: document.getElementById('js-sheet-fact')
-            };
-
-            let currentFilter = "all";
-            let activeMarkersArray = [];
-
-            // 1. Инициализация карты, сфокусированной строго на центр Казахстана
+            // ИНИЦИАЛИЗАЦИЯ И ПОЛНАЯ НАСТРОЙКА КАРТЫ С МАКСИМАЛЬНЫМ ЗУМОМ
             const map = L.map('js-map-viewport', {
-                center: [48.0196, 66.9237],
-                zoom: 5,
-                minZoom: 5,
-                maxZoom: 8,
-                zoomControl: true,
-                dragging: true
+                center: [43.0, 68.5], // Оптимальный фокус на исторические центры Казахстана
+                zoom: 7,
+                minZoom: 4,
+                maxZoom: 21, // Безопасный экстремальный зум для Google
+                zoomControl: true
             });
 
-            // 2. Рендеринг красивой светлой подложки премиального уровня
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                subdomains: 'abcd'
+            // ИСПОЛЬЗУЕМ ВЫСОКОДЕТАЛИЗИРОВАННЫЕ КАРТЫ GOOGLE (HYBRID: Спутник + Подписи)
+            // Это решает проблему размытия и серого экрана при сильном приближении
+            L.tileLayer('https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}', {
+                maxZoom: 21
             }).addTo(map);
 
-            // 3. ЗАГРУЗКА ТОЧНЫХ ОФИЦИАЛЬНЫХ ГРАНИЦ КАЗАХСТАНА И ЕГО ОБЛАСТЕЙ С ЧЕРНЫМИ ЛИНИЯМИ ГРАНИЦ
-            // Используется верифицированный гео-репозиторий границ
-            fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
-                .then(response => response.json())
-                .then(geoData => {
-                    // Ищем контур Казахстана в мировой базе
-                    const kazakhstanGeo = geoData.features.find(feature => feature.properties.ISO_A3 === 'KAZ');
-                    
-                    if(kazakhstanGeo) {
-                        L.geoJSON(kazakhstanGeo, {
-                            style: {
-                                color: '#1d1d1f',       // ТОЧЬ-В-ТОЧЬ ЖЕСТКИЙ ЧЕРНЫЙ/ТЕМНЫЙ ЦВЕТ ГРАНИЦ
-                                weight: 2.5,            // Оптимальная толщина контурной линии
-                                fillColor: '#ffffff',   // Чистый белый премиальный цвет заливки страны
-                                fillOpacity: 0.6,       // Легкая прозрачность для благородной эстетики
-                                lineJoin: 'round'       // Идеальное скругление на изгибах
-                            }
-                        }).addTo(map);
+            let activeMarkersGroup = L.layerGroup().addTo(map);
+
+            function renderMapHotspots(categoryFilter = "all") {
+                activeMarkersGroup.clearLayers();
+
+                historicalDataRegistry.forEach(function(place) {
+                    if (categoryFilter !== "all" && place.cat !== categoryFilter) {
+                        return;
                     }
-                })
-                .catch(err => {
-                    // Резервный отрисовщик границ, если у пользователя временно заблокирован GitHub CDN
-                    console.log("Контуры загружаются автономно...");
-                });
 
-            // 4. ФУНКЦИЯ ОТРИСОВКИ ИНТЕРАКТИВНЫХ ТОЧЕК-МАРКЕРОВ
-            function renderMapHotspots() {
-                // Полностью очищаем старые маркеры с карты перед фильтрацией
-                activeMarkersArray.forEach(m => map.removeLayer(m));
-                activeMarkersArray = [];
+                    const htmlHotspotStructure = `
+                        <div class="custom-geo-marker" data-id="${place.id}">
+                            <div class="marker-wave"></div>
+                            <div class="marker-center"></div>
+                        </div>
+                    `;
 
-                const filteredData = historicalDataRegistry.filter(item => {
-                    return currentFilter === "all" || item.cat === currentFilter;
-                });
-
-                filteredData.forEach(item => {
-                    // Создаем кастомную HTML-структуру маркера (пульсирующая точка)
-                    const customIcon = L.divIcon({
-                        html: `<div class="custom-geo-marker">
-                                 <div class="marker-wave"></div>
-                                 <div class="marker-center"></div>
-                               </div>`,
-                        className: 'clear-leaflet-bg',
+                    const generatedIcon = L.divIcon({
+                        html: htmlHotspotStructure,
+                        className: '',
                         iconSize: [12, 12],
                         iconAnchor: [6, 6]
                     });
 
-                    // Создаем сам маркер и привязываем всплывающую подсказку (Tooltip)
-                    const marker = L.marker([item.lat, item.lng], { icon: customIcon }).addTo(map);
+                    const markerInstance = L.marker([place.lat, place.lng], { icon: generatedIcon });
                     
-                    marker.bindTooltip(item.title, {
-                        permanent: false,
-                        direction: 'top',
-                        className: 'apple-style-tooltip',
-                        offset: [0, -10]
+                    markerInstance.on('click', function() {
+                        // При клике на точку карта красиво центрируется и приближается к ней
+                        map.setView([place.lat, place.lng], 17, { animate: true, duration: 0.8 });
+                        setTimeout(() => {
+                            openSacredLoreSheet(place);
+                        }, 400);
                     });
 
-                    // Клик на маркер -> открывает шторку с историей
-                    marker.on('click', () => {
-                        openSacredLoreSheet(item);
-                    });
-
-                    activeMarkersArray.push(marker);
+                    activeMarkersGroup.addLayer(markerInstance);
                 });
             }
 
-            // 5. ЛОГИКА ФИЛЬТРАЦИИ КАТЕГОРИЙ (ЛЕВАЯ ПАНЕЛЬ)
-            UI.filterItems.forEach(btn => {
+            // Логика фильтров
+            const uiFilterButtons = document.querySelectorAll('.filter-item');
+            uiFilterButtons.forEach(btn => {
                 btn.addEventListener('click', function() {
-                    UI.filterItems.forEach(i => i.classList.remove('is-active'));
+                    uiFilterButtons.forEach(b => b.classList.remove('is-active'));
                     this.classList.add('is-active');
-                    currentFilter = this.getAttribute('data-filter');
-                    renderMapHotspots();
+                    const targetCategory = this.getAttribute('data-filter');
+                    renderMapHotspots(targetCategory);
                 });
             });
 
-            // 6. УПРАВЛЕНИЕ ИНФОРМАЦИОННОЙ ШТОРКОЙ (MODAL SHEET)
-            function openSacredLoreSheet(item) {
-                const humanCats = {
-                    city: "Көне қала neмесе бекініс орны",
-                    sacred: "Рухани киелі кесене / Ғибадатхана",
-                    archaeology: "Археологиялық қазба & Жартас суреттері",
-                    nature: "Ерекше табиғи қорық және ескерткіш"
+            // Логика работы инфо-окна
+            const domOverlay = document.getElementById('js-sheet-overlay');
+            const domClose = document.getElementById('js-sheet-close');
+            
+            const txtCat = document.getElementById('js-sheet-cat');
+            const txtTitle = document.getElementById('js-sheet-title');
+            const txtDate = document.getElementById('js-sheet-date');
+            const txtRegion = document.getElementById('js-sheet-region');
+            const txtDesc = document.getElementById('js-sheet-desc');
+            const txtFact = document.getElementById('js-sheet-fact');
+
+            function openSacredLoreSheet(dataObj) {
+                const readableCategories = {
+                    'sacred': 'Киелі мекен',
+                    'city': 'Көне қала',
+                    'archaeology': 'Археология',
+                    'nature': 'Табиғат нысаны'
                 };
 
-                UI.sheetCat.textContent = humanCats[item.cat] || "Тарихи мұра";
-                UI.sheetTitle.textContent = item.title;
-                UI.sheetDate.innerHTML = `<i class="fa-solid fa-clock"></i> ${item.date}`;
-                UI.sheetRegion.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${item.region}`;
-                UI.sheetDesc.textContent = item.desc;
-                UI.sheetFact.textContent = item.fact;
-                UI.sheet.classList.add('is-active');
+                txtCat.textContent = readableCategories[dataObj.cat] || 'Нысан';
+                txtTitle.textContent = dataObj.title;
+                txtDate.innerHTML = `<i class="fa-solid fa-clock"></i> ${dataObj.date}`;
+                txtRegion.innerHTML = `<i class="fa-solid fa-location-dot"></i> ${dataObj.region}`;
+                txtDesc.textContent = dataObj.desc;
+                txtFact.textContent = dataObj.fact;
+
+                domOverlay.classList.add('is-active');
             }
 
-            function closeSacredLoreSheet() { UI.sheet.classList.remove('is-active'); }
-            UI.sheetClose.addEventListener('click', closeSacredLoreSheet);
-            UI.sheet.addEventListener('click', function(e) { if (e.target === this) closeSacredLoreSheet(); });
+            function closeSacredLoreSheet() {
+                domOverlay.classList.remove('is-active');
+            }
 
-            // Первый автоматический запуск рендеринга точек при загрузке страницы
+            domClose.addEventListener('click', closeSacredLoreSheet);
+            domOverlay.addEventListener('click', function(e) { 
+                if (e.target === this) closeSacredLoreSheet(); 
+            });
+
             renderMapHotspots();
+
+            // Переключение сайдбара на ПК
+            const workspaceNode = document.getElementById('js-workspace');
+            const toggleSidebarBtn = document.getElementById('js-sidebar-toggle');
+
+            if (toggleSidebarBtn && workspaceNode) {
+                toggleSidebarBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    workspaceNode.classList.toggle('sidebar-is-collapsed');
+                    
+                    let checkTicks = 0;
+                    const syncInterval = setInterval(() => {
+                        map.invalidateSize();
+                        checkTicks++;
+                        if (checkTicks >= 10) clearInterval(syncInterval);
+                    }, 50);
+                });
+            }
         });
 
-        document.addEventListener("DOMContentLoaded", function() {
-        const workspaceNode = document.getElementById('js-workspace');
-        const toggleSidebarBtn = document.getElementById('js-sidebar-toggle');
-        const sidebarNode = document.getElementById('js-sidebar');
 
-        if (toggleSidebarBtn && workspaceNode) {
-            toggleSidebarBtn.addEventListener('click', function(e) {
-                e.stopPropagation();
-                
-                // Классты қосу/алып тастау арқылы ашу-жабуды реттеу
-                workspaceNode.classList.toggle('sidebar-is-collapsed');
-                
-                // Карта контейнерінің өлшемін жаңа Grid торына сай бұзылусыз синхрондау
-                // Анимация уақытымен (400ms) сәйкес келетін интервалдармен картаны екі рет тексереміз
-                let checkTicks = 0;
-                const syncInterval = setInterval(() => {
-                    if (typeof map !== 'undefined') {
-                        map.invalidateSize();
-                    }
-                    checkTicks++;
-                    if (checkTicks >= 10) {
-                        clearInterval(syncInterval);
-                    }
-                }, 50);
-            });
-        }
-    });
     </script>
 </body>
 </html>
