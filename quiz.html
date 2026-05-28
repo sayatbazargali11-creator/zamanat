@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quizlet Флэш-карточкалар • Ұлы Дала Шежіресі</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. PREMIUM ORANGE DESIGN SYSTEM (APPLE LIGHT CONCEPT)
+           ========================================================================== */
+        :root {
+            --bg-base: #f5f5f7; 
+            --bg-card: #ffffff; 
+            --text-main: #1d1d1f; 
+            --text-sub: #6e6e73; 
+            --text-muted: #86868b;
+            --orange-main: #ff9500; /* Твой фирменный оранжевый */
+            --orange-glow: rgba(255, 149, 0, 0.08); 
+            --orange-hover: #e08200;
+            --border-light: rgba(0, 0, 0, 0.06);
+            --color-success: #34c759;
+            --color-error: #ff3b30;
+            --ease-3d: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-ios: cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            padding: 20px 16px 80px 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+        }
+
+        .main-wrapper {
+            width: 100%;
+            max-width: 620px; 
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* --------------------------------------------------------------------------
+           2. HEADER & NAVIGATION COMPONENTS
+           -------------------------------------------------------------------------- */
+        .app-header {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.01);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--orange-glow);
+            color: var(--orange-main);
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 6px 14px;
+            border-radius: 100px;
+        }
+
+        .stats-summary {
+            display: flex;
+            gap: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .stat-pill {
+            background: var(--bg-base);
+            padding: 4px 10px;
+            border-radius: 8px;
+            color: var(--text-sub);
+            border: 1px solid var(--border-light);
+        }
+
+        .stat-pill span {
+            color: var(--orange-main);
+            font-weight: 700;
+        }
+
+        .epoch-selector {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        @media(min-width: 480px) {
+            .epoch-selector {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+
+        .epoch-btn {
+            background: var(--bg-base);
+            border: 1px solid transparent;
+            color: var(--text-sub);
+            padding: 10px 6px;
+            border-radius: 12px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s var(--ease-ios);
+        }
+
+        .epoch-btn:hover {
+            color: var(--text-main);
+            background: rgba(0,0,0,0.03);
+        }
+
+        .epoch-btn.active {
+            background: var(--orange-main);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.25);
+        }
+
+        /* --------------------------------------------------------------------------
+           3. PROGRESS BAR COMPONENT
+           -------------------------------------------------------------------------- */
+        .progress-box {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .progress-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .track-bg {
+            width: 100%;
+            height: 6px;
+            background: var(--bg-base);
+            border-radius: 100px;
+            overflow: hidden;
+        }
+
+        .track-fill {
+            height: 100%;
+            width: 1%;
+            background: var(--orange-main);
+            border-radius: 100px;
+            transition: width 0.4s var(--ease-ios);
+        }
+
+        /* --------------------------------------------------------------------------
+           4. QUIZLET 3D FLIP CARD COMPONENT
+           -------------------------------------------------------------------------- */
+        .quizlet-scene {
+            width: 100%;
+            height: 320px;
+            perspective: 1200px;
+            cursor: pointer;
+        }
+
+        .flip-card {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.6s var(--ease-3d);
+        }
+
+        /* Переворот карты при активации класса */
+        .quizlet-scene.is-flipped .flip-card {
+            transform: rotateY(180deg);
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 28px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+            border: 1px solid var(--border-light);
+            background: var(--bg-card);
+        }
+
+        /* Передняя сторона (Вопрос) */
+        .face-front {
+            background: var(--bg-card);
+        }
+
+        /* Задняя сторона (Ответ) */
+        .face-back {
+            background: var(--bg-card);
+            transform: rotateY(180deg);
+            border: 2px solid var(--orange-main);
+        }
+
+        /* Внутренние элементы карточки */
+        .face-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+        }
+
+        .card-index-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            background: var(--bg-base);
+            padding: 4px 10px;
+            border-radius: 6px;
+        }
+
+        .card-icon-indicator {
+            width: 36px;
+            height: 36px;
+            background: var(--orange-glow);
+            color: var(--orange-main);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.95rem;
+        }
+
+        .face-back .card-icon-indicator {
+            background: var(--orange-main);
+            color: #ffffff;
+        }
+
+        .face-body {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 10px 0;
+        }
+
+        .front-title-text {
+            font-size: 1.6rem;
+            font-weight: 800;
+            line-height: 1.3;
+            letter-spacing: -0.02em;
+            color: var(--text-main);
+        }
+
+        .front-hint-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: 10px;
+            font-weight: 500;
+        }
+
+        .back-year-box {
+            font-size: 2.2rem;
+            font-weight: 800;
+            color: var(--orange-main);
+            margin-bottom: 12px;
+            letter-spacing: -0.01em;
+        }
+
+        .back-desc-text {
+            font-size: 1.05rem;
+            line-height: 1.5;
+            color: var(--text-sub);
+            font-weight: 500;
+            max-width: 90%;
+        }
+
+        .face-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* --------------------------------------------------------------------------
+           5. ACTION CONTROLS & MODULES
+           -------------------------------------------------------------------------- */
+        .control-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .nav-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            width: 54px;
+            height: 54px;
+            border-radius: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: all 0.2s var(--ease-ios);
+        }
+
+        .nav-btn:active {
+            transform: scale(0.94);
+            background: var(--bg-base);
+        }
+
+        .study-actions-group {
+            display: flex;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .action-tag-btn {
+            flex-grow: 1;
+            height: 54px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-weight: 600;
+            font-size: 0.92rem;
+            background: var(--bg-card);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+            transition: all 0.2s var(--ease-ios);
+        }
+
+        .action-tag-btn.know-btn {
+            color: var(--color-success);
+        }
+
+        .action-tag-btn.know-btn:active {
+            background: rgba(52, 199, 89, 0.08);
+            border-color: var(--color-success);
+        }
+
+        .action-tag-btn.retry-btn {
+            color: var(--orange-main);
+        }
+
+        .action-tag-btn.retry-btn:active {
+            background: var(--orange-glow);
+            border-color: var(--orange-main);
+        }
+
+        /* --------------------------------------------------------------------------
+           6. USEFUL MATERIALS & GLOSSARY (DEEP COMPONENT)
+           ========================================================================== */
+        .materials-container {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            padding: 24px;
+            box-shadow: 0 4px 25px rgba(0,0,0,0.01);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .materials-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid var(--border-light);
+            padding-bottom: 12px;
+        }
+
+        .materials-title-row i {
+            color: var(--orange-main);
+            font-size: 1.25rem;
+        }
+
+        .materials-title-row h3 {
+            font-size: 1.15rem;
+            font-weight: 700;
+        }
+
+        .search-input-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .search-input-box input {
+            width: 100%;
+            padding: 12px 16px 12px 42px;
+            border-radius: 12px;
+            border: 1px solid var(--border-light);
+            background: var(--bg-base);
+            font-family: inherit;
+            font-size: 0.9rem;
+            color: var(--text-main);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input-box input:focus {
+            border-color: var(--orange-main);
+        }
+
+        .search-input-box i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .glossary-scroll-zone {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 450px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        /* Кастомный скроллбар */
+        .glossary-scroll-zone::-webkit-scrollbar {
+            width: 4px;
+        }
+        .glossary-scroll-zone::-webkit-scrollbar-thumb {
+            background: rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .glossary-item-card {
+            background: var(--bg-base);
+            border-radius: 14px;
+            padding: 14px 16px;
+            border-left: 3px solid var(--orange-main);
+            transition: transform 0.2s;
+        }
+
+        .glossary-item-card:hover {
+            transform: translateX(2px);
+        }
+
+        .glossary-term {
+            font-size: 0.92rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .glossary-definition {
+            font-size: 0.84rem;
+            line-height: 1.45;
+            color: var(--text-sub);
+        }
+
+        /* ==========================================================================
+   ZAMANAT FULLSCREEN HERO INTRO STYLES (PREMIUM WIDE LAYOUT)
+   ========================================================================== */
+.zamanat-hero-fullscreen {
+    width: 100%;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 32px;
+    padding: 40px;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.015);
+    font-family: 'Inter', -apple-system, sans-serif;
+    margin-bottom: 30px;
+    box-sizing: border-box;
+}
+
+/* Двухколоночный макет */
+.hero-split-layout {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+}
+
+/* Левая колонка с текстом */
+.hero-text-side {
+    display: table-cell;
+    width: 55%;
+    vertical-align: middle;
+    padding-right: 45px;
+}
+
+/* Правая колонка с плитками-инструкциями */
+.hero-cards-side {
+    display: table-cell;
+    width: 45%;
+    vertical-align: middle;
+    border-left: 1px solid rgba(0, 0, 0, 0.06);
+    padding-left: 45px;
+}
+
+/* Бейджи сверху */
+.hero-badge-container {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.premium-pulse-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #ff6b00; /* Ваш оранжевый акцент */
+    background: rgba(255, 107, 0, 0.08);
+    padding: 6px 14px;
+    border-radius: 100px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.version-tag {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #86868b;
+    background: #f5f5f7;
+    padding: 5px 12px;
+    border-radius: 8px;
+}
+
+/* Огромный заголовок */
+.hero-main-title {
+    font-size: 2.2rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    line-height: 1.25;
+    letter-spacing: -0.03em;
+    margin-bottom: 18px;
+}
+
+.gradient-orange-text {
+    color: #ff6b00;
+    background: linear-gradient(180deg, transparent 75%, rgba(255, 107, 0, 0.12) 25%);
+}
+
+/* Текстовые параграфы */
+.hero-lead-paragraph {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: #333336;
+    margin-bottom: 12px;
+}
+
+.hero-sub-paragraph {
+    font-size: 0.95rem;
+    line-height: 1.55;
+    color: #6e6e73;
+    margin-bottom: 24px;
+}
+
+.dark-bold {
+    color: #1d1d1f;
+    font-weight: 600;
+}
+
+.hero-action-footer {
+    display: flex;
+    align-items: center;
+}
+
+.scroll-down-hint {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ff6b00;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* Стили карточек-плиток в правой колонке */
+.instruction-tile-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 16px;
+    background: #f5f5f7;
+    padding: 18px;
+    border-radius: 20px;
+    margin-bottom: 14px;
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.instruction-tile-card:last-child {
+    margin-bottom: 0;
+}
+
+.instruction-tile-card:hover {
+    transform: translateY(-2px);
+    background: #f0f0f2;
+}
+
+/* Иконки в плитках */
+.tile-icon-wrapper {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    flex-shrink: 0;
+}
+
+.tile-icon-wrapper.color-orange {
+    background: rgba(255, 107, 0, 0.1);
+    color: #ff6b00;
+}
+
+.tile-icon-wrapper.color-green {
+    background: rgba(52, 199, 89, 0.1);
+    color: #34c759;
+}
+
+.tile-icon-wrapper.color-blue {
+    background: rgba(0, 122, 255, 0.1);
+    color: #007aff;
+}
+
+/* Текст плиток */
+.tile-content h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 4px;
+}
+
+.tile-content p {
+    font-size: 0.85rem;
+    color: #6e6e73;
+    line-height: 1.45;
+}
+
+/* Адаптивность для мобильных телефонов и планшетов */
+@media (max-width: 820px) {
+    .hero-split-layout, .hero-text-side, .hero-cards-side {
+        display: block;
+        width: 100%;
+    }
+    .hero-text-side {
+        padding-right: 0;
+        margin-bottom: 30px;
+    }
+    .hero-cards-side {
+        border-left: none;
+        padding-left: 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.06);
+        padding-top: 30px;
+    }
+    .zamanat-hero-fullscreen {
+        padding: 24px;
+        border-radius: 24px;
+    }
+    .hero-main-title {
+        font-size: 1.8rem;
+    }
+}
+    </style>
+</head>
+<body>
+    <div class="zamanat-hero-fullscreen">
+    <div class="hero-split-layout">
+        
+        <div class="hero-text-side">
+            <div class="hero-badge-container">
+                <span class="premium-pulse-tag">
+                    <i class="fa-solid fa-fire-flame-curved"></i> Тез әрі тиімді оқыту
+                </span>
+                <span class="version-tag">Quizlet 3D v2.0</span>
+            </div>
+            
+            <h1 class="hero-main-title">
+                Ұлы Дала Шежіресі:<br>
+                <span class="gradient-orange-text">Интерактивті флэш-карталар</span>
+            </h1>
+            
+            <p class="hero-lead-paragraph">
+                Тарихты құрғақ даталармен жаттаудан шаршадыңыз ба? <strong class="dark-bold">ZAMANAT</strong> платформасының жаңа интерактивті жүйесімен танысыңыз! Бұл бөлімде Ұлы Дала тарихының Сақ дәуірінен бастап бүгінгі күнге дейінгі ең маңызды <strong class="dark-bold">100 тарихи оқиғасы</strong> мен шешімді сәттері жинақталған.
+            </p>
+            
+            <p class="hero-sub-paragraph">
+                Мидың визуалды, ассоциативті және кеңістіктік есте сақтау қабілетін максималды арттыруға арналған таптырмас әдістеме. Бір кликпен өзіңізді тексеріп, біліміңізді шыңдаңыз!
+            </p>
+
+            <div class="hero-action-footer">
+                <span class="scroll-down-hint"><i class="fa-solid fa-arrow-down-short-wide"></i> Төмен айналдырып, зерттеуді бастаңыз</span>
+            </div>
+        </div>
+
+        <div class="hero-cards-side">
+            <div class="instruction-tile-card">
+                <div class="tile-icon-wrapper color-orange">
+                    <i class="fa-solid fa-hand-pointer"></i>
+                </div>
+                <div class="tile-content">
+                    <h3>Кликте және аудар</h3>
+                    <p>Карточканың кез келген тұсын басу арқылы 3D эффектімен оның артқы бетіндегі жауабы мен дәл датасын ашыңыз.</p>
+                </div>
+            </div>
+
+            <div class="instruction-tile-card">
+                <div class="tile-icon-wrapper color-green">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+                <div class="tile-content">
+                    <h3>Прогресті басқар</h3>
+                    <p>Өзіңіз сенімді білетін даталарды «Білемін» батырмасымен белгілеп, қайталанатын сұрақтар тізімінен автоматты түрде шығарыңыз.</p>
+                </div>
+            </div>
+
+            <div class="instruction-tile-card">
+                <div class="tile-icon-wrapper color-blue">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div class="tile-content">
+                    <h3>Дәуірлерді сүзгілеу</h3>
+                    <p>Тарихты тұтас емес, кезең-кезеңімен (Ежелгі, Орта ғасыр, Жаңа заман) бөліп алып, жүйелі әрі ыңғайлы форматта оқыңыз.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+    <div class="main-wrapper">
+        
+        <header class="app-header">
+            <div class="header-top">
+                <div class="brand-badge">
+                    <i class="fa-solid fa-layer-group"></i> Quizlet Шежіре
+                </div>
+                <div class="stats-summary">
+                    <div class="stat-pill">Білемін: <span id="js-known-count">0</span></div>
+                    <div class="stat-pill">Қалды: <span id="js-remaining-count">100</span></div>
+                </div>
+            </div>
+
+            <div class="epoch-selector">
+                <button class="epoch-btn active" data-epoch="all">Барлығы</button>
+                <button class="epoch-btn" data-epoch="ancient">Ежелгі</button>
+                <button class="epoch-btn" data-epoch="medieval">Орта ғасыр</button>
+                <button class="epoch-btn" data-epoch="modern">Жаңа заман</button>
+            </div>
+
+            <div class="progress-box">
+                <div class="progress-meta">
+                    <span id="js-progress-text">Прогресс: 0%</span>
+                    <span id="js-counter-view">1 / 100</span>
+                </div>
+                <div class="track-bg">
+                    <div class="track-fill" id="js-track-fill"></div>
+                </div>
+            </div>
+        </header>
+
+        <div class="quizlet-scene" id="js-card-scene" title="Аударып көру үшін басыңыз">
+            <div class="flip-card">
+                
+                <div class="card-face face-front">
+                    <div class="face-header">
+                        <span class="card-index-tag" id="js-front-index">#1</span>
+                        <div class="card-icon-indicator">
+                            <i class="fa-solid fa-question"></i>
+                        </div>
+                    </div>
+                    <div class="face-body">
+                        <h2 class="front-title-text" id="js-front-title">Сақ тайпалық одақтарының қалыптасуы және дамуы</h2>
+                        <span class="front-hint-text">Жауабын көру үшін басыңыз</span>
+                    </div>
+                    <div class="face-footer">
+                        <i class="fa-solid fa-rotate"></i> Кликтеу арқылы аудару
+                    </div>
+                </div>
+
+                <div class="card-face face-back">
+                    <div class="face-header">
+                        <span class="card-index-tag" id="js-back-index">#1</span>
+                        <div class="card-icon-indicator">
+                            <i class="fa-solid fa-check"></i>
+                        </div>
+                    </div>
+                    <div class="face-body">
+                        <div class="back-year-box" id="js-back-year">Б.з.б. VIII-III ғғ.</div>
+                        <p class="back-desc-text" id="js-back-desc">Ұлы Дала аумағында алғашқы көшпелі мемлекеттік құрылымдар мен бірегей «аң стилі» өнерінің пайда болуы.</p>
+                    </div>
+                    <div class="face-footer">
+                        <span id="js-back-era-tag">Ежелгі дәуір</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="control-row">
+            <button class="nav-btn" id="js-prev-btn" title="Артқа">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            
+            <div class="study-actions-group">
+                <button class="action-tag-btn retry-btn" id="js-action-retry">
+                    <i class="fa-solid fa-arrow-rotate-left"></i> Қайталау
+                </button>
+                <button class="action-tag-btn know-btn" id="js-action-know">
+                    <i class="fa-solid fa-circle-check"></i> Білемін
+                </button>
+            </div>
+
+            <button class="nav-btn" id="js-next-btn" title="Алға">
+                <i class="fa-solid fa-chevron-right"></i>
+            </button>
+        </div>
+
+        
+
+
+
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            // 1. ПОЛНАЯ БАЗА ИЗ 100 ИСТОРИЧЕСКИХ КАРТОЧЕК (ОРАНЖЕВЫЙ ДИЗАЙН-КОД)
+            const cardsDataset = [
+                { id: 1, epoch: "ancient", title: "Сақ тайпалық одақтары", year: "Б.з.б. VIII-III ғғ.", desc: "Ұлы Дала аумағында алғашқы көшпелі мемлекеттік құрылымдар мен өркениеттің, «аң стилі» өнерінің қалыптасуы.", era: "Ежелгі дәуір" },
+                { id: 2, epoch: "ancient", title: "Томиристің парсы патшасы Кирді жеңуі", year: "Б.з.б. 530 жыл", desc: "Массагеттердің патшайымы Томиристің парсылардың басқыншы әскерін талқандап, бостандықты қорғап қалуы.", era: "Ежелгі дәуір" },
+                { id: 3, epoch: "ancient", title: "Яксарт шайқасы (Александр Македонскийге қарсы)", year: "Б.з.б. 329 жыл", desc: "Сақтардың Сырдария бойында атақты қолбасшы Александр Македонскийдің әскеріне тойтарыс беріп, оны тоқтатуы.", era: "Ежелгі дәуір" },
+                { id: 4, epoch: "ancient", title: "Ғұн мемлекетінің дәуірлеуі мен бірігуі", year: "Б.з.б. III ғ.", desc: "Мөде қағанның тұсында ғұндардың қуатты империяға айналуы және Халықтардың ұлы қоныс аударуына жол ашуы.", era: "Ежелгі дәуір" },
+                { id: 5, epoch: "ancient", title: "Үйсін мемлекеттік бірлестігінің құрылуы", year: "Б.з.б. II ғ.", desc: "Жетісу өңірінде дербес үйсін билігінің орнауы, Қытаймен белсенді дипломатиялық және некелік байланыстар.", era: "Ежелгі дәуір" },
+                { id: 6, epoch: "ancient", title: "Қаңлы мемлекетінің күшеюі", year: "Б.з.б. II-I ғғ.", desc: "Сырдария алқабы мен Жібек жолын бақылаған қаңлылардың ірі саяси және металлургиялық орталыққа айналуы.", era: "Ежелгі дәуір" },
+                { id: 7, epoch: "medieval", title: "Ұлы Түрік қағанатының құрылуы", year: "552 жыл", desc: "Бумын қағанның Алтайда Түркі мемлекетінің негізін қалауы. Түркі тілді тайпалардың бірігу процесінің басталуы.", era: "Орта ғасырлар" },
+                { id: 8, epoch: "medieval", title: "Түрік қағанатының екіге бөлінуі", year: "603 жыл", desc: "Ішкі саяси тартыстар мен сыртқы қысымдар нәтижесінде империяның Батыс және Шығыс қағанаттарына ыдырауы.", era: "Орта ғасырлар" },
+                { id: 9, epoch: "medieval", title: "Түргеш қағанаты және төл теңге шығару", year: "704 жыл", desc: "Жетісуда түргештердің билікке келуі және Суяб қаласында өз атынан теңге соқтырып, ақша айналымын жасауы.", era: "Орта ғасырлар" },
+                { id: 10, epoch: "medieval", title: "Атлах (Талас) шайқасы", year: "751 жыл", desc: "Араб-түркі әскерінің Қытайдың Тан империясын қирата жеңуі. Орталық Азияның ислам мәдениетіне бет бұруы.", era: "Орта ғасырлар" },
+                { id: 11, epoch: "medieval", title: "Қарлұқ қағанатының орнығуы", year: "756 жыл", desc: "Жетісу мен Оңтүстік Қазақстанда қарлұқтардың билік құруы, қалалық және отырықшы мәдениеттің өркендеуі.", era: "Орта ғасырлар" },
+                { id: 12, epoch: "medieval", title: "Оғыз мемлекетінің қалыптасуы", year: "IX ғ. соңы", desc: "Сырдарияның төменгі ағысында оғыз тайпаларының саяси бірлестігі мен Сарман, Хазарлармен одақтастығы.", era: "Орта ғасырлар" },
+                { id: 13, epoch: "medieval", title: "Қимақ қағанатының гүлденуі", year: "VIII-XI ғғ.", desc: "Ертіс бойында қимақтардың ірі мемлекетінің қалыптасуы, көне түркі жазуының қолданылуы мен дамуы.", era: "Орта ғасырлар" },
+                { id: 14, epoch: "medieval", title: "Қарахан мемлекетінде исламның қабылдануы", year: "960 жыл", desc: "Қарахан билеушісі Мұса қағанның тұсында ислам дінінің мемлекеттік дін ретінде ресми қабылдануы.", era: "Орта ғасырлар" },
+                { id: 15, epoch: "medieval", title: "Дешт-и Қыпшақ дәуірінің басталуы", year: "XI ғ. басы", desc: "Қыпшақтардың Алтайдан Дунайға дейінгі ұлан-ғайыр даланы бақылауына алып, аймақтың Қыпшақ даласы атануы.", era: "Орта ғасырлар" },
+                { id: 16, epoch: "medieval", title: "Қарақытайлардың Катван шайқасындағы жеңісі", year: "1141 жыл", desc: "Катван даласында қарақытайлардың Селжүк-қарахан одақтас әскерін жеңіп, Жетісу мен Мәуераннахрды бағындыруы.", era: "Орта ғасырлар" },
+                { id: 17, epoch: "medieval", title: "Найман және Керей хандықтарының күшеюі", year: "XII ғ. соңы", desc: "Орталық Азияның шығысында ірі түркі хандықтарының күшеюі, мемлекеттік хатшылық пен таңба жүйесінің дамуы.", era: "Орта ғасырлар" },
+                { id: 18, epoch: "medieval", title: "Отырар қаласының ерлік қорғанысы", year: "1219 жыл", desc: "Шыңғыс хан әскеріне қарсы Отырар қаласының Қайыр хан басшылығымен 6 ай бойы берілмей, ерлікпен қорғануы.", era: "Орта ғасырлар" },
+                { id: 19, epoch: "medieval", title: "Жошы Ұлысының (Алтын Орда) құрылуы", year: "1224 жыл", desc: "Шыңғыс хан империясының бөлінісінде Ұлы Дала аумағында Алтын Орданың (Ұлық Ұлыстың) іргетасы қалануы.", era: "Орта ғасырлар" },
+                { id: 20, epoch: "medieval", title: "Жошы ханның Ұлытауда қаза болуы", year: "1227 жыл", desc: "Ұлық Ұлыстың негізін қалаушы Жошы ханның жұмбақ жағдайда қайтыс болып, Ұлытауда кесенесінің тұрғызылуы.", era: "Орта ғасырлар" },
+                { id: 21, epoch: "medieval", title: "Бату ханның батысқа ұлы жорығы", year: "1240 жыл", desc: "Алтын Орданың шекарасын Шығыс Еуропаға дейін кеңейтіп, империяның дербестігі мен саяси қуатын күшейтуі.", era: "Орта ғасырлар" },
+                { id: 22, epoch: "medieval", title: "Талас құрылтайы (Толық тәуелсіздік)", year: "1269 жыл", desc: "Жошы, Шағатай және Үгедей ұлыстарының толық тәуелсіздігін жариялап, империялық орталыққа бағынбауы.", era: "Орта ғасырлар" },
+                { id: 23, epoch: "medieval", title: "Өзбек хан тұсында исламның бекуі", year: "1312 жыл", desc: "Алтын Ордада ислам дінінің мемлекеттік дін болып бекітілуі, мәдениет, сәулет өнері мен сауданың гүлденуі.", era: "Орта ғасырлар" },
+                { id: 24, epoch: "medieval", title: "Моғолстан мемлекетінің құрылуы", year: "1346 жыл", desc: "Шағатай ұлысының ыдырауы нәтижесінде Оңтүстік-Шығыс Қазақстан мен Жетісуда дербес мемлекеттің орнауы.", era: "Орта ғасырлар" },
+                { id: 25, epoch: "medieval", title: "Тоқтамыс ханның билікті біріктіруі", year: "1380 жыл", desc: "Алтын Ордадағы ішкі бытыраңқылықты тоқтатып, Мәскеуді бағындыруы және мемлекетті қайта біріктіруі.", era: "Орта ғасырлар" },
+                { id: 26, epoch: "medieval", title: "Құндызша даласындағы сұрапыл шайқас", year: "1391 жыл", desc: "Әмір Темір мен Тоқтамыс хан арасындағы шайқас. Алтын Орданың экономикалық және саяси күйреуінің басталуы.", era: "Орта ғасырлар" },
+                { id: 27, epoch: "medieval", title: "Әбілқайыр хандығының орнығуы", year: "1428 жыл", desc: "Шайбани әулетінен шыққан Әбілқайырдың Дешт-и Қыпшақта өз билігін (Көшпелі өзбектер мемлекетін) орнатуы.", era: "Орта ғасырлар" },
+                { id: 28, epoch: "medieval", title: "Керей мен Жәнібек сұлтандардың бөлінуі", year: "1456 жыл", desc: "Сұлтандардың Әбілқайыр хан саясатына наразы болып, Батыс Моғолстанға қарай Ұлы көш бастауы.", era: "Орта ғасырлар" },
+                { id: 29, epoch: "medieval", title: "Сығанақ түбіндегі ойраттармен шайқас", year: "1457 жыл", desc: "Әбілқайыр ханның ойраттардан (жоңғарлардан) жеңіліп, хандықтың ішкі саяси дағдарысының өршуі.", era: "Орта ғасырлар" },
+                { id: 30, epoch: "medieval", title: "Қазақ хандығының құрылуы", year: "1465 жыл", desc: "Керей мен Жәнібек хандардың Шу мен Қозыбасы өңірінде алғашқы дербес Қазақ мемлекетінің туын көтеруі.", era: "Орта ғасырлар" },
+                { id: 31, epoch: "medieval", title: "Сығанақ пен Сауран қалаларының алынуы", year: "1470 жыл", desc: "Қазақ хандығының Сырдария бойындағы маңызды экономикалық және стратегиялық қалаларды өз бақылауына алуы.", era: "Орта ғасырлар" },
+                { id: 32, epoch: "medieval", title: "Бұрындық ханның билігі мен әскери жорықтары", year: "1480 жыл", desc: "Қазақ әскерінің қуатын арттырып, Сырдария өңіріндегі қалалар үшін Шайбанилерге қарсы соғыстар жүргізуі.", era: "Орта ғасырлар" },
+                { id: 33, epoch: "medieval", title: "Қасым ханның таққа отыруы (Дәуірлеу)", year: "1511 жыл", desc: "Қазақ хандығының қуаттылығының артуы, халық санының 1 миллионға жетіп, мемлекеттің халықаралық деңгейде танылуы.", era: "Орта ғасырлар" },
+                { id: 34, epoch: "medieval", title: "«Қасым ханның қасқа жолы» заңдар жинағы", year: "1515 жыл", desc: "Қазақ қоғамындағы әдет-ғұрып ережелері мен құқықтық нормаларды жүйелеген алғашқы ресми заңдар жинағы.", era: "Орта ғасырлар" },
+                { id: 35, epoch: "medieval", title: "Хақназар ханның билігі мен қайта бірігу", year: "1538 жыл", desc: "Ішкі алауыздықтардан кейін хандықты қайта біріктіріп, Ноғай ордасы мен қырғыз тайпаларын одақтас етуі.", era: "Орта ғасырлар" },
+                { id: 36, epoch: "modern", title: "Тәуекел ханның Ресеймен елшілік байланысы", year: "1582 жыл", desc: "Мәскеу мемлекетімен ресми дипломатиялық қатынастар орнатып, Бұхара хандығына қарсы сәтті жорықтар жасауы.", era: "Жаңа заман" },
+                { id: 37, epoch: "modern", title: "Есім хан тұсында Түркістанның астана болуы", year: "1598 жыл", desc: "Түркістан қаласын Қазақ хандығының ресми астанасы етіп бекітіп, орталықтанған билікті күшейтуі.", era: "Жаңа заман" },
+                { id: 38, epoch: "modern", title: "«Есім ханның ескі жолы» құқықтық реформасы", year: "1610 жыл", desc: "Хандықтың ішкі бірлігін сақтау мақсатында Билер кеңесінің рөлін арттырған әскери-заңдық реформа.", era: "Жаңа заман" },
+                { id: 39, epoch: "modern", title: "Қазақ-ойрат алғашқы ірі қақтығыстары", year: "1627 жыл", desc: "Есім ханның Ұлы Далаға басып кірмек болған жоңғар (ойрат) тайпаларына соққы беріп, шегіндіруі.", era: "Жаңа заман" },
+                { id: 40, epoch: "modern", title: "Жәңгір ханның таққа отыруы", year: "1628 жыл", desc: "Есім ханнан кейін таққа отырып, жоңғар басқыншылығына қарсы белсенді қорғаныс және одақтастық тактикасын ұстануы.", era: "Жаңа заман" },
+                { id: 41, epoch: "modern", title: "Орбұлақ шайқасы (Теңдессіз ерлік)", year: "1643 жыл", desc: "Жәңгір ханның 600 сарбазбен және Самарқаннан келген Жалаңтөс баһадүр көмегімен жоңғардың 50 мыңдық әскерін тоқтатуы.", era: "Жаңа заман" },
+                { id: 42, epoch: "modern", title: "Әз-Тәуке ханның билікке келуі", year: "1680 жыл", desc: "Қазақ хандығының соңғы алтын ғасыры. Тәуке ханның үш жүздің басын біріктіріп, ішкі тұрақтылықты орнатуы.", era: "Жаңа заман" },
+                { id: 43, epoch: "modern", title: "«Жеті жарғы» кодексінің қабылдануы", year: "1690 жыл", desc: "Күлтөбе құрылтайында атақты Төле, Қазыбек, Әйтеке билердің қатысуымен қабылданған дала заңдарының жинағы.", era: "Жаңа заман" },
+                { id: 44, epoch: "modern", title: "Қарақұм құрылтайы", year: "1710 жыл", desc: "Жоңғарларға жаппай тойтарыс беру үшін үш жүз өкілдерінің бас қосып, біріккен жасақ құру туралы шешімі.", era: "Жаңа заман" },
+                { id: 45, epoch: "modern", title: "Аягөз өзені бойындағы шайқас", year: "1718 жыл", desc: "Қазақ жасақтарының жоңғарларға қарсы шайқасы. Мемлекеттің ішкі бірлігінің әлсірей бастауын көрсеткен сәт.", era: "Жаңа заман" },
+                { id: 46, epoch: "modern", title: "«Ақтабан шұбырынды, Алқакөл сұлама»", year: "1723 жыл", desc: "Жоңғар қонтайшысы Севан Рабданның қазақ жеріне тұтқиылдан басып кіруі, халықтың жартысы қырылған ұлы қасірет.", era: "Жаңа заман" },
+                { id: 47, epoch: "modern", title: "Ордабасы құрылтайы (Әскердің бірігуі)", year: "1726 жыл", desc: "Төле, Қазыбек, Әйтеке билердің ұйытқы болуымен Әбілқайыр ханның қазақ әскерінің бас қолбасшысы болып сайлануы.", era: "Жаңа заман" },
+                { id: 48, epoch: "modern", title: "Бұланды шайқасы (Алғашқы үлкен жеңіс)", year: "1727 жыл", desc: "Қалмаққырылған жерінде қазақ сарбаздарының жоңғарларға қарсы алғашқы ірі жеңіске жетіп, рухтың көтерілуі.", era: "Жаңа заман" },
+                { id: 49, epoch: "modern", title: "Аңырақай шайқасы (Тарихи тойтарыс)", year: "1729 жыл", desc: "Балқаш маңында Үш жүз әскерінің жоңғар негізгі күштерін толықтай талқандап, ұлы жеңіске жетуі.", era: "Жаңа заман" },
+                { id: 50, epoch: "modern", title: "Кіші жүздің Ресей құрамына өтуі", year: "1731 жыл", desc: "Әбілқайыр ханның сыртқы саяси қысымдар мен жоңғар қаупіне байланысты Ресей империясының протекторатын қабылдауы.", era: "Жаңа заман" },
+                { id: 51, epoch: "modern", title: "Абылай сұлтанның жоңғар тұтқынына түсуі", year: "1741 жыл", desc: "Абылай сұлтанның тұтқынға түсуі және дала дипломатиясы мен Төле бидің келіссөздері нәтижесінде босап шығуы.", era: "Жаңа заман" },
+                { id: 52, epoch: "modern", title: "Цин (Қытай) империясымен шекаралық соғыс", year: "1756 жыл", desc: "Абылай ханның Қытай әскеріне қарсы соғысы және кейін екіжақты тиімді дипломатиялық байланыс орнатуы.", era: "Жаңа заман" },
+                { id: 53, epoch: "modern", title: "Жоңғар мемлекетінің толық жойылуы", year: "1758 жыл", desc: "Цин (Қытай) империясының Жоңғар мемлекетін ішкі тартыстардан кейін толықтай жойып жіберуі.", era: "Жаңа заман" },
+                { id: 54, epoch: "modern", title: "Абылайдың жалпықазақ ханы болып сайлануы", year: "1771 жыл", desc: "Үш жүздің өкілдері мен сұлтандары Түркістанда Абылайды ресми түрде жалпықазақ ханы етіп көтеруі.", era: "Жаңа заман" },
+                { id: 55, epoch: "modern", title: "Е. Пугачев көтерілісіне қазақтардың қатысуы", year: "1773 жыл", desc: "Ресейдегі шаруалар соғысына отаршылдыққа наразы Кіші және Орта жүз қазақ жасақтарының белсенді қатысуы.", era: "Жаңа заман" },
+                { id: 56, epoch: "modern", title: "Абылай ханның дүниеден өтуі", year: "1781 жыл", desc: "Ұлы хандық дәуірдің әлсіреуі, Ресей империясының қазақ жеріндегі хандық билікті бөлшектеу шараларын үдетуі.", era: "Жаңа заман" },
+                { id: 57, epoch: "modern", title: "Сырым Датұлы бастаған ұлт-азаттық қозғалыс", year: "1783 жыл", desc: "Кіші жүздегі Ресейдің отаршыл саясаты мен хан-сұлтандардың озбырлығына қарсы бағытталған 14 жылдық қозғалыс.", era: "Жаңа заман" },
+                { id: 58, epoch: "modern", title: "Омбы кадет корпусының ашылуы", year: "1789 жыл", desc: "Қазақ даласының элитасын даярлау және патша әкімшілігіне әскери мамандар дайындау мақсатында мектептің ашылуы.", era: "Жаңа заман" },
+                { id: 59, epoch: "modern", title: "Кіші жүзде уақытша Хан кеңесінің құрылуы", year: "1797 жыл", desc: "Сырым Датұлының қысымымен патша үкіметінің хандық билікті шектейтін уақытша Хан кеңесін жұмыс істетуі.", era: "Жаңа заман" },
+                { id: 60, epoch: "modern", title: "Орта жүзде хандық биліктің жойылуы", year: "1822 жыл", desc: "М. Сперанскийдің «Сібір қырғыздары туралы жарғысы» бойынша Орта жүзде хандық биліктің ресми жойылуы.", era: "Жаңа заман" },
+                { id: 61, epoch: "modern", title: "Кіші жүзде хандық институттың құртылуы", year: "1824 жыл", desc: "«Орынбор қырғыздары туралы жарғы» негізінде Кіші жүзді аралық округтерге бөліп, хандықты толық жою.", era: "Жаңа заман" },
+                { id: 62, epoch: "modern", title: "Исатай мен Махамбет бастаған халық көтерілісі", year: "1836 жыл", desc: "Исатай Тайманов пен Махамбет Өтемісұлының Бөкей ордасындағы Жәңгір хан мен патша өкіметіне қарсы шеруі.", era: "Жаңа заман" },
+                { id: 63, epoch: "modern", title: "Кенесары Қасымұлы бастаған жалпыұлттық соғыс", year: "1837 жыл", desc: "Қазақ хандығының тәуелсіздігін қайта қалпына келтіруді мақсат еткен 10 жылдық ең ірі ұлт-азаттық соғыс.", era: "Жаңа заман" },
+                { id: 64, epoch: "modern", title: "Кенесарының жалпықазақ ханы болып сайлануы", year: "1841 жыл", desc: "Үш жүздің рубасылары мен батырлары Кенесарыны қазақтың соңғы ресми ханы етіп сайлап, мемлекеттілікті жариялауы.", era: "Жаңа заман" },
+                { id: 65, epoch: "modern", title: "Ұлы ойшыл Абай Құнанбайұлының тууы", year: "1845 жыл", desc: "Ұлы ақын, ағартушы, қазақ жазба әдебиетінің негізін қалаушы және философы Абайдың дүниеге келуі.", era: "Жаңа заман" },
+                { id: 66, epoch: "modern", title: "Кенесары ханның қаза табуы", year: "1847 жыл", desc: "Қырғыз жеріндегі қақтығыста Кенесары ханның қаза табуы. Жалпықазақтық орталықтанған қарсылықтың аяқталуы.", era: "Жаңа заман" },
+                { id: 67, epoch: "modern", title: "Жанқожа Нұрмұхамедұлы бастаған көтеріліс", year: "1856 жыл", desc: "Сырдария қазақтарының Ресей бекіністері мен Хиуа хандығының озбырлығына қарсы қарулы көтерілісі.", era: "Жаңа заман" },
+                { id: 68, epoch: "modern", title: "Патша үкіметінің әкімшілік реформалары", year: "1867 жыл", desc: "Қазақ жерін генерал-губернаторлықтарға бөліп, отарлық басқару мен сот жүйесін толық бекітуі.", era: "Жаңа заман" },
+                { id: 69, epoch: "modern", title: "Маңғыстаудағы Досан Тәжіұлы көтерілісі", year: "1870 жыл", desc: "Досан Тәжіұлы бастаған адайлардың патшаның жаңа ережелері мен салықтарына қарсы қарулы бас көтеруі.", era: "Жаңа заман" },
+                { id: 70, epoch: "modern", title: "Түркістан өлкесін басқару ережесі", year: "1886 жыл", desc: "Оңтүстік аймақтар мен Сырдария өңірін Ресей заңдарына толық бағындырып, жерді мемлекет меншігі ету.", era: "Жаңа заман" },
+                { id: 71, epoch: "modern", title: "«Дала ережесінің» қабылдануы", year: "1891 жыл", desc: "Қазақ даласындағы барлық құнарлы жерлерді Ресей империясының меншігі деп жариялап, қоныс аудару саясатын үдету.", era: "Жаңа заман" },
+                { id: 72, epoch: "modern", title: "Қарқаралы петициясы", year: "1905 жыл", desc: "Ә. Бөкейханов, А. Байтұрсынұлы бастаған зиялылардың патшаға сөз бостандығы, дін және жер мәселесі бойынша талап қоюы.", era: "Жаңа заман" },
+                { id: 73, epoch: "modern", title: "«Қазақ» газетінің алғашқы санының шығуы", year: "1913 жыл", desc: "Ахмет Байтұрсынұлының редакторлығымен ұлттық сананы ояту, мәдениет пен дербестікті қорғауды көздеген басылым.", era: "Жаңа заман" },
+                { id: 74, epoch: "modern", title: "1916 жылғы Ұлт-азаттық көтеріліс", year: "1916 жыл", desc: "Патшаның қазақтарды майданның қара жұмысына алу туралы жарлығына қарсы Торғай (Амангелді) мен Жетісудағы көтеріліс.", era: "Жаңа заман" },
+                { id: 75, epoch: "modern", title: "Бірінші жалпықазақ съезі («Алаш» партиясы)", year: "1917 жыл шілде", desc: "Орынборда «Алаш» саяси партиясының құрылуы және қазақ автономиясының жоспарын ресми талқылау.", era: "Жаңа заман" },
+                { id: 76, epoch: "modern", title: "Алаш Автономиясы мен Алаш Орда үкіметі", year: "1917 жыл желтоқсан", desc: "Екінші жалпықазақ съезінде Алаш автономиясының жариялануы және Әліхан Бөкейханов басқарған үкіметтің құрылуы.", era: "Жаңа заман" },
+                { id: 77, epoch: "modern", title: "Қазақ КСР-нің (бастапқыда АКСР) құрылуы", year: "1920 жыл", desc: "Кеңес өкіметінің шешімімен РКФСР құрамында Қазақ Автономиялы Кеңестік Социалистік Республикасының құрылуы.", era: "Жаңа заман" },
+                { id: 78, epoch: "modern", title: "Орталық Азиядағы ұлттық-территориялық межелеу", year: "1924 жыл", desc: "Шекараларды бөлу нәтижесінде Сырдария мен Жетісудың тарихи қазақ жерлерінің республикаға қайта қосылуы.", era: "Жаңа заман" },
+                { id: 79, epoch: "modern", title: "Халықтың тарихи «Қазақ» атауының қайтарылуы", year: "1925 жыл", desc: "Патша заманындағы қате «Киргиз» атауы ресми түрде жойылып, халықтың өз атауы құжаттарда бекітілді.", era: "Жаңа заман" },
+                { id: 80, epoch: "modern", title: "Астананың Алматыға көшуі", year: "1929 жыл", desc: "Республика орталығының Қызылордадан Алматы қаласына ауыстырылуы және индустрияландырудың басталуы.", era: "Жаңа заман" },
+                { id: 81, epoch: "modern", title: "Ұжымдастыруға қарсы шаруалар көтерілісі", year: "1930 жыл", desc: "Мал-мүлікті зорлықпен тартып алуға қарсы Созақ, Шемонаиха өңірлеріндегі халықтың қарулы наразылықтары.", era: "Жаңа заман" },
+                { id: 82, epoch: "modern", title: "Ұлы Жұт (Қолдан жасалған ашаршылық)", year: "1931-1933 жж.", desc: "Ф. Голощекиннің «Кіші Қазан» саясаты салдарынан туындаған ашаршылық. Халықтың жартысына жуығы қырылды.", era: "Жаңа заман" },
+                { id: 83, epoch: "modern", title: "Қазақстанның одақтас республика мәртебесін алуы", year: "1936 жыл", desc: "КСРО-ның жаңа Конституциясы бойынша Қазақстанның автономиядан шығып, дербес одақтас республика (Қазақ КСР) болуы.", era: "Жаңа заман" },
+                { id: 84, epoch: "modern", title: "Сталиндік үлкен террор (Саяси қуғын-сүргін)", year: "1937-1938 жж.", desc: "Алаш зиялыларының (Ә. Бөкейханов, А. Байтұрсынұлы, М. Жұмабаев, Т. Рысқұлов) жаппай ұсталып, атылуы.", era: "Жаңа заман" },
+                { id: 85, epoch: "modern", title: "Қазақстанға өзге халықтарды депортациялау", year: "1938 жыл", desc: "Сталиннің шешімімен Қиыр Шығыс корейлерін, курдтарды, кейін немістер мен шешендерді Қазақстанға күштеп көшіру.", era: "Жаңа заман" },
+                { id: 86, epoch: "modern", title: "Екінші дүниежүзілік соғыстың басталуы", year: "1941 жыл", desc: "Қазақстан экономикасының әскери бағытқа көшуі, жүздеген ірі зауыттардың Ресейден эвакуацияланып орналасуы.", era: "Жаңа заман" },
+                { id: 87, epoch: "modern", title: "Мәскеу түбіндегі Панфиловшылар ерлігі", year: "1941 жыл қараша", desc: "Алматыда құрылған 316-атқыштар дивизиясының Мәскеу түбінде жау танктеріне қарсы тұрып, асқан ерлік көрсетуі.", era: "Жаңа заман" },
+                { id: 88, epoch: "modern", title: "Мәншүк пен Әлияның майдандағы ерліктері", year: "1943 жыл", desc: "Қазақ қыздары Мәншүк Мәметова мен Әлия Молдағұлованың майдан даласында көрсеткен теңдессіз қаһармандықтары.", era: "Жаңа заман" },
+                { id: 89, epoch: "modern", title: "Рейхстагқа Жеңіс туын тігу", year: "1945 жыл 30 сәуір", desc: "Қазақ жауынгері Рақымжан Қошқарбаев пен Г. Булатовтың Берлинде Рейхстаг ғимаратының қабырғасына ту тігуі.", era: "Жаңа заман" },
+                { id: 90, epoch: "modern", title: "Қазақ КСР Ғылым академиясының ашылуы", year: "1946 жыл", desc: "Республикалық Ғылым академиясының іске қосылуы және оның тұңғыш президенті болып Қаныш Сәтбаевтың сайлануы.", era: "Жаңа заман" },
+                { id: 91, epoch: "modern", title: "Семей ядролық полигонының ашылуы", year: "1949 жыл", desc: "Семей өңірінде КСРО-ның алғашқы атом қаруының сыналуы, аймақтағы жарты ғасырлық экологиялық апаттың басталуы.", era: "Жаңа заман" },
+                { id: 92, epoch: "modern", title: "Тың жерлерді игеру науқаны", year: "1954 жыл", desc: "Н. Хрущевтің бастамасымен Қазақстанның теріскей аймақтарында миллиондаған гектар тың жерлерді жаппай жырту.", era: "Жаңа заман" },
+                { id: 93, epoch: "modern", title: "Теміртау жұмысшыларының әлеуметтік ереуілі", year: "1959 жыл", desc: "Теміртау металлургия комбинатында жұмысшылардың тұрмыс жағдайына байланысты ереуілі және оны әскермен басу.", era: "Жаңа заман" },
+                { id: 94, epoch: "modern", title: "Д. Қонаевтың республика басшылығына келуі", year: "1960 жыл", desc: "Дінмұхамед Қонаевтың Қазақстан КП Орталық Комитетінің бірінші хатшысы болуы, өндіріс пен мәдениеттің алтын дәуірі.", era: "Жаңа заман" },
+                { id: 95, epoch: "modern", title: "Байқоңырдан адамның тұңғыш ғарышқа ұшуы", year: "1961 жыл", desc: "Байқоңыр айлағынан адамзат тарихында тұңғыш рет Юрий Гагариннің «Восток-1» кемесімен ғарыш әлемін бағындыруы.", era: "Жаңа заман" },
+                { id: 96, epoch: "modern", title: "Целиноградтағы неміс автономиясына қарсылық", year: "1979 жыл", desc: "Мәскеудің қазақ жерінде неміс автономиялық округін құру туралы шешіміне қазақ жастарының батыл наразылық шеруі.", era: "Жаңа заман" },
+                { id: 97, epoch: "modern", title: "Алматыдағы қасіретті Желтоқсан оқиғасы", year: "1986 жыл 16 желтоқсан", desc: "Мәскеудің әміршіл шешіміне қарсы Алматы алаңына шыққан қазақ жастарының бас көтеруі. КСРО ыдырауына алғашқы серпін.", era: "Жаңа заман" },
+                { id: 98, epoch: "modern", title: "«Невада-Семей» антиядролық қозғалысы", year: "1989 жыл", desc: "Олжас Сүлейменовтың бастамасымен ядролық сынақтарға жаппай қарсы тұрған әлемдік деңгейдегі тұңғыш қоғамдық ұйым.", era: "Жаңа заман" },
+                { id: 99, epoch: "modern", title: "Қазақ тіліне Мемлекеттік мәртебе беру", year: "1989 жыл қыркүйек", desc: "«Тілдер туралы» заңның қабылдануы. Қазақ тіліне ресми түрде Мемлекеттік тіл мәртебесінің берілуі.", era: "Жаңа заман" },
+                { id: 100, epoch: "modern", title: "Мемлекеттік егемендік туралы Декларация", year: "1990 жыл 25 қазан", desc: "Жоғарғы Кеңестің Қазақстанның Мемлекеттік егемендігі туралы Декларацияны қабылдауы, тәуелсіздіктің заңдық негізі.", era: "Жаңа заман" }
+            ];
+
+   
+
+            // 3. СИСТЕМНЫЕ АЙНЫМАЛЫЛАР
+            let filteredCards = [...cardsDataset]; 
+            let activeIndex = 0;
+            let knownCardsIds = JSON.parse(localStorage.getItem('quizlet_known_ids')) || [];
+
+            // DOM Элементтері
+            const cardScene = document.getElementById('js-card-scene');
+            const frontIndex = document.getElementById('js-front-index');
+            const backIndex = document.getElementById('js-back-index');
+            const frontTitle = document.getElementById('js-front-title');
+            const backYear = document.getElementById('js-back-year');
+            const backDesc = document.getElementById('js-back-desc');
+            const backEraTag = document.getElementById('js-back-era-tag');
+            
+            const prevBtn = document.getElementById('js-prev-btn');
+            const nextBtn = document.getElementById('js-next-btn');
+            const actionKnow = document.getElementById('js-action-know');
+            const actionRetry = document.getElementById('js-action-retry');
+            
+            const knownCountText = document.getElementById('js-known-count');
+            const remainingCountText = document.getElementById('js-remaining-count');
+            const progressText = document.getElementById('js-progress-text');
+            const counterView = document.getElementById('js-counter-view');
+            const trackFill = document.getElementById('js-track-fill');
+            
+            const glossaryWrapper = document.getElementById('js-glossary-wrapper');
+            const glossarySearch = document.getElementById('js-glossary-search');
+            const epochButtons = document.querySelectorAll('.epoch-btn');
+
+            // 4. СИНТЕТИКАЛЫҚ ДЫБЫС ЭФФЕКТІСІ (Клик дыбысы - Web Audio API)
+            function playClickAudio() {
+                try {
+                    const AudioContext = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContext) return;
+                    const ctx = new AudioContext();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(600, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(150, ctx.currentTime + 0.08);
+                    gain.gain.setValueAtTime(0.05, ctx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.001, ctx.currentTime + 0.08);
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    osc.start();
+                    osc.stop(ctx.currentTime + 0.08);
+                } catch(e) { console.log("Audio template not active"); }
+            }
+
+            // 5. КАРТОЧКАНЫ ЭКРАНҒА ШЫҒАРУ ФУНКЦИЯСЫ
+            function renderCard() {
+                if (filteredCards.length === 0) {
+                    // Егер бұл санатта карточка қалмаса
+                    frontTitle.textContent = "Бұл бөлімдегі барлық карточкаларды оқып біттіңіз! 🎉";
+                    backYear.textContent = "Тамаша!";
+                    backDesc.textContent = "Фильтрді өзгертіп немесе қайталау батырмасын басып, басынан бастаңыз.";
+                    counterView.textContent = "0 / 0";
+                    frontIndex.textContent = "-";
+                    backIndex.textContent = "-";
+                    return;
+                }
+
+                cardScene.classList.remove('is-flipped'); // Переворотты нөлге түсіру
+                
+                const currentData = filteredCards[activeIndex];
+                
+                // Мәтіндерді жаңарту
+                frontIndex.textContent = `#${currentData.id}`;
+                backIndex.textContent = `#${currentData.id}`;
+                frontTitle.textContent = currentData.title;
+                backYear.textContent = currentData.year;
+                backDesc.textContent = currentData.desc;
+                backEraTag.textContent = currentData.era;
+                
+                // Есептегіштерді жаңарту
+                counterView.textContent = `${activeIndex + 1} / ${filteredCards.length}`;
+                
+                // Жалпы статистиканы жаңарту
+                updateGlobalMetrics();
+            }
+
+            // 6. МЕТРИКАЛАРДЫ ЖӘНЕ ПРОГРЕССТІ ЕСЕПТЕУ
+            function updateGlobalMetrics() {
+                knownCountText.textContent = knownCardsIds.length;
+                const remaining = cardsDataset.length - knownCardsIds.length;
+                remainingCountText.textContent = remaining >= 0 ? remaining : 0;
+                
+                // Прогресс сызығын есептеу
+                const percent = Math.round((knownCardsIds.length / cardsDataset.length) * 100);
+                progressText.textContent = `Прогресс: ${percent}%`;
+                trackFill.style.width = `${percent === 0 ? 1 : percent}%`;
+                
+                // LocalStorage сақтау
+                localStorage.setItem('quizlet_known_ids', JSON.stringify(knownCardsIds));
+            }
+
+            // 7. ОҚИҒАЛАРДЫ БАСҚАРУ (EVENT LISTENERS)
+            
+            // Карточканы клик арқылы 3D аудару
+            cardScene.addEventListener('click', function() {
+                cardScene.classList.toggle('is-flipped');
+                playClickAudio();
+            });
+
+            // Келесі карточка
+            nextBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (filteredCards.length === 0) return;
+                activeIndex = (activeIndex + 1) % filteredCards.length;
+                renderCard();
+                playClickAudio();
+            });
+
+            // Алдыңғы карточка
+            prevBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (filteredCards.length === 0) return;
+                activeIndex = (activeIndex - 1 + filteredCards.length) % filteredCards.length;
+                renderCard();
+                playClickAudio();
+            });
+
+            // "Білемін" батырмасын басқанда
+            actionKnow.addEventListener('click', function(e) {
+                e.stopPropagation();
+                if (filteredCards.length === 0) return;
+                
+                const currentData = filteredCards[activeIndex];
+                if (!knownCardsIds.includes(currentData.id)) {
+                    knownCardsIds.push(currentData.id);
+                }
+                
+                // Ағымдағы тізімнен алып тастау және келесіге көшу
+                filteredCards.splice(activeIndex, 1);
+                if (activeIndex >= filteredCards.length) {
+                    activeIndex = 0;
+                }
+                renderCard();
+            });
+
+            // "Қайталау / Тазарту" батырмасы
+            actionRetry.addEventListener('click', function(e) {
+                e.stopPropagation();
+                knownCardsIds = [];
+                const activeEpoch = document.querySelector('.epoch-btn.active').getAttribute('data-epoch');
+                filterDataset(activeEpoch);
+                activeIndex = 0;
+                renderCard();
+            });
+
+            // Эпохалар бойынша сұрыптау
+            epochButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    epochButtons.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const selectedEpoch = this.getAttribute('data-epoch');
+                    filterDataset(selectedEpoch);
+                    activeIndex = 0;
+                    renderCard();
+                });
+            });
+
+            function filterDataset(epoch) {
+                if (epoch === 'all') {
+                    // "Білемін" деп белгіленбегендерін ғана қалдыру
+                    filteredCards = cardsDataset.filter(c => !knownCardsIds.includes(c.id));
+                } else {
+                    filteredCards = cardsDataset.filter(c => c.epoch === epoch && !knownCardsIds.includes(c.id));
+                }
+            }
+
+
+
+        });
+    </script>
+</body>
+</html>

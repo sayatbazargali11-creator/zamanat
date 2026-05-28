@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAMANAT • HISTORICA | Ұлы Дала Шежіресі — Цифрлық Хронология</title>
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" as="style">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+   <style>
+        /* ==========================================================================
+           1. DESIGN SYSTEM & ARCHITECTURE (EXACT index.html FONTS & PREMIUM LIGHT)
+           ========================================================================== */
+        :root {
+            /* Базовые цвета приложения из index.html */
+            --z-color-bg-base: #f5f5f7;
+            --z-color-bg-alt: #ffffff;
+            --z-color-text-main: #1d1d1f;
+            --z-color-text-secondary: #6e6e73;
+            --z-color-text-muted: #86868b;
+            
+            /* Акцентные маркеры (Zamanat Premium Orange) */
+            --z-color-accent-orange: #ff6b00;
+            --z-color-accent-glow: rgba(255, 107, 0, 0.15);
+            --z-color-accent-dim: rgba(255, 107, 0, 0.06);
+            --z-color-ui-border: #e5e5ea;
+
+            /* Тематические мягкие градиенты для подложек */
+            --gradient-sak: linear-gradient(135deg, rgba(255,59,48,0.08), rgba(255,149,0,0.08));
+            --gradient-turk: linear-gradient(135deg, rgba(0,122,255,0.08), rgba(90,200,250,0.08));
+            --gradient-orda: linear-gradient(135deg, rgba(175,82,222,0.08), rgba(255,45,85,0.08));
+            --gradient-khan: linear-gradient(135deg, rgba(52,199,89,0.08), rgba(0,122,255,0.08));
+            --gradient-laws: linear-gradient(135deg, rgba(255,204,0,0.08), rgba(255,149,0,0.08));
+            --gradient-war: linear-gradient(135deg, rgba(255,45,85,0.08), rgba(175,82,222,0.08));
+            --gradient-biys: linear-gradient(135deg, rgba(88,86,214,0.08), rgba(0,122,255,0.08));
+            --gradient-modern: linear-gradient(135deg, rgba(90,200,250,0.08), rgba(52,199,89,0.08));
+
+            /* TOЧНЫЙ НАБОР ШРИФТОВ ИЗ index.html */
+            --z-font-family-base: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            
+            /* Кривые анимаций */
+            --z-ease-human: cubic-bezier(0.16, 1, 0.3, 1);
+            --z-ease-bounce: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            
+            --z-index-webgl: 10;
+            --z-index-content: 50;
+        }
+
+        /* Reset & Base Rules */
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+        html, body { height: 100%; overflow: hidden; background-color: var(--z-color-bg-base); color: var(--z-color-text-main); font-family: var(--z-font-family-base); }
+        body.is-modal-open { overflow: hidden; }
+        ::selection { background-color: var(--z-color-accent-glow); color: var(--z-color-text-main); }
+        a { text-decoration: none; color: inherit; }
+        button { border: none; background: none; font-family: inherit; cursor: pointer; }
+
+        /* Красивый тонкий скроллбар */
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.2); }
+
+        /* Живой фон */
+        .z-webgl-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: var(--z-index-webgl); opacity: 0.6; }
+
+        /* Главная сетка приложения */
+        .z-app-wrapper { position: relative; z-index: var(--z-index-content); width: 100%; height: 100%; display: flex; justify-content: center; padding: 0 30px; }
+        .z-app-layout { width: 100%; max-width: 1560px; height: 100%; display: grid; grid-template-columns: 400px 1fr; gap: 50px; }
+
+        /* ==========================================================================
+           2. LEFT MODULE: NAVIGATION, BRAND META & CHRONOLOGY TREE
+           ========================================================================== */
+        .z-sidebar { display: flex; flex-direction: column; justify-content: space-between; height: 100%; padding: 40px 0; border-right: 1px solid var(--z-color-ui-border); padding-right: 40px; overflow: hidden; }
+        .z-sidebar__top { display: flex; flex-direction: column; height: calc(100% - 60px); }
+        
+        .z-back-action { display: inline-flex; align-items: center; gap: 12px; color: var(--z-color-text-secondary); font-weight: 600; font-size: 0.9rem; background: var(--z-color-bg-alt); padding: 12px 24px; border-radius: 16px; border: 1px solid var(--z-color-ui-border); box-shadow: 0 4px 12px rgba(0,0,0,0.02); transition: all 0.3s var(--z-ease-human); width: fit-content; }
+        .z-back-action:hover { border-color: var(--z-color-accent-orange); color: var(--z-color-accent-orange); transform: translateX(-5px); }
+
+        .z-branding { margin-top: 30px; margin-bottom: 30px; }
+        .z-branding__tag { background: var(--z-color-accent-dim); color: var(--z-color-accent-orange); font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em; padding: 6px 14px; border-radius: 10px; display: inline-block; margin-bottom: 12px; border: 1px solid rgba(255,107,0,0.1); }
+        .z-branding__heading { font-size: 2.2rem; font-weight: 800; line-height: 1.15; letter-spacing: -0.03em; }
+        .z-branding__subheading { font-size: 0.95rem; color: var(--z-color-text-secondary); line-height: 1.5; margin-top: 12px; }
+
+        /* Шапка на мобилках (скрыта по дефолту на десктопе) */
+        .z-mobile-header { display: none; }
+
+        /* Боковое меню */
+        .z-tree-menu { flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding-right: 10px; }
+        .z-tree-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 20px; background: transparent; border: 1px solid transparent; border-radius: 16px; cursor: pointer; transition: all 0.3s var(--z-ease-human); text-align: left; }
+        .z-tree-item:hover { background: rgba(255,255,255,0.6); border-color: rgba(0,0,0,0.04); }
+        .z-tree-item.is-active { background: var(--z-color-bg-alt); border-color: var(--z-color-accent-orange); box-shadow: 0 12px 30px rgba(0,0,0,0.03); transform: translateX(8px); }
+        
+        .z-tree-item__meta { display: flex; flex-direction: column; }
+        .z-tree-item__epoch { font-size: 1.05rem; font-weight: 700; color: var(--z-color-text-muted); transition: color 0.3s; }
+        .z-tree-item.is-active .z-tree-item__epoch { color: var(--z-color-accent-orange); }
+        .z-tree-item__title { font-size: 0.85rem; font-weight: 500; color: var(--z-color-text-secondary); margin-top: 2px; }
+        .z-tree-item__icon { font-size: 0.85rem; color: var(--z-color-text-muted); opacity: 0; transform: translateX(-10px); transition: all 0.3s var(--z-ease-human); }
+        .z-tree-item.is-active .z-tree-item__icon { opacity: 1; transform: translateX(0); color: var(--z-color-accent-orange); }
+
+        .z-sidebar__footer { font-size: 0.72rem; color: var(--z-color-text-muted); font-weight: 500; border-top: 1px solid var(--z-color-ui-border); padding-top: 20px; }
+
+        /* ==========================================================================
+           3. RIGHT MODULE: THE KINEMATOGRAPHIC MASSIVE STREAM
+           ========================================================================== */
+        .z-stream-container { height: 100%; overflow-y: scroll; padding-top: 40px; padding-right: 15px; padding-bottom: 40vh; scroll-behavior: smooth; }
+        .z-stream-block { position: relative; padding-left: 45px; margin-bottom: 120px; border-left: 2px dashed var(--z-color-ui-border); transition: border-color 0.4s; }
+        .z-stream-block::before { content: ''; position: absolute; top: 35px; left: -8px; width: 14px; height: 14px; border-radius: 50%; background: #e5e5ea; border: 3px solid var(--z-color-bg-base); z-index: 5; transition: all 0.4s var(--z-ease-bounce); }
+        
+        .z-stream-block.is-active-focus { border-left-color: rgba(255,107,0,0.4); }
+        .z-stream-block.is-active-focus::before { background: var(--z-color-accent-orange); transform: scale(1.3); box-shadow: 0 0 15px var(--z-color-accent-orange); }
+
+        /* Карточка энциклопедии */
+        .z-encyclo-card { background: var(--z-color-bg-alt); border: 1px solid var(--z-color-ui-border); border-radius: 32px; padding: 45px; box-shadow: 0 10px 40px rgba(0,0,0,0.01); position: relative; overflow: hidden; transition: opacity 0.4s, border-color 0.4s; opacity: 0.35; }
+        .z-stream-block.is-active-focus .z-encyclo-card { opacity: 1; border-color: rgba(255,107,0,0.15); box-shadow: 0 25px 60px rgba(0,0,0,0.03); }
+
+        .z-encyclo-card__glow { position: absolute; width: 400px; height: 400px; top: -200px; right: -200px; border-radius: 50%; filter: blur(100px); opacity: 0; transition: opacity 0.6s ease; pointer-events: none; z-index: 1; }
+        .z-stream-block.is-active-focus .z-encyclo-card__glow { opacity: 1; }
+
+        .z-encyclo-card__content { position: relative; z-index: 5; }
+        
+        /* Заголовки */
+        .z-card-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 25px; }
+        .z-card-header__date { font-size: 1.5rem; font-weight: 800; color: var(--z-color-text-muted); transition: color 0.4s; letter-spacing: -0.02em; }
+        .z-stream-block.is-active-focus .z-card-header__date { color: var(--z-color-accent-orange); }
+        .z-card-header__badge { font-size: 0.75rem; font-weight: 700; background: rgba(0,0,0,0.04); color: var(--z-color-text-secondary); padding: 6px 16px; border-radius: 12px; text-transform: uppercase; letter-spacing: 0.03em; }
+
+        .z-card-title { font-size: 2.1rem; font-weight: 800; color: var(--z-color-text-main); letter-spacing: -0.03em; line-height: 1.25; margin-bottom: 20px; }
+        .z-card-lead { font-size: 1.1rem; color: var(--z-color-text-secondary); line-height: 1.6; margin-bottom: 30px; font-weight: 400; }
+
+        /* Медиа контейнеры */
+        .z-media-frame { width: 100%; height: 320px; border-radius: 24px; overflow: hidden; position: relative; background: #e5e5ea; border: 1px solid var(--z-color-ui-border); margin-bottom: 35px; }
+        .z-media-frame__img { width: 100%; height: 100%; object-fit: cover; }
+        .z-media-frame__caption { position: absolute; bottom: 0; left: 0; width: 100%; background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%); padding: 25px; color: #ffffff; font-size: 0.88rem; font-weight: 500; display: flex; align-items: center; gap: 12px; z-index: 2; }
+        .z-media-frame__caption i { color: #ff9500; }
+
+        /* ==========================================================================
+           4. EXTENDED ADVANCED CONTENT LAYERS (THE ENCYCLOPEDIA UPGRADE)
+           ========================================================================== */
+        
+        /* Таблица внутренних событий */
+        .z-micro-timeline { margin-bottom: 35px; background: rgba(0,0,0,0.02); padding: 25px; border-radius: 20px; border: 1px solid rgba(0,0,0,0.01); }
+        .z-micro-timeline__title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--z-color-text-muted); letter-spacing: 0.05em; margin-bottom: 15px; display: flex; align-items: center; gap: 8px; }
+        .z-micro-timeline__title i { color: var(--z-color-accent-orange); }
+        .z-micro-timeline__wrapper { display: flex; flex-direction: column; gap: 14px; }
+        .z-micro-step { display: grid; grid-template-columns: 110px 1fr; gap: 15px; align-items: start; }
+        .z-micro-step__date { font-size: 0.9rem; font-weight: 700; color: var(--z-color-accent-orange); background: var(--z-color-bg-alt); padding: 3px 8px; border-radius: 8px; border: 1px solid rgba(255,107,0,0.15); text-align: center; }
+        .z-micro-step__text { font-size: 0.92rem; color: var(--z-color-text-main); line-height: 1.45; font-weight: 500; }
+
+        /* Блок метрик */
+        .z-metrics-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
+        .z-metric-card { background: var(--z-color-bg-base); padding: 16px; border-radius: 18px; border: 1px solid rgba(0,0,0,0.01); display: flex; flex-direction: column; gap: 4px; }
+        .z-metric-card__value { font-size: 1.35rem; font-weight: 800; color: var(--z-color-text-main); letter-spacing: -0.01em; }
+        .z-metric-card__label { font-size: 0.78rem; font-weight: 600; color: var(--z-color-text-secondary); line-height: 1.2; }
+
+        /* Персоналии */
+        .z-person-section { margin-bottom: 35px; }
+        .z-person-section__title { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--z-color-text-muted); letter-spacing: 0.05em; margin-bottom: 15px; }
+        .z-person-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .z-person-node { background: var(--z-color-bg-alt); border: 1px solid var(--z-color-ui-border); padding: 16px; border-radius: 18px; display: flex; align-items: center; gap: 15px; }
+        .z-person-node__avatar { width: 45px; height: 45px; border-radius: 50%; background: var(--z-color-bg-base); display: flex; align-items: center; justify-content: center; color: var(--z-color-text-secondary); font-size: 1.1rem; border: 1px solid var(--z-color-ui-border); flex-shrink: 0; }
+        .z-person-node__data { display: flex; flex-direction: column; }
+        .z-person-node__name { font-size: 0.95rem; font-weight: 700; color: var(--z-color-text-main); }
+        .z-person-node__role { font-size: 0.78rem; color: var(--z-color-text-secondary); margin-top: 1px; }
+
+        /* Цитаты */
+        .z-quote-block { background: rgba(255,107,0,0.03); border-left: 4px solid var(--z-color-accent-orange); padding: 25px; border-radius: 0 20px 20px 0; margin-bottom: 35px; position: relative; }
+        .z-quote-block__text { font-size: 1.05rem; font-style: italic; color: var(--z-color-text-main); line-height: 1.5; margin-bottom: 10px; position: relative; z-index: 2; font-weight: 500; }
+        .z-quote-block__author { font-size: 0.85rem; font-weight: 700; text-transform: uppercase; color: var(--z-color-text-secondary); letter-spacing: 0.03em; display: flex; align-items: center; gap: 8px; }
+
+        /* Теги снизу */
+        .z-meta-footer { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+        .z-info-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.01); padding: 10px 18px; border-radius: 14px; font-size: 0.85rem; font-weight: 600; color: var(--z-color-text-main); }
+        .z-info-badge i { color: var(--z-color-accent-orange); }
+
+        /* Мягкие свечения */
+        .glow-sak { background: var(--gradient-sak); }
+        .glow-turk { background: var(--gradient-turk); }
+        .glow-orda { background: var(--gradient-orda); }
+        .glow-khan { background: var(--gradient-khan); }
+        .glow-laws { background: var(--gradient-laws); }
+        .glow-war { background: var(--gradient-war); }
+        .glow-biys { background: var(--gradient-biys); }
+        .glow-modern { background: var(--gradient-modern); }
+
+        /* Оверлей фонового затемнения */
+        .z-sidebar-overlay { display: none; }
+
+        /* ==========================================================================
+           5. PREMIUM MOBILE RESPONSIVE ENGINE (CLEAR TRANSPARENT DRAWER)
+           ========================================================================== */
+        @media (max-width: 1100px) {
+            html, body { overflow-y: auto; overflow-x: hidden; height: auto; }
+            .z-app-wrapper { padding: 0; height: auto; display: block; }
+            .z-app-layout { grid-template-columns: 1fr; gap: 0; height: auto; display: block; }
+            
+            /* Мобильді бекітілген тұрақты шапка */
+            .z-mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px 20px calc(15px + env(safe-area-inset-top, 0px)) 20px;
+                background: rgba(245, 245, 247, 0.95);
+                border-bottom: 1px solid var(--z-color-ui-border);
+                position: sticky;
+                top: 0;
+                z-index: 110;
+            }
+            .z-mobile-header__left { display: flex; flex-direction: column; }
+            .z-mobile-header__tag { font-size: 0.62rem; font-weight: 700; color: var(--z-color-accent-orange); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+            .z-mobile-header__title { font-size: 1.25rem; font-weight: 800; letter-spacing: -0.01em; color: var(--z-color-text-main); }
+            
+            /* Үш сызық (Бургер) батырмасы */
+            .z-burger-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                background: var(--z-color-bg-alt);
+                border: 1px solid var(--z-color-ui-border);
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+                transition: all 0.3s var(--z-ease-human);
+                position: relative;
+                z-index: 130; /* Батырма әрқашан ең жоғарыда тұрады */
+            }
+            .z-burger-btn span {
+                display: block;
+                width: 20px;
+                height: 2px;
+                background-color: var(--z-color-text-main);
+                border-radius: 2px;
+                transition: transform 0.3s var(--z-ease-human), opacity 0.3s ease, background-color 0.3s;
+            }
+            
+            /* Белсенді крестик күйіне ауысу анимациясы */
+            body.is-sidebar-active .z-burger-btn {
+                border-color: var(--z-color-accent-orange);
+            }
+            body.is-sidebar-active .z-burger-btn span:nth-child(1) {
+                transform: translateY(7px) rotate(45deg);
+                background-color: var(--z-color-accent-orange);
+            }
+            body.is-sidebar-active .z-burger-btn span:nth-child(2) {
+                opacity: 0;
+            }
+            body.is-sidebar-active .z-burger-btn span:nth-child(3) {
+                transform: translateY(-7px) rotate(-45deg);
+                background-color: var(--z-color-accent-orange);
+            }
+
+            /* Жылжымалы бүйірлік панель (Түнық, артқы жағы толық анық көрінеді) */
+            .z-sidebar {
+                position: fixed !important;
+                top: 0 !important;
+                left: 0 !important;
+                width: 320px !important;
+                height: 100vh !important;
+                background: var(--z-color-bg-alt) !important;
+                z-index: 120 !important;
+                border-right: 1px solid var(--z-color-ui-border) !important;
+                border-bottom: none !important;
+                padding: 30px 24px !important;
+                transform: translateX(-100%);
+                transition: transform 0.4s var(--z-ease-human) !important;
+                display: flex !important;
+                flex-direction: column !important;
+                box-shadow: 20px 0 50px rgba(0,0,0,0.08) !important;
+            }
+            
+            body.is-sidebar-active .z-sidebar {
+                transform: translateX(0);
+            }
+
+            /* Оверлей көлеңке — БАТЫРМАЛАР БАСЫЛУ ҮШІН З-ИНДЕКС ТӨМЕНДЕТІЛДІ */
+            .z-sidebar-overlay {
+                display: block;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                background: rgba(0,0,0,0.05); /* Өте жұқа таза көлеңке */
+                backdrop-filter: none !important; /* Бұлдырату толығымен өшірілді */
+                -webkit-backdrop-filter: none !important;
+                z-index: 100; /* Сайдбардан төмен тұрады, батырмаларға кедергі жасамайды */
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.4s ease;
+            }
+            body.is-sidebar-active .z-sidebar-overlay {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .z-sidebar__top { height: 100%; display: flex; flex-direction: column; pointer-events: auto !important; }
+            .z-back-action { padding: 10px 18px; font-size: 0.82rem; margin-bottom: 20px; pointer-events: auto !important; }
+            .z-branding { margin-top: 10px; margin-bottom: 20px; }
+            .z-branding__heading { font-size: 1.6rem; }
+            .z-branding__subheading { display: block; font-size: 0.85rem; margin-top: 8px; }
+            
+            /* Мәзір ішіндегі батырмалар құрылымы — Толықтай басылады */
+            .z-tree-menu {
+                display: flex !important;
+                flex-direction: column !important;
+                gap: 8px !important;
+                margin-top: 10px !important;
+                overflow-y: auto !important;
+                padding-right: 4px !important;
+                pointer-events: auto !important; /* Белсенді басылу аймағы */
+            }
+
+            .z-tree-item {
+                display: flex !important;
+                flex-direction: row !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                padding: 12px 16px !important;
+                border-radius: 14px !important;
+                background: var(--z-color-bg-base) !important;
+                pointer-events: auto !important; /* Тікелей басылуды қамтамасыз етеді */
+                cursor: pointer !important;
+            }
+            .z-tree-item.is-active {
+                background: var(--z-color-bg-alt) !important;
+                border-color: var(--z-color-accent-orange) !important;
+                transform: translateX(4px) !important;
+            }
+            .z-tree-item__epoch { font-size: 0.88rem !important; color: var(--z-color-text-muted) !important; }
+            .z-tree-item__title { font-size: 0.82rem !important; color: var(--z-color-text-secondary) !important; margin-top: 2px !important; }
+            .z-tree-item.is-active .z-tree-item__epoch { color: var(--z-color-accent-orange) !important; }
+            .z-tree-item.is-active .z-tree-item__title { color: var(--z-color-text-main) !important; }
+            .z-tree-item__icon { display: block !important; opacity: 0.5; font-size: 0.75rem; }
+            .z-tree-item.is-active .z-tree-item__icon { opacity: 1; color: var(--z-color-accent-orange); }
+
+            .z-sidebar__footer { display: block !important; margin-top: 20px; }
+
+            /* Оң жақтағы негізгі мазмұн бағандары — Олар әрқашан анық тұрады */
+            .z-stream-container { height: auto !important; overflow-y: visible !important; padding: 25px 16px 80px 16px !important; }
+            .z-stream-block { padding-left: 20px; margin-bottom: 50px; border-left-style: dashed; }
+            .z-stream-block::before { left: -6px; top: 22px; width: 10px; height: 10px; }
+            
+            .z-encyclo-card { padding: 25px; border-radius: 24px; opacity: 1 !important; }
+            .z-card-header__date { font-size: 1.2rem; }
+            .z-card-title { font-size: 1.5rem; }
+            .z-card-lead { font-size: 0.95rem; }
+            .z-media-frame { height: 210px; border-radius: 16px; }
+
+            .z-metrics-board { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+            @media (max-width: 550px) {
+                .z-metrics-board { grid-template-columns: 1fr; gap: 8px; }
+                .z-person-grid { grid-template-columns: 1fr; }
+            }
+            .z-micro-step { grid-template-columns: 95px 1fr; }
+            .z-person-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="z-sidebar-overlay" id="js-sidebar-overlay"></div>
+
+    <canvas id="js-webgl-canvas" class="z-webgl-canvas"></canvas>
+
+    <header class="z-mobile-header">
+        <div class="z-mobile-header__left">
+            <span class="z-mobile-header__tag">Академиялық Хроника</span>
+            <span class="z-mobile-header__title">Ұлы Дала Шежіресі</span>
+        </div>
+        <button class="z-burger-btn" id="js-burger-trigger" aria-label="Мәзірді басқару">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </header>
+
+    <div class="z-app-wrapper">
+        <div class="z-app-layout">
+            
+            <aside class="z-sidebar" id="js-sidebar-drawer">
+                <div class="z-sidebar__top">
+                    <div>
+                        <a href="index.html" class="z-back-action">
+                            <i class="fa-solid fa-arrow-left-long"></i> Артқа оралу
+                        </a>
+                    </div>
+
+                    <div class="z-branding">
+                        <span class="z-branding__tag">Академиялық Басылым</span>
+                        <h1 class="z-branding__heading">Ұлы Дала Шежіресі</h1>
+                        <p class="z-branding__subheading">Қазақстан тарихының ежелгі дәуірден бүгінге дейінгі ең ауқымды және тереңдетілген цифрлық хронологиясы.</p>
+                    </div>
+
+                    <nav class="z-tree-menu" id="js-timeline-nav-tree">
+                        
+                        <div class="z-tree-item is-active" data-anchor="sak" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">Б.з.б. VIII-III ғғ.</span>
+                                <span class="z-tree-item__title">Сақ тайпалық одақтары</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="turk" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">VI - VIII ғғ.</span>
+                                <span class="z-tree-item__title">Түрік қағанаттары дәуірі</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="orda" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">XIII - XV ғғ.</span>
+                                <span class="z-tree-item__title">Ұлық Ұлыс (Алтын Орда)</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="khan" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">1465 жыл</span>
+                                <span class="z-tree-item__title">Қазақ Хандығының құрылуы</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="laws" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">XVI - XVII ғғ.</span>
+                                <span class="z-tree-item__title">Дала заңдары және Реформалар</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="war" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">XVIII ғасыр</span>
+                                <span class="z-tree-item__title">Ұлы Отан азаттық соғысы</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="biys" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">XVIII - XIX ғғ.</span>
+                                <span class="z-tree-item__title">Хандар билігі мен Дала соты</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                        <div class="z-tree-item" data-anchor="modern" role="button">
+                            <div class="z-tree-item__meta">
+                                <span class="z-tree-item__epoch">1991 - Бүгін</span>
+                                <span class="z-tree-item__title">Егемендік пен Жаңа заман</span>
+                            </div>
+                            <i class="fa-solid fa-chevron-right z-tree-item__icon"></i>
+                        </div>
+
+                    </nav>
+                </div>
+
+                <div class="z-sidebar__footer">
+                    &copy; Zamanat Historica Research Group. Барлық құқықтар қорғалған.
+                </div>
+            </aside>
+
+            <main class="z-stream-container" id="js-story-stream-container">
+                
+                <div class="z-stream-block is-active-focus" id="card-sak" data-id="sak">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-sak"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">Б.з.б. VIII - III ғғ.</span>
+                                <span class="z-card-header__badge">Темір дәуірі</span>
+                            </div>
+                            <h2 class="z-card-title">Сақ тайпалық одақтары және «Аң стилі» өнері</h2>
+                            <p class="z-card-lead">Ұлы Дала геосаяси кеңістігіндегі алғашқы ірі әскери-тайпалық конфедерациялар. Сақтар (массагеттер, исседондар, тиграхаудалар, хаумаваргалар) Еуразия құрлығында темір металлургиясын дамытып, атты әскер тактикасын кемелдікке жеткізді.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://avatars.mds.yandex.net/i?id=76eff7d56fb86f4f66d2e91257926208_l-5253513-images-thumbs&n=13" alt="Алтын Адам" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-building-columns"></i> Есік қорғанынан (б.з.б. V-IV ғғ.) табылған Сақ патшазадасының толық алтын киімді реконструкциясы
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">4000+</span>
+                                    <span class="z-metric-card__label">Алтын әшекейлер</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">26 әріп</span>
+                                    <span class="z-metric-card__label">Есік жазуы (көне руна)</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">3 үлкен</span>
+                                    <span class="z-metric-card__label">Негізгі конфедерация</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-clock"></i> Ішкі оқиғалар хронологиясы</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">Б.з.б. 530 ж.</div>
+                                        <div class="z-micro-step__text">Tomiris патшайым бастаған массагеттердің Парсы патшасы Кир әскерін толық талқандауы.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">Б.з.б. 519 ж.</div>
+                                        <div class="z-micro-step__text">Дарий I патшаның сақ-тиграхаудаларға қарсы жорығы және Скунха ханды тұтқындауы. Ширақ батырдың ерлігі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">Б.з.б. 329 ж.</div>
+                                        <div class="z-micro-step__text">Александр Македонскийдің Яксарт (Сырдария) шайқасында сақтармен қақтығысы және шегінуі.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Ұлы Тұлғалар</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-user-shield"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Томирис Патшайым</span>
+                                            <span class="z-person-node__role">Массагеттер басшысы</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-person-running"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Ширақ Батыр</span>
+                                            <span class="z-person-node__role">Далалық барлаушы / Партизан</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Қанға құмар едің, енді іш құмарың қанғанша!»</p>
+                                <span class="z-quote-block__author">— Томирис патшайымның Кир басына айтқан тарихи сөзі</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-location-dot"></i> Жетісу, Оңтүстік және Батыс Қазақстан</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-gem"></i> Алтын адам мәдениеті</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-turk" data-id="turk">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-turk"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">VI - VIII ғғ.</span>
+                                <span class="z-card-header__badge">Көктүріктер заманы</span>
+                            </div>
+                            <h2 class="z-card-title">Ұлы Түрік қағанаты және Бітік тастар мәдениеті</h2>
+                            <p class="z-card-lead">Алтайдан Қара теңізге дейінгі аумақты біріктірген, адамзат тарихындағы ең ірі континенттік империялардың бірі. Түріктер байырғы жазу жүйесін қалыптастырып, «Мәңгі Ел» идеологиялық тұжырымдамасының негезін қалады.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://sun9-60.userapi.com/impg/G-vP_91_mOfGbeTOnUizN6Y-EepU3Qf5p6E7lg/nN6D3M06mF8.jpg?size=1024x683&quality=95&sign=b6d88cf2436f56a59336d396a5ca4837&type=album" alt="Күлтегін" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-scroll"></i> Орхон-Енисей руникалық ескерткіштері, Күлтегін және Білге қаған бітік тастары
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">552 ж.</span>
+                                    <span class="z-metric-card__label">Қағанаттың құрылуы</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">38 әріп</span>
+                                    <span class="z-metric-card__label">Көне түрік әліпбиі</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">100+ мың</span>
+                                    <span class="z-metric-card__label">Тұрақты салт атты әскер</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-clock"></i> Басты геосаяси белестер</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">552 ж.</div>
+                                        <div class="z-micro-step__text">Бумын қағанның Жужан қағанатын талқандап, ел тәуелсіздігін жариялауы.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">568 ж.</div>
+                                        <div class="z-micro-step__text">Иштеми қағанның Византияға Маниах бастаған елшілікті жіберуі, Ұлы Жібек жолын бақылауға алу.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">682 ж.</div>
+                                        <div class="z-micro-step__text">Құтлық (Елтеріс) қаған tobacco Тоныкөк абыздың Шығыс Түрік қағанатын қайта жаңғыртуы.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Қағанат Тұлғалары</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-crown"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Бумын Қаған</span>
+                                            <span class="z-person-node__role">Негізін қалаушы ұлы билеуші</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-brain"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Тоныкөк Абыз</span>
+                                            <span class="z-person-node__role">Бас кеңесші, стратег, шежіреші</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Үстінде көк тәңірі, астында қара жер жаралғанда, екі арасында адам баласы жаралған. Адам баласын басқаруға менің бабаларым Бумын, Иштеми қағандар отырған...»</p>
+                                <span class="z-quote-block__author">— Күлтегін үлкен бітік тасынан үзінді</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-monument"></i> Орхон, Талас, Алтай жәдігерлері</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-flag"></i> Көк бөрі байрағы</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-orda" data-id="orda">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-orda"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">XIII - XV ғғ.</span>
+                                <span class="z-card-header__badge">Ұлық Ұлыс дәуірі</span>
+                            </div>
+                            <h2 class="z-card-title">Ұлық Ұлыс (Алтын Орда) империялық кеңістігі</h2>
+                            <p class="z-card-lead">Шыңғыс хан империясының батыс қанатында қалыптасқан, Орталық Еуразияның этникалық, саяси және мәдени сипатын айқындаған алпауыт мемлекет. Жошы ұлысы қазақ мемлекеттігінің тікелей институционалдық негізі болып табылады.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://i.ytimg.com/vi/bYf6K_g9H40/maxresdefault.jpg" alt="Алтын Орда" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-map-marked-alt"></i> Сарай-Бату және Сарай-Берке қалалары — Еуразияның транзиттік сауда және урбанизация орталықтары
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">1227 ж.</span>
+                                    <span class="z-metric-card__label">Жошы ұлысының бөлінуі</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">110+</span>
+                                    <span class="z-metric-card__label">Археологиялық ірі қалалар</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Па пайза</span>
+                                    <span class="z-metric-card__label">Мемлекеттік дипломатиялық паспорт</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-shield-halved"></i> Империя тарихының белестері</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1242 ж.</div>
+                                        <div class="z-micro-step__text">Бату ханның жалпыеуропалық жорықтан кейін Сарай қаласын Мемлекет астанасы ретінде бекітуі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1312-1342 жж.</div>
+                                        <div class="z-micro-step__text">Өзбек ханның билігі. Ислам дінінің мемлекеттік дін ретінде қабылдануы және экономикалық өрлеу.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1380 жж.</div>
+                                        <div class="z-micro-step__text">Тоқтамыс ханның Мәскеуді өртеуі және кейін Ақсақ Темірмен арадағы ұзақ жойқын соғыстар.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Ренессанс Тұлғалары</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-chess-king"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Жошы Хан</span>
+                                            <span class="z-person-node__role">Әулеттің негізін салушы ата</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-bolt"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Едіге Ноян</span>
+                                            <span class="z-person-node__role">Ұлы Беклербек, Ноғай Ордасының атасы</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Бұл мемлекетте жолаушы үшін ешқандай қауіп жоқ, өйткені олар қылмысқа өте қатал жаза қолданады және тәртіпті бекем сақтайды»</p>
+                                <span class="z-quote-block__author">— Жиһангез Ибн Баттутаның Сарай қаласы туралы естеліктерінен</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-coins"></i> Алтын дирхемдер мен динарлар</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-landmark-dome"></i> Ұлы Дала мемлекеттік мектебі</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-khan" data-id="khan">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-khan"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">1465 жыл</span>
+                                <span class="z-card-header__badge">Ұлттық мемлекеттілік</span>
+                            </div>
+                            <h2 class="z-card-title">Қазақ Хандығының құрылуы және Керей мен Жәнібек</h2>
+                            <p class="z-card-lead">Әбілқайыр ұлысынан бөліген қазақ ру-тайпаларының Шу мен Қозыбасы өңіріне тарихи көші (Үдере көшу). Бұл оқиға «Қазақ» этнономының саяси тұрғыдан біржола бекіп, дербес ұлттық классикалық мемлекеттің құрылуына алып келді.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://sc01.alicdn.com/kf/HTB1P5gXQVXXXXXmXXXXq6xXFXXXn/230114006/HTB1P5gXQVXXXXXmXXXXq6xXFXXXn.jpg" alt="Қазақ Хандығы" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-tent"></i> Қозыбасы мен Шу алқабында алғашқы хандық туының көтерілуі
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">1465 ж.</span>
+                                    <span class="z-metric-card__label">Мұхаммед Хайдар Дулати дерегі</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">200+ мың</span>
+                                    <span class="z-metric-card__label">Алғашқы Көш көлемі (адам)</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Жошылық</span>
+                                    <span class="z-metric-card__label">Төре әулетінің легитимділігі</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-map"></i> Мемлекеттің кеңею кезеңдері</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1465-1470 жж.</div>
+                                        <div class="z-micro-step__text">Сырдария бойындағы қалалар (Сығанақ, Сауран) үшін Шайбанилермен алғашқы соғыстар мен дипломатия.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1511-1518 жж.</div>
+                                        <div class="z-micro-step__text">Қасым ханның билігі. Халқының саны 1 миллионға жетіп, шекараның Еділге дейін кеңеюі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1580-1598 жж.</div>
+                                        <div class="z-micro-step__text">Тәуекел ханның Ташкент пен Бұхараға жорықтары, Түркістанды түпкілікті астана ету.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Негізін салушы хандар</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-crown"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Kерей Хан</span>
+                                            <span class="z-person-node__role">Тұңғыш қазақ ханы (Ақ киізге салынған)</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-handshake"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Жәнібек Хан</span>
+                                            <span class="z-person-node__role">Одақтың тең негізін салушы, стратег</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Қазақ хандарының билігі 870 жылдан (хижра — 1465 ж.) басталды, олар Шу өңірінде еркін жайлап, өз тәуелсіздігін бекітті»</p>
+                                <span class="z-quote-block__author">— Мұхаммед Хайдар Дулати, «Тарих-и Рашиди» шежіресі</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-mosque"></i> Әзірет Сұлтан — Хандар пантеоны</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-gavel"></i> Қасым ханның қасқа жолы</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-laws" data-id="laws">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-laws"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">XVI - XVII ғғ.</span>
+                                <span class="z-card-header__badge">Құқықтық даму</span>
+                            </div>
+                            <h2 class="z-card-title">Дала заңдары, Реформалар және «Жеті Жарғы»</h2>
+                            <p class="z-card-lead">Көшпелі қоғамның ішкі тұрақтылығы мен сыртқы қорғанысын қамтамасыз еткен бірегей әдет-ғұрып құқықтар жинағы. Тәуке ханның жетекшілігімен және ұлы билердің қатысуымен қабылданған «Жеті Жарғы» кодексі далалық демократияның шыңы болды.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://static.tildacdn.com/tild3564-3263-4731-b864-363236306536/scale_1200.jpg" alt="Билер соты" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-gavel"></i> Күлтөбенің басындағы күнделікті кеңес — Үш жүздин билері заңдар жүйесін бекітуде
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">7 тармақ</span>
+                                    <span class="z-metric-card__label">Негізгі құқықтық бөлім</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Құн төлеу</span>
+                                    <span class="z-metric-card__label">Экономикалық бітістіру жазасы</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Ер жегі бел</span>
+                                    <span class="z-metric-card__label">Қару ұстауға міндетті азаматтар</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-scale-balanced"></i> Заңнамалық эволюция</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">XVI ғ. басы</div>
+                                        <div class="z-micro-step__text">«Қасым ханның қасқа жолы» — мүліктік, қылмыстық және әскери заңдардың алғашқы жүйеленуі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">XVII ғ. ортасы</div>
+                                        <div class="z-micro-step__text">«Есім ханның ескі жолы» — хан билігі мен рулық ақсүйектер құқығын реттеген толықтырулар.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1690-жылдар</div>
+                                        <div class="z-micro-step__text">Тәуке ханның «Жеті Жарғысы» — үш жүздің басын қосқан әмбебап Дала Конституциясы.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Ұлы заңгер билер</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-gavel"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Төле Би Әлібекұлы</span>
+                                            <span class="z-person-node__role">Үйсін биі, Ұлы жүздің төбе биі</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-scale-balanced"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Қазыбек Би Келдібекұлы</span>
+                                            <span class="z-person-node__role">Арғын биі, Орта жүздің төбе биі</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Бәріміз бір тудың, бір заңның астында бірікпесек, сыртқы жаудан елімізді қорғай алмаймыз. Ту тура биде туған жоқ»</p>
+                                <span class="z-quote-block__author">— Әйтеке би Байбекұлының Күлтөбе жиынында айтқан сөзі</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-scroll"></i> Әдет құқығы (Common Law)</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-users"></i> Руаралық кулуарлық медиация</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-war" data-id="war">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-war"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">XVIII ғасыр</span>
+                                <span class="z-card-header__badge">Ұлт-азаттық күрес</span>
+                            </div>
+                            <h2 class="z-card-title">Ұлы Отан азаттық соғысы (Жоңғар басқыншылығы)</h2>
+                            <p class="z-card-lead">Қазақ халқының өз жерін сақтап қалу жолындағы ең ауыр әрі қаһармандық кезеңі. «Ақтабан шұбырынды, Алқакөл сұлама» қасіретінен кейін Абылай хан мен батырлар корпусының жетекшілігімен жалпыұлттық мобилизация ұйымдастырылды.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://i.ytimg.com/vi/HjNqYVb5tUo/maxresdefault.jpg" alt="Аңырақай шайқасы" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-horse"></i> Аңырақай шайқасы (1729 ж.) — Қазақ жасақтарының Жоңғар мемлекетіне берген шешуші соққысы
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">1723 ж.</span>
+                                    <span class="z-metric-card__label">«Ақтабан шұбырынды» басталуы</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">2 ірі емле</span>
+                                    <span class="z-metric-card__label">Бұланты және Аңырақай жеңістері</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Бәрі бірге</span>
+                                    <span class="z-metric-card__label">Үш жүз әскерінің бірігуі</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-burst"></i> Соғыс Хроникасы</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1726 ж.</div>
+                                        <div class="z-micro-step__text">Ордабасы жиыны. Әбілқайыр ханның бас қолбасшы болып сайлануы, біріккен майдан құру.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1727 ж.</div>
+                                        <div class="z-micro-step__text">Бұланты шайқасы («Қалмаққырылған»). Қазақтардың жоңғарларды алғашқы ірі талқандауы.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1771 ж.</div>
+                                        <div class="z-micro-step__text">Абылайдың Көкшетауда үш жүздің атынан ресми Қазақ ханы болып танылуы, Шаңды жорық.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Ұлы Батырлар мен Хандар</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-shield"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Абылай Хан</span>
+                                            <span class="z-person-node__role">Ұлы стратег, дипломат, бас біріктіруші</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-user-ninja"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Қаракерей Қабанбай</span>
+                                            <span class="z-person-node__role">Дарабоз, Хан батыры, әскербасы</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Ей, Жоңғар билеушісі, біз қазақ деген мал баққан елміз, ешкімге соқтықпай жай жатқан елміз. Елімізден құт-береке қашпасын деп, найзаға үкі таққан елміз!»</p>
+                                <span class="z-quote-block__author">— Қаздауысты Қазыбек бидің Жоңғар қонтайшысына айтқан ультиматумы</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-fist-raised"></i> Ұлттық қарсылық рухы</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-mountain"></i> Ордабасы, Көкшетау зияраттары</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-biys" data-id="biys">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-biys"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">XVIII - XIX ғғ.</span>
+                                <span class="z-card-header__badge">Отарлық кезең және Қарсылық</span>
+                            </div>
+                            <h2 class="z-card-title">Хандар билігінің жойылуы және Кенесары реформалары</h2>
+                            <p class="z-card-lead">Ресей империясының «Жарғыларымен» (1822, 1824 жж.) хандық билікті күштеп жоюы. Мемлекеттілікті қайта тірілту мақсатында Кенесары Қасымұлы бастаған ең ауқымды ұлт-азаттық көтеріліс кезінде Дала соты мен Орталықтандырылған әскери-әкімшілік басқару жүйесі қалпына келтірілді.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://sc01.alicdn.com/kf/HTB1P5gXQVXXXXXmXXXXq6xXFXXXn/230114006/HTB1P5gXQVXXXXXmXXXXq6xXFXXXn.jpg" alt="Кенесары хан" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-gavel"></i> Кенесары ханның әскери кеңесі және шекаралық мобилизация заңдары
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">1822/24 ж.</span>
+                                    <span class="z-metric-card__label">Хандықты жою реформалары</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">10 жыл</span>
+                                    <span class="z-metric-card__label">Кенесары көтерілісі (1837-1847)</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">20 мың</span>
+                                    <span class="z-metric-card__label">Тұрақты мергендер әскері</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-clock"></i> Отарлауға қарсылық тарихы</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1783-1797 жж.</div>
+                                        <div class="z-micro-step__text">Сырым Датұлы бастаған Кіші жүздегі көтеріліс. Хан кеңесін шектеу әрекеттері.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1836-1838 жж.</div>
+                                        <div class="z-micro-step__text">Исатай Тайманұлы мен Махамбет Өтемісұлының Ішкі Ордадағы әлеуметтік-азаттық көтерілісі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1841 ж.</div>
+                                        <div class="z-micro-step__text">Кенесары Қасымұлының барлық үш жүз өкілдерінің қатысуымен ресми соңғы Қазақ ханы болып сайлануы.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Азаттық Көшбасшылары</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-crown"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Кенесары Хан</span>
+                                            <span class="z-person-node__role">Соңғы жалпықазақ ханы, қолбасшы</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-pen-fancy"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Махамбет Өтемісұлы</span>
+                                            <span class="z-person-node__role">Көтеріліс идеологы, отты ақын, батыр</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Мен Ресейдің қол астында қорлықпен өткен өмірді қаламаймын. Менің мақсатым — ата-бабамның егемен елін қалпына келтіру»</p>
+                                <span class="z-quote-block__author">— Кенесары ханның Орынбор генерал-губернаторына жазған хатынан</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-gavel"></i> Диван — Хандық заң соты</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-scroll"></i> Хандық биліктің құлауы</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="z-stream-block" id="card-modern" data-id="modern">
+                    <article class="z-encyclo-card">
+                        <div class="z-encyclo-card__glow glow-modern"></div>
+                        <div class="z-encyclo-card__content">
+                            <div class="z-card-header">
+                                <span class="z-card-header__date">1991 - Бүгін</span>
+                                <span class="z-card-header__badge">Қазіргі Тәуелсіздік</span>
+                            </div>
+                            <h2 class="z-card-title">Егемендік, Алаш мұрасы және Жаңа Қазақстан</h2>
+                            <p class="z-card-lead">XX ғасыр басындағы Әлихан Бөкейхан жетекшілік еткен «Алаш» автономиясы мен ұлт зиялыларының мемлекетшілдік идеясының заңды жалғасы. 1991 жылы Тәуелсіздіктің жариялануы, БҰҰ-ға мүшелік және қазіргі кезеңдегі конституциялық реформалар.</p>
+                            
+                            <div class="z-media-frame">
+                                <img src="https://strategy2050.kz/upload/medialibrary/b00/b007507198fbe886a877be1b1f6cb1bd.jpg" alt="Тәуелсіздік" class="z-media-frame__img">
+                                <div class="z-media-frame__caption">
+                                    <i class="fa-solid fa-flag"></i> Қазақстан Республикасының Көк Байрағы — Әлемдік деңгейде танылған егемендік нышаны
+                                </div>
+                            </div>
+
+                            <div class="z-metrics-board">
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">16 желтоқсан</span>
+                                    <span class="z-metric-card__label">1991 ж. Тәуелсіздік Заңы</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">9-шы орын</span>
+                                    <span class="z-metric-card__label">Әлемдегі ең ірі жер аумағы</span>
+                                </div>
+                                <div class="z-metric-card">
+                                    <span class="z-metric-card__value">Конституция</span>
+                                    <span class="z-metric-card__label">Республикалық заң үстемдігі</span>
+                                </div>
+                            </div>
+
+                            <div class="z-micro-timeline">
+                                <div class="z-micro-timeline__title"><i class="fa-solid fa-star"></i> Жаңа тарих белестері</div>
+                                <div class="z-micro-timeline__wrapper">
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1917-1920 жж.</div>
+                                        <div class="z-micro-step__text">Алашорда үкіметінің құрылуы. Ұлттық-территориялық автономия шекарасын алғашқы бекіту.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">1986 ж.</div>
+                                        <div class="z-micro-step__text">Желтоқсан оқиғасы. Алматыда жастардың тоталитарлық жүйеге қарсы қаһармандық бас көтеруі.</div>
+                                    </div>
+                                    <div class="z-micro-step">
+                                        <div class="z-micro-step__date">2022 ж. - бүгін</div>
+                                        <div class="z-micro-step__text">Жалпыхалықтық референдумдар, суперпрезиденттік үлгіні шектеу, Парламентаризмді нығайту бағыты.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-person-section">
+                                <div class="z-person-section__title">Ұлы ұлт арыстары</div>
+                                <div class="z-person-grid">
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-graduation-cap"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Әлихан Бөкейхан</span>
+                                            <span class="z-person-node__role">Алашорда үкіметінің Төрағасы, ғалым</span>
+                                        </div>
+                                    </div>
+                                    <div class="z-person-node">
+                                        <div class="z-person-node__avatar"><i class="fa-solid fa-feather"></i></div>
+                                        <div class="z-person-node__data">
+                                            <span class="z-person-node__name">Ахмет Байтұрсынұлы</span>
+                                            <span class="z-person-node__role">Ұлы ұстаз, лингвист, реформатор</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="z-quote-block">
+                                <p class="z-quote-block__text">«Бостандыққа апаратын жалғыз жол — ұлттық бірлік, білім және ата-баба мұрасына адалдық. Отанның гүлденуі әр азаматтың жауапкершілігінде»</p>
+                                <span class="z-quote-block__author">— Әлихан Бөкейханның ұлттық өсиет хаттарынан</span>
+                            </div>
+
+                            <div class="z-meta-footer">
+                                <div class="z-info-badge"><i class="fa-solid fa-globe"></i> Халықаралық дипломатия</div>
+                                <div class="z-info-badge"><i class="fa-solid fa-building"></i> Тәуелсіз егемен сот жүйесі</div>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+
+            </main>
+
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // Мобильді басқару элементтері
+            const burgerTrigger = document.getElementById('js-burger-trigger');
+            const sidebarOverlay = document.getElementById('js-sidebar-overlay');
+            
+            function toggleMobileSidebar() {
+                document.body.classList.toggle('is-sidebar-active');
+            }
+            
+            function closeMobileSidebar() {
+                document.body.classList.remove('is-sidebar-active');
+            }
+            
+            if (burgerTrigger) burgerTrigger.addEventListener('click', toggleMobileSidebar);
+            if (sidebarOverlay) sidebarOverlay.addEventListener('click', closeMobileSidebar);
+
+            // Реестр құрамдас бөліктері
+            const uiRegistry = {
+                navTree: document.getElementById('js-timeline-nav-tree'),
+                navItems: Array.from(document.querySelectorAll('#js-timeline-nav-tree .z-tree-item')),
+                streamContainer: document.getElementById('js-story-stream-container'),
+                streamBlocks: Array.from(document.querySelectorAll('.z-stream-block'))
+            };
+
+            const GLOBAL_STATE = {
+                activeId: 'sak',
+                isMobileDevice: window.innerWidth <= 1100,
+                isProgrammaticScrolling: false,
+                scrollTimeout: null
+            };
+
+            const coreTimelineEngine = {
+                init: function() {
+                    this.bindClickEvents();
+                    this.bindScrollObserver();
+                },
+
+                bindClickEvents: function() {
+                    uiRegistry.navItems.forEach(item => {
+                        item.addEventListener('click', (e) => {
+                            e.stopPropagation(); // Батырманы басқанда оқиғаның жоғары таралуын тоқтатамыз
+                            
+                            const anchorId = item.getAttribute('data-anchor');
+                            const targetBlock = document.getElementById(`card-${anchorId}`);
+                            
+                            if (targetBlock) {
+                                GLOBAL_STATE.isProgrammaticScrolling = true;
+                                GLOBAL_STATE.activeId = anchorId;
+                                
+                                this.shiftActiveState(anchorId);
+                                this.highlightStreamCard(anchorId);
+                                
+                                // Мәзірді басқан соң оны автоматты түрде жабамыз
+                                closeMobileSidebar();
+
+                                if (GLOBAL_STATE.isMobileDevice) {
+                                    const headerOffset = 90;
+                                    const elementPosition = targetBlock.getBoundingClientRect().top;
+                                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                                    
+                                    window.scrollTo({
+                                        top: offsetPosition,
+                                        behavior: 'smooth'
+                                    });
+                                } else {
+                                    uiRegistry.streamContainer.scrollTo({
+                                        top: targetBlock.offsetTop - 40,
+                                        behavior: 'smooth'
+                                    });
+                                }
+
+                                clearTimeout(GLOBAL_STATE.scrollTimeout);
+                                GLOBAL_STATE.scrollTimeout = setTimeout(() => {
+                                    GLOBAL_STATE.isProgrammaticScrolling = false;
+                                }, 800);
+                            }
+                        });
+                    });
+                },
+
+                bindScrollObserver: function() {
+                    const targetContext = GLOBAL_STATE.isMobileDevice ? window : uiRegistry.streamContainer;
+                    
+                    targetContext.addEventListener('scroll', () => {
+                        if (GLOBAL_STATE.isProgrammaticScrolling) return;
+
+                        let visibleSectionId = GLOBAL_STATE.activeId;
+                        const bufferZone = window.innerHeight * 0.35;
+
+                        uiRegistry.streamBlocks.forEach(block => {
+                            const bounds = block.getBoundingClientRect();
+                            if (bounds.top <= bufferZone && bounds.bottom >= bufferZone) {
+                                visibleSectionId = block.getAttribute('data-id');
+                            }
+                        });
+
+                        if (visibleSectionId !== GLOBAL_STATE.activeId) {
+                            GLOBAL_STATE.activeId = visibleSectionId;
+                            this.shiftActiveState(visibleSectionId);
+                            this.highlightStreamCard(visibleSectionId);
+                        }
+                    }, { passive: true });
+                },
+
+                shiftActiveState: function(id) {
+                    uiRegistry.navItems.forEach(node => {
+                        if (node.getAttribute('data-anchor') === id) {
+                            node.classList.add('is-active');
+                        } else {
+                            node.classList.remove('is-active');
+                        }
+                    });
+                },
+
+                highlightStreamCard: function(id) {
+                    uiRegistry.streamBlocks.forEach(block => {
+                        if (block.getAttribute('data-id') === id) {
+                            block.classList.add('is-active-focus');
+                        } else {
+                            block.classList.remove('is-active-focus');
+                        }
+                    });
+                }
+            };
+
+            coreTimelineEngine.init();
+
+            window.addEventListener('resize', () => {
+                const currentWidthState = window.innerWidth <= 1100;
+                if (currentWidthState !== GLOBAL_STATE.isMobileDevice) {
+                    window.location.reload();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

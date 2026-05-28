@@ -1,0 +1,1310 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAMANAT • MILITARY STRATEGY GAME</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <style>
+        /* ==========================================================================
+           1. PREMIUM LIGHT ORANGE DESIGN SYSTEM & VARIABLES
+           ========================================================================== */
+        :root {
+            --z-bg: #f5f5f7;
+            --z-card: #ffffff;
+            --z-text-main: #1d1d1f;
+            --z-text-sub: #6e6e73;
+            --z-text-muted: #86868b;
+            --z-accent: #ff9500;
+            --z-accent-gradient: linear-gradient(135deg, #ff9500, #ff6b00);
+            --z-accent-glow: rgba(255, 149, 0, 0.06);
+            --z-border: rgba(0, 0, 0, 0.08);
+            --z-card-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+            --z-modal-shadow: 0 30px 70px rgba(0, 0, 0, 0.15);
+            --ease-apple: cubic-bezier(0.25, 1, 0.5, 1);
+            --transition-smooth: all 0.4s var(--ease-apple);
+            
+            --z-success: #34c759;
+            --z-danger: #ff3b30;
+            --sidebar-width: 420px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--z-bg);
+            color: var(--z-text-main);
+            font-family: 'Inter', -apple-system, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* ==========================================================================
+           2. HEADER NAVIGATION WITH INTERACTIVE CONTROLS
+           ========================================================================== */
+        header {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--z-border);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            height: 75px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: var(--z-accent-gradient);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.25rem;
+            box-shadow: 0 4px 14px rgba(255, 149, 0, 0.3);
+        }
+
+        .brand-title h1 {
+            font-size: 1.2rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        .brand-title p {
+            font-size: 0.75rem;
+            color: var(--z-text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-top: 2px;
+        }
+
+        .stats-block {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-badge {
+            background: var(--z-card);
+            border: 1px solid var(--z-border);
+            padding: 10px 18px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: var(--z-card-shadow);
+        }
+
+        .stat-badge i.fa-star { color: var(--z-accent); }
+        .stat-badge i.fa-flag { color: #007aff; }
+
+        .btn-reset-game {
+            background: transparent;
+            border: 1px solid var(--z-border);
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            cursor: pointer;
+            color: var(--z-text-sub);
+            transition: var(--transition-smooth);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-reset-game:hover {
+            background: rgba(255, 59, 48, 0.08);
+            border-color: var(--z-danger);
+            color: var(--z-danger);
+        }
+
+        /* ==========================================================================
+           3. WORKSPACE LAYOUT
+           ========================================================================== */
+        .workspace-container {
+            flex: 1;
+            margin-top: 75px;
+            display: grid;
+            grid-template-columns: var(--sidebar-width) 1fr;
+            position: relative;
+            height: calc(100vh - 75px);
+        }
+
+        .sidebar {
+            background: var(--z-card);
+            border-right: 1px solid var(--z-border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 22px;
+            z-index: 100;
+            overflow-y: auto;
+            min-width: 0;
+        }
+
+        /* Індикатор прогресу вверху сайдбара */
+        .progress-tracker-bar {
+            display: flex;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .progress-dot {
+            flex: 1;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.06);
+            border-radius: 100px;
+            transition: var(--transition-smooth);
+        }
+
+        .progress-dot.active {
+            background: var(--z-accent);
+            box-shadow: 0 0 8px rgba(255, 149, 0, 0.4);
+        }
+
+        .progress-dot.passed-correct { background: var(--z-success); }
+        .progress-dot.passed-wrong { background: var(--z-danger); }
+
+        .game-info-card {
+            background: var(--z-accent-glow);
+            border: 1px solid rgba(255, 149, 0, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .game-info-card h3 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--z-accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .game-info-card p {
+            font-size: 0.86rem;
+            color: var(--z-text-sub);
+            line-height: 1.5;
+        }
+
+        .question-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .question-title {
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--z-text-muted);
+            font-weight: 700;
+        }
+
+        .question-text {
+            font-size: 1.02rem;
+            font-weight: 700;
+            color: var(--z-text-main);
+            line-height: 1.45;
+            background: var(--z-bg);
+            padding: 18px;
+            border-radius: 16px;
+            border: 1px dashed var(--z-border);
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-item {
+            background: var(--z-bg);
+            border: 1px solid transparent;
+            padding: 16px 20px;
+            border-radius: 16px;
+            text-align: left;
+            font-size: 0.92rem;
+            font-weight: 600;
+            color: var(--z-text-main);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: var(--transition-smooth);
+            width: 100%;
+            position: relative;
+        }
+
+        .option-item:hover:not(.disabled) {
+            background: #ffffff;
+            border-color: var(--z-accent);
+            box-shadow: 0 8px 20px rgba(255, 149, 0, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .option-item:active:not(.disabled) { transform: scale(0.98); }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--z-text-sub);
+            flex-shrink: 0;
+        }
+
+        .option-item.correct {
+            background: rgba(52, 199, 89, 0.08) !important;
+            border-color: var(--z-success) !important;
+            color: var(--z-success) !important;
+        }
+        .option-item.correct .option-letter {
+            background: var(--z-success) !important;
+            color: #fff !important;
+        }
+
+        .option-item.wrong {
+            background: rgba(255, 59, 48, 0.08) !important;
+            border-color: var(--z-danger) !important;
+            color: var(--z-danger) !important;
+        }
+        .option-item.wrong .option-letter {
+            background: var(--z-danger) !important;
+            color: #fff !important;
+        }
+        .option-item.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .action-container {
+            margin-top: auto;
+            padding-top: 10px;
+        }
+
+        .btn-primary {
+            background: var(--z-accent-gradient);
+            color: #ffffff;
+            border: none;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            width: 100%;
+            box-shadow: 0 6px 20px rgba(255, 149, 0, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(255, 149, 0, 0.35);
+        }
+        .btn-primary:disabled {
+            background: var(--z-text-muted);
+            box-shadow: none;
+            pointer-events: none;
+            opacity: 0.4;
+        }
+
+        /* ==========================================================================
+           4. MAP VIEWPORT
+           ========================================================================== */
+        .map-container {
+            position: relative;
+            background: #ededf2;
+            width: 100%;
+            height: 100%;
+        }
+
+        #js-game-map {
+            width: 100%;
+            height: 100%;
+            background-color: #ededf2;
+        }
+
+        .battle-epicenter-marker {
+            position: relative;
+            width: 44px;
+            height: 44px;
+        }
+
+        .battle-wave {
+            position: absolute;
+            width: 44px;
+            height: 44px;
+            background: var(--z-danger);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: battlePulse 1.6s infinite ease-out;
+            top: -12px;
+            left: -12px;
+        }
+
+        .battle-core {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--z-danger);
+            border: 4px solid #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 4px 15px rgba(255, 59, 48, 0.5);
+            top: 0; left: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes battlePulse {
+            0% { transform: scale(0.5); opacity: 0.9; }
+            100% { transform: scale(2.5); opacity: 0; }
+        }
+
+        .military-path-arrow {
+            stroke-dasharray: 12;
+            animation: arrowDash 25s linear infinite;
+        }
+
+        @keyframes arrowDash {
+            to { stroke-dashoffset: -1000; }
+        }
+
+        /* ==========================================================================
+           5. IOS MODAL SHEET BLOCKS
+           ========================================================================== */
+        .sheet-overlay {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+            padding: 20px;
+        }
+
+        .sheet-overlay.is-active { opacity: 1; pointer-events: auto; }
+
+        .sheet-card {
+            background: var(--z-card);
+            border: 1px solid var(--z-border);
+            width: 100%;
+            max-width: 560px;
+            border-radius: 28px;
+            box-shadow: var(--z-modal-shadow);
+            transform: scale(0.92) translateY(40px);
+            transition: transform 0.5s var(--ease-apple);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sheet-overlay.is-active .sheet-card { transform: scale(1) translateY(0); }
+
+        .sheet-hero {
+            background: var(--z-accent-glow);
+            padding: 32px 32px 24px 32px;
+            border-bottom: 1px solid var(--z-border);
+            position: relative;
+        }
+
+        .sheet-dismiss {
+            position: absolute;
+            top: 24px; right: 24px;
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--z-text-main);
+            font-size: 1.1rem;
+            transition: var(--transition-smooth);
+        }
+        .sheet-dismiss:hover { background: rgba(0,0,0,0.08); }
+
+        .sheet-badge {
+            color: var(--z-accent);
+            border: 1px solid rgba(255, 149, 0, 0.2);
+            background: white;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            padding: 6px 14px;
+            border-radius: 100px;
+            display: inline-block;
+            margin-bottom: 14px;
+        }
+
+        .sheet-badge.result-success { color: var(--z-success); border-color: rgba(52, 199, 89, 0.3); background: rgba(52, 199, 89, 0.05); }
+        .sheet-badge.result-danger { color: var(--z-danger); border-color: rgba(255, 59, 48, 0.3); background: rgba(255, 59, 48, 0.05); }
+
+        .sheet-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--z-text-main);
+            line-height: 1.25;
+        }
+
+        .sheet-metadata {
+            display: flex;
+            gap: 18px;
+            margin-top: 14px;
+            font-size: 0.85rem;
+            color: var(--z-text-sub);
+            font-weight: 500;
+        }
+        .sheet-metadata span i { color: var(--z-accent); margin-right: 6px; }
+
+        .sheet-body {
+            padding: 32px;
+            overflow-y: auto;
+            max-height: 380px;
+            font-size: 0.98rem;
+            color: var(--z-text-sub);
+            line-height: 1.65;
+        }
+
+        .sheet-section-lbl {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            color: var(--z-text-muted);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        .sheet-desc { margin-bottom: 24px; }
+
+        .sheet-fact-box {
+            background: var(--z-bg);
+            border-radius: 18px;
+            padding: 18px;
+            border-left: 4px solid var(--z-accent);
+        }
+
+        .sheet-fact-box h5 {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--z-text-main);
+            margin-bottom: 6px;
+        }
+
+        /* ==========================================================================
+           6. RESPONSIVE MEDIA ADAPTATION FOR SMARTPHONES (BOTTOM SHEET MODE)
+           ========================================================================== */
+        @media (max-width: 1023px) {
+            body {
+                overflow: auto;
+            }
+            .workspace-container {
+                grid-template-columns: 1fr !important;
+                display: flex;
+                flex-direction: column;
+                height: auto;
+                margin-top: 75px;
+            }
+            .map-container {
+                height: 45vh;
+                position: sticky;
+                top: 75px;
+                z-index: 500;
+            }
+            .sidebar {
+                border-right: none;
+                border-top: 1px solid var(--z-border);
+                padding: 18px 16px 32px 16px;
+                background: var(--z-card);
+                border-radius: 24px 24px 0 0;
+                margin-top: -16px;
+                position: relative;
+                z-index: 600;
+                overflow-y: visible;
+                box-shadow: 0 -10px 30px rgba(0,0,0,0.04);
+            }
+            header {
+                padding: 0 14px;
+            }
+            .brand-title h1 {
+                font-size: 1rem;
+            }
+            .brand-title p {
+                font-size: 0.65rem;
+            }
+            .stat-badge {
+                padding: 8px 12px;
+                font-size: 0.8rem;
+            }
+            .btn-reset-game {
+                width: 36px;
+                height: 36px;
+            }
+            .sheet-card {
+                max-height: 90vh;
+            }
+            .sheet-body {
+                padding: 20px;
+            }
+        }
+
+
+
+         .back-btn {
+            background: var(--z-card);
+            border: 1px solid var(--z-border);
+            padding: 10px 18px;
+            border-radius: 12px;
+            color: var(--z-text-main);
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .back-btn:active { transform: scale(0.96); }
+
+
+@media (max-width: 1023px) {
+    /* Хедерді екі қатарлы режимге ауыстырамыз — сонда бәрі 100% сияды */
+    header {
+        padding: 10px 12px !important;
+        height: auto !important; /* Биіктікті шектемейміз, элементтер еркін сыяды */
+        display: flex !important;
+        flex-direction: column !important; /* Элементтер бірінің астына бірі түседі */
+        align-items: stretch !important;
+        gap: 8px !important;
+    }
+
+    /* 1-ҚАТАР: Сол жақ блок (Логотип пен Тақырып енді толық әрі үлкен көрінеді) */
+    .header-left {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: flex-start !important; /* Сол жақ шетке әдемі тегістейді */
+        min-width: 0 !important;
+        flex: none !important; /* Карта нүктелерін басуға кедергі жасамайтындай шектеу */
+    }
+
+    .brand-block {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: auto !important;
+    }
+
+    .brand-logo {
+        width: 36px !important;
+        height: 36px !important;
+        border-radius: 8px !important;
+        font-size: 1rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    .brand-title {
+        display: flex !important;
+        flex-direction: column !important;
+        min-width: 0 !important;
+    }
+
+    /* БАС ТАҚЫРЫП: Енді телефонда бұзылмай, анық әрі үлкен болып тұрады */
+    .brand-title h1 {
+        font-size: 1.05rem !important; /* Қаріпті үлкейттік */
+        font-weight: 800 !important;
+        white-space: nowrap !important;
+    }
+
+    /* Кіші мәтін де өшпейді, астында әдемі көрініп тұрады */
+    .brand-title p {
+        font-size: 0.62rem !important;
+        white-space: nowrap !important;
+        opacity: 0.85;
+    }
+
+    /* 2-ҚАТАР: Оң жақ блок (Статистика мен батырмалар астыңғы қатарға түседі) */
+    .stats-block {
+        width: 100% !important;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important; /* Элементтерді қатар бойымен толық созады */
+        gap: 6px !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Бейдждер енді кеңістікті тиімді бөліп алады */
+    .stat-badge {
+        flex: 1 !important; /* Экран еніне байланысты теңдей созылады */
+        justify-content: center !important;
+        padding: 6px 8px !important;
+        border-radius: 8px !important;
+        font-size: 0.78rem !important;
+        height: 34px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 4px !important;
+    }
+
+    /* Барлық "Ұпай:" және "Сұрақ:" жазулары толық сақталады */
+    .stat-badge span {
+        white-space: nowrap !important;
+    }
+
+    /* Қайта бастау батырмасы */
+    .btn-reset-game {
+        width: 34px !important;
+        height: 34px !important;
+        border-radius: 8px !important;
+        font-size: 0.85rem !important;
+        flex-shrink: 0 !important;
+    }
+
+    /* Артқа батырмасы (Жазуы сақталған, бұрынғыдай үлкен) */
+    .back-btn {
+        padding: 0 12px !important;
+        border-radius: 8px !important;
+        font-size: 0.8rem !important;
+        height: 34px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 4px !important;
+        font-weight: 700 !important;
+        white-space: nowrap !important;
+        flex-shrink: 0 !important;
+    }
+
+    .back-btn span {
+        display: inline !important; /* "Артқа" сөзі әрдайым тұрады */
+    }
+
+    /* Ең кішкентай экранды смартфондар үшін қосымша сақтау ережесі */
+    @media (max-width: 360px) {
+        .brand-title h1 {
+            font-size: 0.95rem !important;
+        }
+        .stat-badge {
+            font-size: 0.72rem !important;
+            padding: 6px 4px !important;
+        }
+        .back-btn {
+            padding: 0 8px !important;
+            font-size: 0.75rem !important;
+        }
+    }
+}
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="header-left">
+            <div class="brand-block">
+                <div class="brand-logo"><i class="fa-solid fa-shield-halved"></i></div>
+                <div class="brand-title">
+                    <h1>ZAMANAT • BATTLES</h1>
+                    <p>Әскери-Стратегиялық Интерактивті Карта</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="stats-block">
+            <div class="stat-badge" title="Ұпай саны">
+                <i class="fa-solid fa-star"></i>
+                <span>Ұпай: <strong id="js-score-val">0</strong></span>
+            </div>
+            <div class="stat-badge" title="Ағымдағы сұрақ">
+                <i class="fa-solid fa-flag"></i>
+                <span>Сұрақ: <strong id="js-question-counter">1/10</strong></span>
+            </div>
+            <button class="btn-reset-game" id="js-reset-btn" title="Ойынды басынан бастау">
+                <i class="fa-solid fa-arrow-rotate-right"></i>
+            </button>
+            <a href="index.html" class="back-btn">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Артқа</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="workspace-container" id="js-workspace">
+        
+        <section class="map-container">
+            <div id="js-game-map"></div>
+        </section>
+
+        <section class="sidebar" id="js-sidebar">
+            <div class="progress-tracker-bar" id="js-progress-dots-box">
+                </div>
+
+            <div class="game-info-card">
+                <h3><i class="fa-solid fa-compass"></i> Әскери барлау</h3>
+                <p>Картада екі бағытты немесе шабуылдаушы стратегиялық сызықтар көрсетілген. Тарихи деректер мен географиялық шепке қарап, оқиғаны анықтаңыз.</p>
+            </div>
+
+            <div class="question-container">
+                <h4 class="question-title">Майдан сипаттамасы</h4>
+                <div class="question-text" id="js-question-hint">Жүктелуде...</div>
+            </div>
+
+            <div class="question-container">
+                <h4 class="question-title">Жауап нұсқалары</h4>
+                <div class="options-list" id="js-options-box"></div>
+            </div>
+
+            <div class="action-container">
+                <button class="btn-primary" id="js-next-btn" disabled>
+                    <span>Келесі кезең</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <div class="sheet-overlay" id="js-game-sheet">
+        <div class="sheet-card">
+            <div class="sheet-hero">
+                <button class="sheet-dismiss" id="js-sheet-close-btn"><i class="fa-solid fa-xmark"></i></button>
+                <span class="sheet-badge" id="js-sheet-status">Мәртебе</span>
+                <h3 class="sheet-title" id="js-sheet-battle-title">Шайқас</h3>
+                <div class="sheet-metadata" id="js-sheet-meta-block">
+                    <span id="js-sheet-battle-date"><i class="fa-solid fa-calendar-days"></i> Уақыты</span>
+                    <span id="js-sheet-battle-location"><i class="fa-solid fa-map-pin"></i> Орны</span>
+                </div>
+            </div>
+            <div class="sheet-body">
+                <div id="js-sheet-main-content">
+                    <h4 class="sheet-section-lbl">Тарихи хроника және стратегия</h4>
+                    <p class="sheet-desc" id="js-sheet-battle-desc">Сипаттама мәтіні...</p>
+                    <div class="sheet-fact-box">
+                        <h5>Маңызды құжатты факт:</h5>
+                        <p id="js-sheet-battle-fact">Қызықты дерек...</p>
+                    </div>
+                </div>
+                <div id="js-sheet-action-box" style="display:none; margin-top:20px;">
+                    <button class="btn-primary" id="js-sheet-restart-btn">
+                        <i class="fa-solid fa-arrow-rotate-right"></i>
+                        <span>Қайтадан бастау</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            
+            // === ПОЛНАЯ БАЗА ВОЕННО-ИСТОРИЧЕСКИХ ДАННЫХ ===
+            const militaryCampaignRegistry = [
+                {
+                    id: "campaign_1",
+                    title: "Аңырақай шайқасы",
+                    date: "1729 жыл, көктем",
+                    location: "Балқаш көлінің оңтүстігі, Аңырақай таулары",
+                    hint: "Қазақ жасақтарының жоңғар басқыншылығына қарсы Отан соғысының ең шешуші және ең ұлы жеңісі. Үш жүздің әскері бірігіп, жауға соққы берген стратегиялық аймақ.",
+                    desc: "Бұл шайқаста Әбілқайыр ханның басшылығымен қазақ туы астына біріккен қарулы күштер жоңғарлардың негізгі шептерін талқандады. Стрелкалар Балқаш маңынан жауды оңтүстік-шығысқа қарай ысыру бағытын көрсетеді.",
+                    fact: "Шайқас өткен жер кейіннен жоңғарлардың «зары мен өкініші қалған жер» ретінде Аңырақай деп аталып кетті.",
+                    epicenter: { lat: 44.5212, lng: 75.4123 },
+                    arrowStart: { lat: 43.8123, lng: 74.2514 },
+                    arrowEnd: { lat: 45.1012, lng: 76.5123 },
+                    arrowType: "clash"
+                },
+                {
+                    id: "campaign_2",
+                    title: "Бұланты шайқасы",
+                    date: "1726 (1728) жыл",
+                    location: "Ұлытау өңірі, Бұланты өзенінің бойы",
+                    hint: "Қазақтардың жоңғар әскерін толықтай жойып жіберген алғашқы ірі жеңістерінің бірі. Халық арасында бұл жер «Қалмаққырылған» деп аталып кеткен.",
+                    desc: "Орталық Қазақстанның Ұлытау даласында өткен бұл ұрыста қазақ сарбаздары тактикалық қоршау әдісін қолданып, жоңғар контингентін Бұланты өзенінің мүйісінде талқандады.",
+                    fact: "Бұл жеңіс «Ақтабан шұбырындыдан» кейін еңсесі түскен қазақ халқының рухын көтеріп, жеңіске деген сенімін бекітті.",
+                    epicenter: { lat: 48.3512, lng: 66.4112 },
+                    arrowStart: { lat: 49.1245, lng: 65.2114 },
+                    arrowEnd: { lat: 47.9123, lng: 67.8512 },
+                    arrowType: "clash"
+                },
+                {
+                    id: "campaign_3",
+                    title: "Кенесары хан бастаған ұлт-азаттық көтеріліс",
+                    date: "1837 — 1847 жылдар",
+                    location: "Бүкіл Қазақстан аумағы (Көкшетау, Торғай, Ұлытау, Жетісу)",
+                    hint: "Ресей империясының отаршылдық саясатына қарсы бағытталған ең ұзақ әрі ең ауқымды жалпыұлттық қарулы қозғалыс. Хандықты қалпына келтіру жорықтары.",
+                    desc: "Кенесары Қасымұлы бастаған әскер Арқадан қозғалып, Торғай даласы, Ұлытау және соңында Жетісу мен Қырғыз шекарасына дейін әскери қимылдар жүргізді. Стрелкалар солтүстіктен оңтүстікке жылжыған ұзақ стратегиялық маневрлерді сипаттайды.",
+                    fact: "Кенесары хан заманауи үлгідегі регулярлы әскер құрып, оған қатаң темірдей тәртіп енгізген және зеңбірек құю шеберлерін ұстаған.",
+                    epicenter: { lat: 49.8123, lng: 69.1245 },
+                    arrowStart: { lat: 53.2112, lng: 69.4112 },
+                    arrowEnd: { lat: 43.1245, lng: 75.1215 },
+                    arrowType: "attack"
+                },
+                {
+                    id: "campaign_4",
+                    title: "Ұзынағаш шайқасы",
+                    date: "1860 жыл, қазан",
+                    location: "Алматы өңірі, Ұзынағаш маңы",
+                    hint: "Оңтүстік қазақтары мен Жетісу өңірін Қоқан хандығының озбырлығынан азат ету мақсатында болған ірі қақтығыс.",
+                    desc: "Қоқандықтардың Жетісуға жасаған басқыншылық жорығына Сұраншы, Саурық батырлар бастаған қазақ жасақтары Ресей отрядтарымен бірлесе отырып соққы берді. Стрелка Шу өзені жақтан Алматыға қарай бағытталған соққыны көрсетеді.",
+                    fact: "Ұзынағаш шайқасындағы жеңіс Қоқан хандығының Жетісудағы ықпалын біржолата жойып, олардың қазақ жеріне басқыншылығын тоқтатты.",
+                    epicenter: { lat: 43.2112, lng: 75.6123 },
+                    arrowStart: { lat: 42.8512, lng: 74.1215 },
+                    arrowEnd: { lat: 43.5112, lng: 76.4112 },
+                    arrowType: "attack"
+                },
+                {
+                    id: "campaign_5",
+                    title: "Сырым Датов бастаған көтеріліс",
+                    date: "1783 — 1797 жылдар",
+                    location: "Батыс Қазақстан, Жайық және Елек өзендерінің бойы",
+                    hint: "Кіші жүздегі патша өкіметінің отарлау саясатына және Жайық казак әскерінің зорлық-зомбылығына қарсы бағытталған ірі халықтық қозғалыс.",
+                    desc: "Сырым Батыр бастаған көтерілісшілер Жайық бекіністеріне, Орынбор шекаралық шебіне бірнеше рет шабуыл жасады. Екі бағытты стрелка Орынбор шебі мен ішкі дала арасындағы үздіксіз партизандық рейдтерді білдіреді.",
+                    fact: "Бұл көтерілістің нәтижесінде патша өкіметі Кіші жүзде хандық билікті уақытша жойып, басқарудың жаңа реформаларын енгізуге мәжбүр болды.",
+                    epicenter: { lat: 51.2114, lng: 51.3512 },
+                    arrowStart: { lat: 50.1215, lng: 53.4512 },
+                    arrowEnd: { lat: 52.0123, lng: 50.1012 },
+                    arrowType: "clash"
+                },
+                {
+                    id: "campaign_6",
+                    title: "Исатай-Махамбет көтерілісі",
+                    date: "1836 — 1838 жылдар",
+                    location: "Ішкі Бөкей ордасы, Каспий маңы ойпаты",
+                    hint: "Жәңгір ханның халыққа тиімсіз жер саясатына және Каспий бойындағы орыс помещиктерінің қысымына қарсы бағытталған Бөкей ордасындағы қозғалыс.",
+                    desc: "Көтерілісшілер хан ордасын қоршауға алып, Тастөбе маңында патша әскерімен бетпе-бет келді. Стрелкалар Каспий жағалауынан Нарын құмдары арқылы Хан Ордасына бағытталған шабуыл шептерін сипаттайды.",
+                    fact: "Махамбет Өтемісұлы өзінің жалынды өлеңдерімен көтерілістің идеологиялық жетекшісіне айналып, халықты намысқа шақырды.",
+                    epicenter: { lat: 48.9123, lng: 48.2514 },
+                    arrowStart: { lat: 47.1245, lng: 50.1215 },
+                    arrowEnd: { lat: 49.3712, lng: 47.4112 },
+                    arrowType: "attack"
+                },
+                {
+                    id: "campaign_7",
+                    title: "Ордабасы жиыны",
+                    date: "1726 жыл",
+                    location: "Түркістан өңірі, Ордабасы тауы",
+                    hint: "Жоңғар шапқыншылығына қарсы бүкілхалықтық қарсылықты ұйымдастыру үшін үш жүздің билері мен батырлары, хандары бас қосқан тарихи конгресс орны.",
+                    desc: "Түркістан маңындағы Ордабасы төбесінде қазақ тарихындағы ең маңызды әскери кеңес өтті. Мұнда Әбілқайыр бас қолбасшы болып сайланды. Стрелкалар үш жүзден бір орталыққа қарай ағылған сарбаздар шоғырын білдіреді.",
+                    fact: "Дәл осы жерде қазақ шонжарлары бір-біріне ант беріп, ішкі араздықты тоқтатып, біріккен майдан құруға серттесті.",
+                    epicenter: { lat: 42.5112, lng: 69.2114 },
+                    arrowStart: { lat: 45.1215, lng: 65.1012 },
+                    arrowEnd: { lat: 43.1012, lng: 70.4512 },
+                    arrowType: "attack"
+                },
+                {
+                    id: "campaign_8",
+                    title: "Томирис патшайымның Кирді талқандауы",
+                    date: "Б.з.б. 530 жыл",
+                    location: "Сырдария өзенінің бойы, Арал маңы даласы",
+                    hint: "Парсы empire-сының негізін салушы, «әлем билеушісі» атанған Кир патшаның сақ жерінде толықтай күйрей жеңілген тарихи шайқасы.",
+                    desc: "Массагеттердің патшайымы Томирис парсы әскерін Сырдариядан өткізіп алып, шегініс маневрі арқылы қоршауға алып, жойып жіберді. Стрелка Сырдария бойындағы парсылардың ішкеріге ену әрекетін көрсетеді.",
+                    fact: "Шайқас соңында Томирис Кирдің басын қан толтырылған меспен бірге «Іздегенің қан еді, іш енді!» деп тарихқа алтын әріппен жазылған сөз қалдырды.",
+                    epicenter: { lat: 45.5123, lng: 63.2114 },
+                    arrowStart: { lat: 44.1245, lng: 65.4512 },
+                    arrowEnd: { lat: 46.1012, lng: 62.1012 },
+                    arrowType: "clash"
+                },
+                {
+                    id: "campaign_9",
+                    title: "Атлах шайқасы",
+                    date: "751 жыл, шілде",
+                    location: "Жамбыл облысы, Тараз маңы, Атлах қаласы",
+                    hint: "Араб хандығы мен Қытайдың Тан империясы арасында Орталық Азияға ықпал ету үшін болған әлемдік деңгейдегі ең ірі геосаяси соғыс.",
+                    desc: "Талас өзенінің бойында арабтар мен қытайлар кездесті. Түргештер мен қарлұқтар арабтар жағына шығып, қытай әскерінің ту сыртынан соққы берді. Шайқас стрелкалары Таразға бағытталған екі алып империяның бетпе-бет келуін сипаттайды.",
+                    fact: "Бұл соғыстың нәтижесінде Қытай әскері Орталық Азиядан мың жылға шегінді және өңірде ислам дінінің таралуына жол ашылды.",
+                    epicenter: { lat: 42.9123, lng: 71.3512 },
+                    arrowStart: { lat: 42.1245, lng: 69.4112 },
+                    arrowEnd: { lat: 43.5112, lng: 73.1245 },
+                    arrowType: "clash"
+                },
+                {
+                    id: "campaign_10",
+                    title: "1916 жылғы Торғай көтерілісі",
+                    date: "1916 — 1917 жылдар",
+                    location: "Қостанай/Торғай өңірі, Доғал-Үрпек аймағы",
+                    hint: "Патша өкіметінің қазақтарды майдандағы қара жұмысқа алу туралы маусым жарлығына қарсы бағытталған, Амангелді Иманов басқарған ең ұйымдасқан көтеріліс ошағы.",
+                    desc: "Амангелді Иманов пен Әліби Жангелдин Торғай даласында мергендер мен сарбаздардан үлкен партизандық армия құрды. Бағыттар жазалаушы орыс отрядтарының Торғай қаласына шабуылы мен қоршауын бейнелейді.",
+                    fact: "Амангелді сарбаздары қолдан мылтық, қылыш және жарылғыш заттар жасап, патшаның заманауи регулярлы әскеріне бірнеше ай бойы берілмей соғысқан.",
+                    epicenter: { lat: 50.2514, lng: 63.9123 },
+                    arrowStart: { lat: 52.1245, lng: 63.1215 },
+                    arrowEnd: { lat: 49.6112, lng: 64.5123 },
+                    arrowType: "clash"
+                }
+            ];
+
+            // === ИГРОВЫЕ СИСТЕМНЫЕ СТРУКТУРЫ ===
+            let gameEngineState = {
+                currentIdx: 0,
+                score: 0,
+                sequenceIds: [],
+                historyAnswers: {} 
+            };
+
+            let mapInstance = null;
+            let activeMapLayers = [];
+
+            // DOM Элементы
+            const scoreVal = document.getElementById("js-score-val");
+            const questionCounter = document.getElementById("js-question-counter");
+            const questionHint = document.getElementById("js-question-hint");
+            const optionsBox = document.getElementById("js-options-box");
+            const nextBtn = document.getElementById("js-next-btn");
+            const progressDotsBox = document.getElementById("js-progress-dots-box");
+            const resetBtn = document.getElementById("js-reset-btn");
+
+            const sheetOverlay = document.getElementById("js-game-sheet");
+            const sheetStatus = document.getElementById("js-sheet-status");
+            const sheetTitle = document.getElementById("js-sheet-battle-title");
+            const sheetDate = document.getElementById("js-sheet-battle-date");
+            const sheetLocation = document.getElementById("js-sheet-battle-location");
+            const sheetDesc = document.getElementById("js-sheet-battle-desc");
+            const sheetFact = document.getElementById("js-sheet-battle-fact");
+            const sheetCloseBtn = document.getElementById("js-sheet-close-btn");
+            
+            const sheetMetaBlock = document.getElementById("js-sheet-meta-block");
+            const sheetMainContent = document.getElementById("js-sheet-main-content");
+            const sheetActionBox = document.getElementById("js-sheet-action-box");
+            const sheetRestartBtn = document.getElementById("js-sheet-restart-btn");
+
+            // === 1. ИНИЦИАЛИЗАЦИЯ ИНТЕРАКТИВНОЙ КАРТЫ ===
+            function initGISMap() {
+                mapInstance = L.map('js-game-map', {
+                    center: [48.0196, 66.9237],
+                    zoom: 5,
+                    zoomControl: true,
+                    attributionControl: false
+                });
+
+                L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                    maxZoom: 18, minZoom: 4
+                }).addTo(mapInstance);
+            }
+
+            // === 2. СИСТЕМА ЛОКАЛЬНОГО ХРАНЕНИЯ (LOCAL STORAGE) ===
+            function saveStateToLocalStorage() {
+                localStorage.setItem("zamanat_game_persist_v4", JSON.stringify(gameEngineState));
+            }
+
+            function loadStateFromLocalStorage() {
+                const saved = localStorage.getItem("zamanat_game_persist_v4");
+                if (saved) {
+                    try {
+                        gameEngineState = JSON.parse(saved);
+                        return true;
+                    } catch(e) {
+                        return false;
+                    }
+                }
+                return false;
+            }
+
+            // === 3. УПРАВЛЕНИЕ ИГРОВЫМ ПРОЦЕССОМ ===
+            function bootGame() {
+                const hasSave = loadStateFromLocalStorage();
+
+                if (!hasSave) {
+                    const shuffledIds = [...militaryCampaignRegistry]
+                        .sort(() => 0.5 - Math.random())
+                        .map(c => c.id);
+                    
+                    gameEngineState = {
+                        currentIdx: 0,
+                        score: 0,
+                        sequenceIds: shuffledIds,
+                        historyAnswers: {}
+                    };
+                    saveStateToLocalStorage();
+                }
+
+                renderProgressDots();
+                updateTopStatsBar();
+                renderStep(gameEngineState.currentIdx);
+            }
+
+            function updateTopStatsBar() {
+                scoreVal.innerText = gameEngineState.score;
+                questionCounter.innerText = `${Math.min(gameEngineState.currentIdx + 1, 10)}/10`;
+            }
+
+            function renderProgressDots() {
+                progressDotsBox.innerHTML = "";
+                gameEngineState.sequenceIds.forEach((id, idx) => {
+                    const dot = document.createElement("div");
+                    dot.className = "progress-dot";
+                    
+                    if (idx === gameEngineState.currentIdx) {
+                        dot.classList.add("active");
+                    }
+                    
+                    if (gameEngineState.historyAnswers[id]) {
+                        if (gameEngineState.historyAnswers[id] === "correct") {
+                            dot.classList.add("passed-correct");
+                        } else {
+                            dot.classList.add("passed-wrong");
+                        }
+                    }
+                    progressDotsBox.appendChild(dot);
+                });
+            }
+
+            // === 4. ОТРИСОВКА ВОЕННЫХ НАПРАВЛЕНИЙ НА КАРТЕ ===
+            function drawMilitaryArrowLayers(campaign) {
+                activeMapLayers.forEach(layer => mapInstance.removeLayer(layer));
+                activeMapLayers = [];
+
+                const icon = L.divIcon({
+                    className: 'custom-battle-marker',
+                    html: `<div class="battle-epicenter-marker"><div class="battle-wave"></div><div class="battle-core"><i class="fa-solid fa-burst" style="color:white; font-size:10px;"></i></div></div>`,
+                    iconSize: [20, 20], iconAnchor: [10, 10]
+                });
+                
+                const marker = L.marker([campaign.epicenter.lat, campaign.epicenter.lng], { icon: icon }).addTo(mapInstance);
+                activeMapLayers.push(marker);
+
+                const points = [
+                    [campaign.arrowStart.lat, campaign.arrowStart.lng],
+                    [campaign.epicenter.lat, campaign.epicenter.lng],
+                    [campaign.arrowEnd.lat, campaign.arrowEnd.lng]
+                ];
+
+                const line = L.polyline(points, {
+                    color: campaign.arrowType === 'clash' ? '#ff3b30' : '#ff9500',
+                    weight: 6,
+                    opacity: 0.85,
+                    dashArray: '12, 12',
+                    className: 'military-path-arrow'
+                }).addTo(mapInstance);
+                activeMapLayers.push(line);
+
+                const bounds = L.latLngBounds([points[0], points[1], points[2]]);
+                mapInstance.flyToBounds(bounds, { padding: [60, 60], duration: 1.2 });
+            }
+
+            // === 5. ГЕНЕРАЦИЯ ТЕКУЩЕГО ВОПРОСА С ФИНАЛОМ В МОДАЛЬНОМ ОКНЕ ===
+            function renderStep(index) {
+                if (index >= 10 || index >= gameEngineState.sequenceIds.length) {
+                    showFinalResultsModal();
+                    return;
+                }
+
+                nextBtn.disabled = true;
+                sheetMetaBlock.style.display = "flex";
+                sheetMainContent.style.display = "block";
+                sheetActionBox.style.display = "none";
+
+                const activeId = gameEngineState.sequenceIds[index];
+                const currentCampaign = militaryCampaignRegistry.find(c => c.id === activeId);
+
+                questionHint.innerText = currentCampaign.hint;
+                drawMilitaryArrowLayers(currentCampaign);
+
+                let dummyOptions = militaryCampaignRegistry
+                    .filter(c => c.id !== activeId)
+                    .sort(() => 0.5 - Math.random())
+                    .slice(0, 3);
+                
+                dummyOptions.push(currentCampaign);
+                dummyOptions.sort(() => 0.5 - Math.random());
+
+                optionsBox.innerHTML = "";
+                const letters = ["A", "B", "C", "D"];
+
+                dummyOptions.forEach((opt, i) => {
+                    const btn = document.createElement("button");
+                    btn.className = "option-item";
+                    btn.dataset.id = opt.id;
+                    btn.innerHTML = `
+                        <div class="option-letter">${letters[i]}</div>
+                        <span>${opt.title}</span>
+                    `;
+
+                    if (gameEngineState.historyAnswers[activeId]) {
+                        btn.classList.add("disabled");
+                        if (opt.id === activeId) btn.classList.add("correct");
+                    } else {
+                        btn.addEventListener("click", function() {
+                            evaluateUserSelection(btn, opt.id, currentCampaign);
+                        });
+                    }
+
+                    optionsBox.appendChild(btn);
+                });
+
+                if (gameEngineState.historyAnswers[activeId]) {
+                    nextBtn.disabled = false;
+                }
+            }
+
+            function showFinalResultsModal() {
+                sheetStatus.innerText = "Ойын аяқталды!";
+                sheetStatus.className = "sheet-badge result-success";
+                sheetTitle.innerText = "Сіз барлық сыну шептерінен өттіңіз!";
+                
+                sheetMetaBlock.style.display = "none";
+                sheetMainContent.style.display = "none";
+                
+                let finalScore = gameEngineState.score;
+                let ratingText = "";
+                if (finalScore >= 9) ratingText = "Керемет нәтиже! Сіз Ұлы Даланың нағыз бас стратегісіз!";
+                else if (finalScore >= 6) ratingText = "Жақсы көрсеткіш! Тарих пен әскери географияны сенімді білесіз.";
+                else ratingText = "Талпыныс жаман емес, бірақ тарих хроникасын қайта қарап шыққан дұрыс.";
+
+                const bodyContainer = sheetOverlay.querySelector('.sheet-body');
+                const oldText = document.getElementById("js-final-text-node");
+                if(oldText) oldText.remove();
+
+                const finalTextNode = document.createElement("div");
+                finalTextNode.id = "js-final-text-node";
+                finalTextNode.innerHTML = `
+                    <div style="text-align:center; padding: 20px 0;">
+                        <i class="fa-solid fa-trophy" style="font-size: 4rem; color: var(--z-accent); margin-bottom:15px;"></i>
+                        <h2 style="font-size:1.8rem; font-weight:800; margin-bottom:10px;">Қорытынды ұпай: ${finalScore} / 10</h2>
+                        <p style="color: var(--z-text-sub); line-height:1.5;">${ratingText}</p>
+                    </div>
+                `;
+                bodyContainer.insertBefore(finalTextNode, sheetActionBox);
+                
+                sheetActionBox.style.display = "block";
+                sheetOverlay.classList.add("is-active");
+            }
+
+            // === 6. ОБРАБОТКА И ВАЛИДАЦИЯ ОТВЕТА ===
+            function evaluateUserSelection(selectedBtn, selectedId, correctCampaign) {
+                const allItems = optionsBox.querySelectorAll(".option-item");
+                allItems.forEach(item => item.classList.add("disabled"));
+
+                const isCorrect = (selectedId === correctCampaign.id);
+
+                if (isCorrect) {
+                    selectedBtn.classList.add("correct");
+                    gameEngineState.score += 1;
+                    gameEngineState.historyAnswers[correctCampaign.id] = "correct";
+                    
+                    sheetStatus.innerText = "Керемет! Дұрыс жауап";
+                    sheetStatus.className = "sheet-badge result-success";
+                } else {
+                    selectedBtn.classList.add("wrong");
+                    gameEngineState.historyAnswers[correctCampaign.id] = "wrong";
+                    
+                    allItems.forEach(item => {
+                        if (item.dataset.id === correctCampaign.id) item.classList.add("correct");
+                    });
+
+                    sheetStatus.innerText = "Қате таңдау";
+                    sheetStatus.className = "sheet-badge result-danger";
+                }
+
+                saveStateToLocalStorage();
+                updateTopStatsBar();
+                renderProgressDots();
+
+                sheetTitle.innerText = correctCampaign.title;
+                sheetDate.innerHTML = `<i class="fa-solid fa-calendar-days"></i> ${correctCampaign.date}`;
+                sheetLocation.innerHTML = `<i class="fa-solid fa-map-pin"></i> ${correctCampaign.location}`;
+                sheetDesc.innerText = correctCampaign.desc;
+                sheetFact.innerText = correctCampaign.fact;
+
+                setTimeout(() => {
+                    sheetOverlay.classList.add("is-active");
+                }, 400);
+
+                nextBtn.disabled = false;
+            }
+
+            // === 7. НАВИГАЦИЯ И СБРОС ИГРЫ ===
+            nextBtn.addEventListener("click", function() {
+                sheetOverlay.classList.remove("is-active");
+                gameEngineState.currentIdx += 1;
+                saveStateToLocalStorage();
+                updateTopStatsBar();
+                renderProgressDots();
+                renderStep(gameEngineState.currentIdx);
+            });
+
+            function clearGameProgress() {
+                const oldText = document.getElementById("js-final-text-node");
+                if(oldText) oldText.remove();
+                
+                localStorage.removeItem("zamanat_game_persist_v4");
+                bootGame();
+            }
+
+            resetBtn.addEventListener("click", function() {
+                if(confirm("Ойынды басынан бастағыңыз келе ме? Прогресс өшіріледі.")) {
+                    clearGameProgress();
+                }
+            });
+
+            sheetRestartBtn.addEventListener("click", function() {
+                sheetOverlay.classList.remove("is-active");
+                clearGameProgress();
+            });
+
+            sheetCloseBtn.addEventListener("click", () => sheetOverlay.classList.remove("is-active"));
+            sheetOverlay.addEventListener("click", (e) => { if(e.target === sheetOverlay) sheetOverlay.classList.remove("is-active"); });
+
+            // Запуск ГИС и логики игры
+            initGISMap();
+            bootGame();
+        });
+    </script>
+</body>
+</html>

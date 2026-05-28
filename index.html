@@ -1,0 +1,5399 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAMANAT — Академиялық тестілеу және білім беру платформасы</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+/* ==========================================================================
+           1. ЖАҢА ПЕРЕМЕННЫЙЛЕР МЕН ТОП-ДЕҢГЕЙЛІ СТИЛЬДЕР (PREMIUM ORANGE LIGHT STYLE)
+           ========================================================================== */
+        :root {
+            --bg-color: #f5f5f7;
+            --surface-color: #ffffff;
+            --surface-card: #ffffff;
+            --text-color: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --text-muted: #86868b;
+            --accent-color: #ff6b00; /* Жарқын оранжевый акцент */
+            --accent-hover: #e05e00; /* Наведение кезіндегі қою оранжевый */
+            --gray-border: #e5e5ea;
+            --error-color: #ff3b30;
+            --success-color: #34c759;
+            --gold-color: #ff9500;
+            --premium-gradient: linear-gradient(135deg, #ff9500, #ff6b00);
+            --gold-gradient: linear-gradient(135deg, #ffe259, #ffa751);
+            
+            --radius-xs: 8px;
+            --radius-sm: 14px;
+            --radius-md: 24px;
+            --radius-lg: 32px;
+            
+            --shadow-sm: 0 4px 12px rgba(255, 107, 0, 0.05);
+            --shadow-md: 0 12px 34px rgba(255, 107, 0, 0.08);
+            --shadow-lg: 0 24px 60px rgba(255, 107, 0, 0.12);
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+            letter-spacing: -0.015em;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        main {
+            flex: 1;
+            width: 100%;
+            margin: 0 auto;
+            padding: 0;
+            animation: pageFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        @keyframes pageFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+/* ==========================================================================
+   НАВИГАЦИЯ ЖӘНЕ МОБИЛЬДІ МӘЗІР (APPLE STYLE BLUR HEADER)
+   ========================================================================== */
+header {
+    position: sticky;
+    top: 0;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+    z-index: 1000;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.header-container {
+    max-width: 1240px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo-block {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.logo-text {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--accent-color);
+}
+
+.logo-dot {
+    width: 7px;
+    height: 7px;
+    background: var(--success-color);
+    border-radius: 50%;
+    display: inline-block;
+}
+
+/* Компьютерге арналған навигация */
+nav {
+    display: flex;
+    gap: 28px;
+    align-items: center;
+}
+
+nav a {
+    text-decoration: none;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+    padding: 6px 12px;
+    border-radius: 12px;
+}
+
+nav a:hover, nav a.active {
+    color: var(--accent-color);
+    background: rgba(255, 107, 0, 0.05);
+}
+
+/* ҮШ СЫЗЫҚ БАТЫРМАСЫ (MENU TOGGLE) */
+.menu-toggle {
+    display: none; /* Компьютерде жасырулы болады */
+    background: none;
+    border: none;
+    width: 30px;
+    height: 24px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.menu-toggle span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background: var(--text-color);
+    border-radius: 2px;
+    position: absolute;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Үш сызықтың орналасуы */
+.menu-toggle span:nth-child(1) { top: 2px; }
+.menu-toggle span:nth-child(2) { top: 11px; }
+.menu-toggle span:nth-child(3) { bottom: 2px; }
+
+/* Басқан кезде Крестикке (X) айналу анимациясы */
+.menu-toggle.open span:nth-child(1) { 
+    transform: translateY(9px) rotate(45deg); 
+    background: var(--accent-color); 
+}
+.menu-toggle.open span:nth-child(2) { 
+    opacity: 0; 
+}
+.menu-toggle.open span:nth-child(3) { 
+    transform: translateY(-9px) rotate(-45deg); 
+    background: var(--accent-color); 
+}
+
+/* МОБИЛЬДІ ҚҰРЫЛҒЫЛАРҒА АРНАЛҒАН АДАПТИВТІ СТИЛЬДЕР (RESPONSIVE) */
+@media (max-width: 920px) {
+    .menu-toggle { 
+        display: block; /* Телефонда үш сызық көрінеді */
+    }
+    
+    nav {
+        position: fixed;
+        top: 0;
+        right: -100%; /* Мәзір оң жақта жасырулы тұрады */
+        width: 280px;
+        height: 100vh;
+        background: rgba(255, 255, 255, 0.98);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 100px 40px;
+        gap: 24px;
+        z-index: 1050;
+        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    
+    /* Мәзір ашылған кезде оң жақтан шығады */
+    nav.mobile-active {
+        right: 0;
+    }
+    
+    nav a {
+        font-size: 16px;
+        width: 100%;
+        padding: 10px 16px;
+    }
+}
+
+        nav a:hover, nav a.active {
+            color: var(--accent-color);
+            background: rgba(255, 107, 0, 0.05);
+        }
+
+        .nav-cta {
+            background: var(--accent-color);
+            color: #ffffff !important;
+            padding: 10px 20px !important;
+            border-radius: 40px;
+            font-weight: 600 !important;
+            box-shadow: var(--shadow-sm);
+        }
+        .nav-cta:hover { 
+            background: var(--accent-hover); 
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ==========================================================================
+           3. БАТЫРМАЛАР МЕН ИНТЕРФЕЙС ЭЛЕМЕНТТЕРІ
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--accent-color);
+            color: #ffffff;
+            border: 1px solid var(--accent-color);
+            padding: 14px 32px;
+            font-size: 15px;
+            font-weight: 600;
+            border-radius: 40px;
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            gap: 8px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn:hover {
+            background-color: var(--accent-hover);
+            border-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .btn:disabled {
+            background-color: #e8e8ed;
+            border-color: #e8e8ed;
+            color: var(--text-muted);
+            cursor: not-allowed;
+            transform: none !important;
+            box-shadow: none !important;
+        }
+
+        .btn-secondary {
+            background-color: #ffffff;
+            color: var(--text-color);
+            border: 1px solid var(--gray-border);
+        }
+
+        .btn-secondary:hover {
+            background-color: #f5f5f7;
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* ==========================================================================
+           4. ПАРАҚШАЛАРДЫҢ СТРУКТУРАСЫ
+           ========================================================================== */
+        .page-section { display: none; }
+        .page-section.active { display: block; }
+
+        /* ==========================================================================
+           5. БАСТЫ ПАРАҚША (HOME) - ЛЕНДИНГ СТИЛЬДЕРІ
+           ========================================================================== */
+        .hero-home {
+            padding: 100px 0;
+            text-align: center;
+            background: radial-gradient(circle at top, rgba(255,107,0,0.03) 0%, #f5f5f7 100%);
+            border-bottom: 1px solid var(--gray-border);
+        }
+
+        .hero-home h1 {
+            font-size: 56px;
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.03em;
+            margin-bottom: 24px;
+            color: var(--text-color);
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-home h1 span {
+            display: block;
+            font-size: 32px;
+            color: var(--accent-color);
+            margin-top: 14px;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+        }
+
+        .hero-home p {
+            font-size: 21px;
+            color: var(--text-secondary);
+            max-width: 720px;
+            margin: 0 auto 48px auto;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        /* Статистика Секциясы */
+        .stats-strip {
+            background: #ffffff;
+            border-bottom: 1px solid var(--gray-border);
+            padding: 40px 0;
+        }
+
+        .stats-grid-strip {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            text-align: center;
+        }
+
+        .stat-strip-card h3 {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 6px;
+        }
+
+        .stat-strip-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Кері Санақ Таймері Блогы */
+        .countdown-section {
+            background: #111112;
+            color: #ffffff;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .countdown-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+
+        .timer-grid-display {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            margin-bottom: 32px;
+        }
+
+        .timer-unit-box {
+            background: #1c1c1e;
+            padding: 16px 24px;
+            border-radius: var(--radius-sm);
+            min-width: 100px;
+            border: 1px solid #2c2c2e;
+        }
+
+        .timer-unit-num {
+            font-size: 38px;
+            font-weight: 800;
+            font-family: monospace;
+            display: block;
+            line-height: 1;
+            margin-bottom: 4px;
+            color: var(--accent-color);
+        }
+
+        .timer-unit-label {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .timer-divider {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--accent-color);
+        }
+
+        /* Артықшылықтар */
+        .features-section {
+            padding: 80px 0;
+            background: #ffffff;
+        }
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+        .feature-card {
+            padding: 32px;
+            background: #f5f5f7;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-border);
+            transition: var(--transition);
+        }
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            background: #ffffff;
+            border-color: var(--accent-color);
+        }
+        .feature-icon {
+            font-size: 36px;
+            margin-bottom: 20px;
+            display: inline-block;
+        }
+        .feature-card h3 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        .feature-card p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Интерактивный калькулятор гранта */
+        .calculator-section {
+            padding: 80px 0;
+            background: #f5f5f7;
+        }
+        .calc-wrapper {
+            max-width: 650px;
+            margin: 40px auto 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow-md);
+        }
+        .calc-title {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 24px;
+        }
+
+        /* Дорожная карта (Roadmap) */
+        .roadmap-section {
+            padding: 80px 0;
+            background: #ffffff;
+        }
+        .roadmap-timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 48px auto 0 auto;
+            padding-left: 32px;
+            border-left: 2px solid var(--gray-border);
+        }
+        .roadmap-step {
+            position: relative;
+            margin-bottom: 40px;
+        }
+        .roadmap-step::before {
+            content: '';
+            position: absolute;
+            left: -41px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--accent-color);
+            border: 4px solid #ffffff;
+            box-shadow: 0 0 0 2px var(--accent-color);
+        }
+        .roadmap-step h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        .roadmap-step p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+        /* Часто задаваемые вопросы (FAQ) */
+        .faq-section {
+            padding: 80px 0;
+            background: #f5f5f7;
+        }
+        .faq-container {
+            max-width: 760px;
+            margin: 40px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .faq-item {
+            background: #ffffff;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-sm);
+            padding: 24px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .faq-question {
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .faq-answer {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-top: 12px;
+            display: none;
+            line-height: 1.6;
+        }
+
+        /* Отзывы */
+        .reviews-section {
+            padding: 80px 0;
+            background: #ffffff;
+        }
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            margin-top: 40px;
+        }
+        .review-card {
+            background: #f5f5f7;
+            padding: 32px;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--gray-border);
+        }
+        .review-stars {
+            color: var(--gold-color);
+            margin-bottom: 12px;
+            font-size: 18px;
+        }
+        .review-text {
+            font-size: 14px;
+            font-style: italic;
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .review-author {
+            font-weight: 600;
+            font-size: 14px;
+        }
+        .review-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        /* ==========================================================================
+           6. ТЕСТТЕР ТІЗІМІ БӨЛІМІ (APPLE STYLE GRID)
+           ========================================================================== */
+        .section-header { 
+            padding: 60px 0 20px 0; 
+            margin-bottom: 20px;
+        }
+        .section-title { font-size: 38px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; color: #000; text-align: center;}
+        .section-desc { color: var(--text-secondary); font-size: 16px; font-weight: 400; text-align: center; max-width: 600px; margin: 0 auto; }
+
+        .category-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.07em;
+            margin: 40px 0 24px 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .category-title span {
+            font-size: 12px;
+            background: #e8e8ed;
+            padding: 2px 10px;
+            border-radius: 20px;
+            color: var(--text-color);
+            font-weight: 600;
+            letter-spacing: 0;
+        }
+
+        .test-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); 
+            gap: 28px; 
+            margin-bottom: 40px;
+        }
+        
+        .test-card {
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            padding: 36px;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+        }
+
+        .test-card:hover {
+            transform: translateY(-6px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow-md);
+        }
+
+        .test-card h3 { 
+            font-size: 22px; 
+            font-weight: 700; 
+            margin-bottom: 12px; 
+            color: var(--text-color); 
+            line-height: 1.3; 
+            letter-spacing: -0.02em;
+        }
+        
+        .test-card p { 
+            font-size: 14px; 
+            color: var(--text-secondary); 
+            margin-bottom: 32px; 
+            line-height: 1.6; 
+        }
+        
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: max-content;
+        }
+        .status-badge.available { 
+            background: rgba(255, 107, 0, 0.1); 
+            color: var(--accent-hover); 
+            border: 1px solid rgba(255, 107, 0, 0.15);
+        }
+        .status-badge.done { 
+            background: #f5f5f7; 
+            color: var(--text-muted); 
+            border: 1px solid var(--gray-border);
+        }
+
+        .card-action-btn {
+            width: 100%;
+            background: var(--accent-color);
+            color: #ffffff;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            transition: var(--transition);
+        }
+        
+        .card-action-btn:hover {
+            background: var(--accent-hover);
+            box-shadow: 0 4px 15px rgba(255,107,0,0.2);
+        }
+        
+        .card-action-btn:hover .arrow-icon {
+            transform: translateX(4px);
+        }
+        
+        .arrow-icon {
+            transition: var(--transition);
+            font-weight: 700;
+        }
+
+        .test-card.completed-card {
+            background: rgba(245, 245, 247, 0.6);
+            border-color: var(--gray-border);
+            box-shadow: none;
+            opacity: 0.75;
+        }
+        .test-card.completed-card:hover {
+            transform: none;
+            box-shadow: none;
+            border-color: var(--gray-border);
+        }
+        
+        .btn-card-disabled {
+            width: 100%;
+            background: #e8e8ed;
+            color: var(--text-muted);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 40px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+
+        /* ==========================================================================
+           7. ТЕСТ ОРЫНДАУ ИНТЕРФЕЙСІ (APPLE PREMIUM DESIGN)
+           ========================================================================== */
+        .test-container-box { max-width: 740px; margin: 40px auto 100px auto; }
+        
+        .test-top-bar {
+            display: flex; flex-direction: column; gap: 16px;
+            margin-bottom: 40px; padding: 24px; background: var(--surface-card);
+            border: 1px solid var(--gray-border); border-radius: var(--radius-md);
+            box-shadow: var(--shadow-sm);
+        }
+        .top-info-wrapper { display: flex; justify-content: space-between; align-items: center; width: 100%; }
+        .test-live-title { font-size: 18px; font-weight: 600; color: var(--text-secondary); }
+        
+        .timer-premium-box {
+            display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700;
+            color: var(--text-color); font-family: monospace; background: #f5f5f7;
+            padding: 8px 16px; border-radius: 30px; border: 1px solid var(--gray-border);
+        }
+        .timer-premium-box.warning { color: var(--error-color); border-color: var(--error-color); animation: pulse 1s infinite; }
+        
+        .progress-bar-container { width: 100%; height: 6px; background: #e8e8ed; border-radius: 20px; overflow: hidden; position: relative; }
+        .progress-bar-fill { height: 100%; width: 100%; background: var(--accent-color); transition: width 1s linear; }
+
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        .q-card {
+            background: var(--surface-card); border: 1px solid var(--gray-border);
+            padding: 40px; border-radius: var(--radius-md); margin-bottom: 24px;
+            box-shadow: var(--shadow-sm);
+        }
+        .q-title { font-size: 22px; font-weight: 700; margin-bottom: 32px; color: var(--text-color); line-height: 1.4; letter-spacing: -0.02em; }
+        .ans-list { list-style: none; display: flex; flex-direction: column; gap: 14px; }
+        
+        .ans-item {
+            background: #ffffff; border: 1px solid var(--gray-border); padding: 18px 24px;
+            border-radius: var(--radius-sm); cursor: pointer; font-size: 15px; font-weight: 500;
+            transition: var(--transition); display: flex; align-items: center; gap: 16px; color: var(--text-color);
+        }
+        .ans-item:hover { border-color: var(--accent-color); background: rgba(255, 107, 0, 0.02); }
+        .ans-item.selected { background: var(--premium-gradient); color: #ffffff; border-color: var(--accent-color); }
+        
+        .ans-prefix {
+            width: 26px; height: 26px; border: 1px solid var(--gray-border);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-size: 12px; font-weight: 600; color: var(--text-secondary);
+            background: #f5f5f7;
+        }
+        .ans-item.selected .ans-prefix { border-color: #ffffff; color: var(--accent-color); background: #ffffff; }
+
+        .test-footer-actions { display: flex; justify-content: space-between; align-items: center; margin-top: 32px; }
+
+        /* ==========================================================================
+           8. НӘТИЖЕ ЖӘНЕ ҚАТЕМЕН ЖҰМЫС
+           ========================================================================== */
+        .score-card {
+            text-align: center;
+            padding: 64px 24px;
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-lg);
+            margin: 40px 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .score-num {
+            font-size: 84px;
+            font-weight: 800;
+            letter-spacing: -4px;
+            margin: 16px 0;
+            color: var(--accent-color);
+        }
+
+        .review-container-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-width: 740px;
+            margin: 0 auto;
+        }
+
+        .review-card-item {
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            padding: 28px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 12px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .review-card-item.correct {
+            border-left: 5px solid var(--success-color);
+        }
+
+        .review-card-item.wrong {
+            border-left: 5px solid var(--error-color);
+        }
+
+        /* ==========================================================================
+           9. ТАПСЫРЫЛҒАН ТЕСТТЕР КЕСТЕСІ
+           ========================================================================== */
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 32px;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-md);
+            background: var(--surface-card);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 600px;
+        }
+
+        .data-table th {
+            background: #f5f5f7;
+            padding: 18px 24px;
+            font-weight: 600;
+            font-size: 14px;
+            border-bottom: 1px solid var(--gray-border);
+            color: var(--text-color);
+        }
+
+        .data-table td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--gray-border);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* ==========================================================================
+           10. УЛЬТРА-ЛЕНДИНГ СТИЛЬДЕРІ (COURSES & ABOUT)
+           ========================================================================== */
+        .ld-hero {
+            padding: 80px 0;
+            text-align: center;
+            background: radial-gradient(circle at bottom, rgba(255,107,0,0.04) 0%, #f5f5f7 100%);
+            border-bottom: 1px solid var(--gray-border);
+        }
+        
+        .ld-badge {
+            display: inline-block;
+            padding: 6px 16px;
+            background: #ffffff;
+            border: 1px solid var(--gray-border);
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 24px;
+            color: var(--accent-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .ld-hero h1 {
+            font-size: 46px;
+            font-weight: 800;
+            line-height: 1.2;
+            max-width: 900px;
+            margin: 0 auto 24px auto;
+            color: var(--text-color);
+            letter-spacing: -0.02em;
+        }
+
+        .ld-hero p {
+            font-size: 19px;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto 40px auto;
+        }
+
+        .ld-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 24px;
+            margin-top: -30px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .ld-stat-card {
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            padding: 32px;
+            border-radius: var(--radius-md);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+        }
+
+        .ld-stat-card h3 {
+            font-size: 36px;
+            font-weight: 800;
+            color: var(--accent-color);
+            margin-bottom: 4px;
+        }
+
+        .ld-stat-card p {
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Тарифы оқулық курстары */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .price-card {
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-lg);
+            padding: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .price-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent-color);
+        }
+
+        .price-card.featured {
+            border: 2px solid var(--accent-color);
+            background: #ffffff;
+        }
+
+        .badge-premium-card {
+            position: absolute;
+            top: -14px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--premium-gradient);
+            color: #ffffff;
+            padding: 6px 18px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-radius: 20px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .price-title { font-size: 22px; font-weight: 700; margin-bottom: 8px; }
+        .price-desc { font-size: 14px; color: var(--text-secondary); margin-bottom: 24px; }
+        
+        .price-num-display {
+            font-size: 44px;
+            font-weight: 800;
+            color: var(--text-color);
+            margin-bottom: 32px;
+            letter-spacing: -0.03em;
+        }
+        .price-num-display span { font-size: 16px; color: var(--text-muted); font-weight: 400; letter-spacing: 0; }
+
+        .price-features-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            margin-bottom: 40px;
+            text-align: left;
+        }
+        .price-features-list li {
+            font-size: 14px;
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 500;
+        }
+        .price-features-list li::before {
+            content: '✓';
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        /* Команда және Таймлайн */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .team-card {
+            background: #ffffff;
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            background: #e8e8ed;
+            border-radius: 50%;
+            margin: 0 auto 16px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 36px;
+        }
+
+        .team-name { font-size: 18px; font-weight: 700; margin-bottom: 4px; }
+        .team-role { font-size: 13px; color: var(--text-secondary); margin-bottom: 12px; }
+        .team-bio { font-size: 13px; color: var(--text-muted); }
+
+        /* ==========================================================================
+           11. МОДАЛЬДІ ТЕРЕЗЕЛЕР ЖҮЙЕСІ ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+        
+        .modal-overlay.active {
+            display: flex;
+            opacity: 1;
+        }
+        
+        .modal-window {
+            background: var(--surface-color);
+            width: 100%;
+            max-width: 440px;
+            border-radius: var(--radius-md);
+            padding: 40px;
+            border: 1px solid var(--gray-border);
+            box-shadow: var(--shadow-lg);
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+        }
+        
+        .modal-overlay.active .modal-window {
+            transform: scale(1) translateY(0);
+        }
+        
+        .close-modal-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #f5f5f7;
+            border: none;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+        .close-modal-btn:hover { background: #e8e8ed; color: var(--accent-color); }
+        
+        .modal-header h2 {
+            font-size: 26px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 8px;
+        }
+        
+        .modal-header p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 28px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 14px 16px;
+            border-radius: var(--radius-xs);
+            border: 1px solid var(--gray-border);
+            background: #f5f5f7;
+            font-size: 14px;
+            font-weight: 500;
+            outline: none;
+            transition: var(--transition);
+        }
+        
+        .form-control:focus {
+            border-color: var(--accent-color);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(255,107,0,0.15);
+        }
+
+        .modal-footer-btn {
+            width: 100%;
+            margin-top: 12px;
+        }
+        
+        .modal-switch-text {
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-top: 20px;
+        }
+        
+        .modal-switch-text span {
+            color: var(--accent-color);
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .modal-switch-text span:hover { text-decoration: underline; }
+
+        /* Панель Профиля Стили */
+        .profile-container-box {
+            max-width: 900px;
+            margin: 40px auto 100px auto;
+        }
+        .profile-hero-card {
+            background: var(--surface-card);
+            border: 1px solid var(--gray-border);
+            border-radius: var(--radius-md);
+            padding: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 40px;
+        }
+        .profile-info-block {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+        .profile-large-avatar {
+            width: 84px;
+            height: 84px;
+            border-radius: 50%;
+            background: var(--premium-gradient);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            font-weight: 700;
+            box-shadow: var(--shadow-md);
+        }
+        .profile-meta-text h2 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+        .profile-meta-text p {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+
+/* ==========================================================================
+   ОБНОВЛЕННЫЙ ПРЕМИУМ ФУТЕР С CDN-ИКОНКАМИ (APPLE STYLE)
+   ========================================================================== */
+#main-footer {
+    background: #ffffff;
+    border-top: 1px solid var(--gray-border);
+    padding: 70px 0 0 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-top: auto;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px 50px 24px;
+    display: grid;
+    grid-template-columns: 2fr repeat(2, 1fr);
+    gap: 60px;
+}
+
+.footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.footer-logo {
+    font-size: 22px;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--accent-color);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.brand-desc {
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--text-secondary);
+    max-width: 340px;
+}
+
+/* Блок иконок соцсетей */
+.footer-socials {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    width: 42px;
+    height: 42px;
+    background: #f5f5f7;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #1d1d1f;
+    font-size: 20px; /* Управление размером CDN иконки */
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    border: 1px solid rgba(0, 0, 0, 0.02);
+    text-decoration: none;
+}
+
+/* Эффект плавного всплытия кнопки */
+.social-icon:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* Эффект бренда Instagram (Градиент) */
+.social-icon.instagram:hover {
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    color: #ffffff;
+    border-color: transparent;
+}
+
+/* Эффект бренда WhatsApp (Зеленый) */
+.social-icon.whatsapp:hover {
+    background: #25D366;
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+}
+
+/* Эффект бренда Telegram (Синий) */
+.social-icon.telegram:hover {
+    background: #0088cc;
+    color: #ffffff;
+    border-color: transparent;
+    box-shadow: 0 8px 20px rgba(0, 136, 204, 0.25);
+}
+
+/* Колонки навигации */
+.footer-nav-col h4 {
+    color: var(--text-color);
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.footer-nav-col ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.footer-nav-col ul li a {
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: var(--transition);
+    font-weight: 500;
+    display: inline-block;
+}
+
+.footer-nav-col ul li a:hover {
+    color: var(--accent-color);
+    transform: translateX(4px);
+}
+
+/* Нижняя панель */
+.footer-bottom {
+    border-top: 1px solid var(--gray-border);
+    background: #f5f5f7;
+    padding: 24px 0;
+}
+
+.footer-bottom-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.developer-tag span {
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+/* Адаптивность под мобильные устройства */
+@media (max-width: 768px) {
+    .footer-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        padding-bottom: 40px;
+    }
+    
+    .brand-desc {
+        max-width: 100%;
+    }
+    
+    .footer-bottom-container {
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+}
+
+        /* ==========================================================================
+           13. МОБИЛЬДІ АДАПТИВТІЛІК (RESPONSIVE STYLES)
+           ========================================================================== */
+        .menu-toggle-btn {
+            display: none;
+            background: none;
+            border: none;
+            width: 30px;
+            height: 24px;
+            position: relative;
+            cursor: pointer;
+            z-index: 1100;
+        }
+
+        .menu-toggle-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background: var(--text-color);
+            border-radius: 2px;
+            position: absolute;
+            transition: var(--transition);
+        }
+
+        .menu-toggle-btn span:nth-child(1) { top: 2px; }
+        .menu-toggle-btn span:nth-child(2) { top: 11px; }
+        .menu-toggle-btn span:nth-child(3) { bottom: 2px; }
+
+        .menu-toggle-btn.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); background: var(--accent-color); }
+        .menu-toggle-btn.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle-btn.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); background: var(--accent-color); }
+
+        @media (max-width: 920px) {
+            .menu-toggle-btn { display: block; }
+            
+            nav {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 280px;
+                height: 100vh;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(20px);
+                -webkit-backdrop-filter: blur(20px);
+                box-shadow: -10px 0 30px rgba(0,0,0,0.05);
+                flex-direction: column;
+                align-items: flex-start;
+                padding: 100px 40px;
+                gap: 24px;
+                z-index: 1050;
+                transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            }
+            
+            nav.mobile-active {
+                right: 0;
+            }
+            
+            nav a {
+                font-size: 16px;
+                width: 100%;
+                padding: 10px 16px;
+            }
+            
+            .nav-cta {
+                text-align: center;
+                margin-top: 16px;
+            }
+
+            .hero-home h1 { font-size: 38px; }
+            .hero-home p { font-size: 16px; }
+            .stats-grid-strip { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+            .timer-grid-display { gap: 12px; }
+            .timer-unit-box { min-width: 70px; padding: 12px 14px; }
+            .timer-unit-num { font-size: 26px; }
+            
+            .profile-hero-card { flex-direction: column; align-items: flex-start; gap: 24px; }
+        }
+
+        @media (max-width: 520px) {
+            .stats-grid-strip { grid-template-columns: 1fr; }
+            .test-footer-actions { flex-direction: column; gap: 16px; width: 100%; }
+            .test-footer-actions .btn { width: 100%; }
+            .top-info-wrapper { flex-direction: column; gap: 12px; align-items: flex-start; }
+            .timer-premium-box { width: 100%; justify-content: center; }
+            .calc-wrapper { padding: 24px; }
+            .modal-window { padding: 24px; margin: 0 16px; }
+        }
+
+        /* ==========================================================================
+   ИНТЕРФЕЙС БАСТЫ ПАРАҚША (HERO & VECTOR ICONS STYLE)
+   ========================================================================== */
+.hero-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 40px;
+    align-items: center;
+    text-align: left !important;
+}
+
+.hero-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.hero-badge {
+    background: rgba(255, 107, 0, 0.08);
+    color: var(--accent-color);
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid rgba(255, 107, 0, 0.15);
+}
+
+.hero-home h1 {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    text-align: left !important;
+}
+
+.hero-home p {
+    margin: 0 0 36px 0 !important;
+    text-align: left !important;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+/* ОҢ ЖАҚТАҒЫ КАРТАЛАР МЕН ВЕКТОРЛЫҚ ИКОНКАЛАР КАРКАСЫ */
+.hero-visual {
+    position: relative;
+    height: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.main-glow-circle {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    background: radial-gradient(circle, rgba(255,107,0,0.12) 0%, rgba(255,107,0,0) 70%);
+    border-radius: 50%;
+    z-index: 1;
+    animation: pulseGlow 4s infinite ease-in-out;
+}
+
+.floating-card {
+    position: absolute;
+    background: #ffffff;
+    border: 1px solid var(--gray-border);
+    padding: 14px 20px;
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    z-index: 5;
+    transition: var(--transition);
+}
+
+/* Жаңа векторлық иконкаларға арналған premium қорапша */
+.icon-box-premium {
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 107, 0, 0.08);
+    color: var(--accent-color);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    transition: var(--transition);
+}
+
+.floating-card .text {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--text-color);
+    line-height: 1.3;
+}
+
+.floating-card .text .sub {
+    display: block;
+    font-size: 11px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    margin-top: 2px;
+}
+
+/* Карталардың қалқу анимациясы */
+.card-1 {
+    top: 40px;
+    left: 10px;
+    animation: floatAnim 3.5s infinite ease-in-out;
+}
+
+.card-2 {
+    top: 170px;
+    right: 10px;
+    animation: floatAnim 4s infinite ease-in-out 0.5s;
+}
+
+.card-3 {
+    bottom: 40px;
+    left: 40px;
+    animation: floatAnim 4.5s infinite ease-in-out 1s;
+}
+
+.floating-card:hover {
+    transform: scale(1.04) translateY(-6px) !important;
+    border-color: var(--accent-color);
+    box-shadow: var(--shadow-lg);
+}
+
+.floating-card:hover .icon-box-premium {
+    background: var(--accent-color);
+    color: #ffffff;
+}
+
+/* ҚАДАМДАР СЕКЦИЯСЫ (WORKFLOW) */
+.workflow-section {
+    padding: 90px 0;
+    background: #ffffff;
+    border-bottom: 1px solid var(--gray-border);
+}
+
+.workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 32px;
+    margin-top: 50px;
+}
+
+.workflow-card {
+    background: var(--bg-color);
+    padding: 40px 32px;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.workflow-card:hover {
+    background: #ffffff;
+    border-color: var(--accent-color);
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-md);
+}
+
+.step-number {
+    font-size: 48px;
+    font-weight: 900;
+    color: rgba(255, 107, 0, 0.08);
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    line-height: 1;
+    transition: var(--transition);
+}
+
+.workflow-card:hover .step-number {
+    color: rgba(255, 107, 0, 0.2);
+    transform: scale(1.1);
+}
+
+.workflow-card h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 14px;
+    color: var(--text-color);
+}
+
+.workflow-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+/* FAQ ішіндегі иконка стилі */
+.faq-question span i {
+    font-size: 14px;
+    color: var(--text-secondary);
+    transition: var(--transition);
+}
+
+/* АНИМАЦИЯЛАР (KEYFRAMES) */
+@keyframes floatAnim {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-12px); }
+    100% { transform: translateY(0px); }
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(0.9); opacity: 0.6; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.9); opacity: 0.6; }
+}
+
+/* МОБИЛЬДІ ҚҰРЫЛҒЫЛАР БАСҚАРУЫ */
+@media (max-width: 920px) {
+    .hero-wrapper {
+        grid-template-columns: 1fr;
+        text-align: center !important;
+    }
+    .hero-content {
+        align-items: center;
+    }
+    .hero-home h1, .hero-home p {
+        text-align: center !important;
+    }
+    .hero-buttons {
+        justify-content: center;
+    }
+    .hero-visual {
+        height: 340px;
+        width: 100%;
+        margin-top: 20px;
+    }
+    .card-1 { left: 10px; top: 20px; }
+    .card-2 { right: 10px; top: 130px; }
+    .card-3 { left: 20px; bottom: 20px; }
+}
+
+
+
+
+/* ==========================================================================
+   HISTORICA.KZ ЭКСКЛЮЗИВТІ СЕКЦИЯ СТИЛЬДЕРІ (PREMIUM DARK/ORANGE BLEND)
+   ========================================================================== */
+.historica-premium-showcase {
+    background: linear-gradient(135deg, #111112 0%, #1d1d1f 100%);
+    color: #ffffff;
+    padding: 90px 0;
+    border-radius: var(--radius-md);
+    margin: 40px auto;
+    max-width: 1200px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 107, 0, 0.15);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+}
+
+.historica-wrapper {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 50px;
+    align-items: center;
+    padding: 0 40px;
+}
+
+.historica-info {
+    text-align: left;
+}
+
+.historica-badge {
+    background: rgba(255, 107, 0, 0.15);
+    color: var(--accent-color);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(255, 107, 0, 0.25);
+}
+
+.historica-info h2 {
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.historica-main-desc {
+    font-size: 16px;
+    line-height: 1.6;
+    color: #a1a1a6;
+    margin-bottom: 35px;
+}
+
+/* Артықшылықтар тізімі */
+.historica-features-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 40px;
+}
+
+.historica-feat-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+.historica-feat-item .h-icon {
+    width: 44px;
+    height: 44px;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--accent-color);
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.05);
+}
+
+.historica-feat-item h4 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+
+.historica-feat-item p {
+    font-size: 13.5px;
+    color: #86868b;
+    line-height: 1.5;
+}
+
+/* Іс-қимыл аймағы */
+.historica-action-zone {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    align-items: flex-start;
+}
+
+.btn-historica-cta {
+    background: #ffffff !important;
+    color: #1d1d1f !important;
+    font-weight: 700 !important;
+    border: none !important;
+    padding: 14px 28px !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 15px rgba(255,255,255,0.1);
+}
+
+.btn-historica-cta:hover {
+    background: var(--accent-color) !important;
+    color: #ffffff !important;
+    transform: translateY(-2px);
+}
+
+.historica-promo-text {
+    font-size: 12px;
+    color: var(--accent-color);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ОҢ ЖАҚТАҒЫ ИМИТАЦИЯЛЫҚ ВИЗУАЛДЫ ТЕРЕЗЕ */
+.historica-visual-preview {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.preview-window {
+    width: 100%;
+    max-width: 340px;
+    background: #1c1c1e;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 16px;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+    overflow: hidden;
+    text-align: left;
+    animation: floatDashboard 4s infinite ease-in-out;
+}
+
+.window-header {
+    background: #2c2c2e;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.window-header .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+.window-header .dot.red { background: #ff5f56; }
+.window-header .dot.yellow { background: #ffbd2e; }
+.window-header .dot.green { background: #27c93f; }
+
+.window-header .window-title {
+    color: #8e8e93;
+    font-size: 11px;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: monospace;
+}
+
+.window-body {
+    padding: 24px;
+}
+
+.mock-badge {
+    background: rgba(52, 199, 89, 0.15);
+    color: #34c759;
+    padding: 4px 10px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 700;
+    display: inline-block;
+    margin-bottom: 12px;
+}
+
+.window-body h4 {
+    font-size: 20px;
+    color: #ffffff;
+    margin-bottom: 16px;
+}
+
+.mock-progress-bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255,255,255,0.1);
+    border-radius: 3px;
+    margin-bottom: 14px;
+}
+
+.mock-progress-bar .fill {
+    width: 75%;
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 3px;
+}
+
+.mock-stats-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #aeaeb2;
+    margin-bottom: 20px;
+}
+
+.mock-map-graphic {
+    background: rgba(255, 107, 0, 0.05);
+    border: 1px dashed rgba(255, 107, 0, 0.3);
+    border-radius: 12px;
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--accent-color);
+}
+
+.mock-map-graphic i {
+    font-size: 32px;
+}
+
+.mock-map-graphic span {
+    font-size: 12px;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+/* Тарифтер элементтеріндегі иконкалар түзетуі */
+.price-features-list li {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: left;
+}
+
+/* АНИМАЦИЯ */
+@keyframes floatDashboard {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+/* РЕСПОНСИВ (МОБИЛЬДІК БЕЙІМДЕЛУ) */
+@media (max-width: 920px) {
+    .historica-wrapper {
+        grid-template-columns: 1fr;
+        padding: 0 24px;
+        gap: 40px;
+    }
+    .historica-premium-showcase {
+        margin: 20px;
+    }
+    .historica-info h2 {
+        font-size: 26px;
+    }
+    .historica-action-zone {
+        align-items: stretch;
+    }
+    .btn-historica-cta {
+        justify-content: center;
+    }
+}
+
+
+/* ==========================================================================
+   CLEAN WHITE REDIRECT CARD STYLES
+   ========================================================================== */
+.white-luxury-redirect-card {
+    background: #ffffff; /* ТАП-ТАЗА АҚ ФОН */
+    border: 1px solid rgba(229, 229, 234, 0.9);
+    
+    /* Тек төменгі жағы ғана жұмырланған (Бұрыш радиусы) */
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 28px;
+    border-bottom-right-radius: 28px;
+    
+    padding: 40px 50px;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    margin-bottom: 25px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.03);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+/* Блоктың үстіне барғандағы нәзік қозғалыс */
+.white-luxury-redirect-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.06);
+}
+
+.card-left-info-v3 {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    position: relative;
+    z-index: 5;
+}
+
+.badge-row-v3 {
+    display: flex;
+    align-items: center;
+}
+
+.redirect-badge-v3 {
+    background: rgba(255, 107, 0, 0.08);
+    color: #ff6b00;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
+.card-main-title-v3 {
+    font-size: 1.9rem;
+    font-weight: 800;
+    color: #1d1d1f; /* Apple қара түсі */
+    letter-spacing: -0.02em;
+}
+
+.card-sub-text-v3 {
+    font-size: 1rem;
+    color: #6e6e73; /* Apple сұр түсі */
+    line-height: 1.6;
+    max-width: 540px;
+}
+
+/* ҚОЮ ҚАРА ФОНДЫ БАТЫРМА - СӨЗДЕРІ ӨТЕ АНЫҚ КӨРІНЕДІ */
+.card-action-btn-v3 {
+    align-self: flex-start;
+    margin-top: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    background: #1d1d1f; /* Қою қара фон */
+    color: #ffffff !important; /* МӘТІН АҚ ТҮСТІ - МІНСІЗ КОНТРАСТ */
+    text-decoration: none !important;
+    padding: 15px 35px;
+    border-radius: 14px;
+    font-size: 1.05rem;
+    font-weight: 700;
+    transition: all 0.25s ease;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+}
+
+/* Батырмаға тышқан апарғанда қызғылт-сары болады */
+.card-action-btn-v3:hover {
+    background: #ff6b00;
+    transform: translateY(-1px);
+    box-shadow: 0 10px 20px rgba(255, 107, 0, 0.25);
+}
+
+.btn-arrow-v3 {
+    width: 18px; height: 18px;
+    transition: transform 0.25s ease;
+}
+
+.card-action-btn-v3:hover .btn-arrow-v3 {
+    transform: translateX(4px);
+}
+
+/* СУРЕТ ОРНplaceholder ЖӘНЕ ОНЫҢ АНИМАЦИЯСЫ */
+.card-right-visual-v3 {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.soft-orange-blur {
+    position: absolute;
+    width: 160px; height: 160px;
+    background: #ff6b00;
+    filter: blur(70px);
+    opacity: 0.1;
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+/* Сурет контейнеріне баяу қалқу (Floating) анимациясы */
+.animated-image-holder {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: premiumFloatImage 5s infinite ease-in-out;
+}
+
+.kazakhstan-map-photo {
+    width: 100%;
+    height: auto;
+    max-height: 230px;
+    object-fit: contain;
+    filter: drop-shadow(0 10px 25px rgba(0,0,0,0.04));
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Блоктың үстіне барғанда сурет сәл үлкейеді */
+.white-luxury-redirect-card:hover .kazakhstan-map-photo {
+    transform: scale(1.04);
+}
+
+/* ==========================================================================
+   FLOATING ANIMATION KEYFRAMES
+   ========================================================================== */
+@keyframes premiumFloatImage {
+    0%, 100% {
+        transform: translateY(0) scale(1);
+        filter: drop-shadow(0 10px 25px rgba(0,0,0,0.04));
+    }
+    50% {
+        transform: translateY(-10px) scale(1.02);
+        /* Тыныс алу кезінде көлеңке де өзгереді */
+        filter: drop-shadow(0 20px 35px rgba(255, 107, 0, 0.08));
+    }
+}
+
+/* Адаптивтілік (Мобильді телефондар) */
+@media (max-width: 992px) {
+    .white-luxury-redirect-card {
+        grid-template-columns: 1fr;
+        padding: 35px;
+        gap: 30px;
+    }
+    .card-right-visual-v3 {
+        order: -1; /* Мобильді нұсқада сурет бірінші тұрады */
+        height: 180px;
+    }
+    .card-main-title-v3 {
+        font-size: 1.6rem;
+    }
+}
+
+/* ==========================================================================
+   BROWSER WARNING MODAL STYLES (APPLE STYLE)
+   ========================================================================== */
+.premium-modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Артқыфонды күңгірттеу */
+    backdrop-filter: blur(8px);     /* Эстетикалық бұлыңғырлық */
+    -webkit-backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999; /* Экрандағы ең жоғарғы қабат */
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Модалды терезе ашылғанда белсенді болатын класс */
+.premium-modal-overlay.is-active {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.premium-modal-window {
+    background: #ffffff;
+    padding: 35px 30px;
+    border-radius: 24px;
+    max-width: 420px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+    transform: scale(0.9);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-modal-overlay.is-active .premium-modal-window {
+    transform: scale(1);
+}
+
+.modal-icon-wrapper {
+    width: 60px; height: 60px;
+    background: rgba(255, 107, 0, 0.1);
+    color: #ff6b00;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    margin: 0 auto 20px auto;
+}
+
+.modal-welcome-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #1d1d1f;
+    margin-bottom: 12px;
+    letter-spacing: -0.01em;
+}
+
+.modal-welcome-text {
+    font-size: 0.95rem;
+    color: #6e6e73;
+    line-height: 1.6;
+    margin-bottom: 25px;
+}
+
+.modal-welcome-text strong {
+    color: #1d1d1f;
+}
+
+/* Нағыз контрасты, анық көрінетін батырма */
+.modal-submit-btn {
+    width: 100%;
+    background: #1d1d1f;
+    color: #ffffff;
+    border: none;
+    padding: 14px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.modal-submit-btn:hover {
+    background: #ff6b00; /* Үстіне барғанда оранжевый болады */
+}
+
+.modal-submit-btn:active {
+    transform: scale(0.98);
+}
+
+/* ==========================================================================
+   УЛЬТРА-КРЕАТИВНЫЙ КРУГОВОЙ ПРЕЛОАДЕР С ЗЕЛЕНОЙ ТОЧКОЙ И ИНДИКАТОРОМ
+   ========================================================================== */
+.apple-clean-preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff; /* Кристально чистый белый фон */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000000; /* Поверх абсолютно всех элементов на сайте */
+    
+    /* Эффект круглого затвора (на старте 100% экрана) */
+    clip-path: circle(100% at 50% 50%);
+    -webkit-clip-path: circle(100% at 50% 50%);
+    
+    /* Плавное стягивание круга в центр за 0.9 сек */
+    transition: clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1), 
+                -webkit-clip-path 0.9s cubic-bezier(0.76, 0, 0.24, 1),
+                opacity 0.5s ease;
+    will-change: clip-path, -webkit-clip-path;
+}
+
+/* Когда страница загружена — круг сжимается в 0% ровно по центру */
+.apple-clean-preloader.is-hidden {
+    clip-path: circle(0% at 50% 50%);
+    -webkit-clip-path: circle(0% at 50% 50%);
+    pointer-events: none;
+}
+
+/* Блокировка скролла сайта во время загрузки */
+body.preloader-active {
+    overflow: hidden !important;
+}
+
+.preloader-branding {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Контейнер для логотипа и точки */
+.logo-container {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+}
+
+/* Фирменный оранжевый логотип ZAMANAT */
+.pure-logo {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--accent-color); /* Ваш оранжевый акцент */
+    letter-spacing: 0.4em; /* Премиальный широкий отступ */
+    text-transform: uppercase;
+    margin: 0;
+    padding-left: 0.4em; /* Идеальная центровка */
+    opacity: 0;
+    transform: scale(0.97);
+    animation: fadeInLogo 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Живая зеленая пульсирующая точка */
+.live-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #34c759; /* Использование вашего --success-color */
+    border-radius: 50%;
+    margin-left: -4px; /* Корректировка из-за letter-spacing у текста */
+    opacity: 0;
+    animation: fadeInDot 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards,
+               pulseDot 1.8s infinite ease-in-out 0.9s;
+    box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.4);
+}
+
+/* Контейнер для линии загрузки */
+.progress-wrapper {
+    width: 140px;
+    height: 3px;
+    background-color: rgba(0, 0, 0, 0.05); /* Едва заметный трек линии */
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Настоящая линия прогресса (заполняется через JS) */
+.progress-core-line {
+    width: 0%;
+    height: 100%;
+    background-color: var(--accent-color); /* Или можно сделать var(--text-color), если хотите её тёмной */
+    border-radius: 10px;
+    will-change: width;
+}
+
+/* Исчезновение элементов внутри при закрытии затвора */
+.apple-clean-preloader.is-hidden .preloader-branding {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: opacity 0.3s ease, transform 0.5s cubic-bezier(0.76, 0, 0.24, 1);
+}
+
+/* Анимации появления */
+@keyframes fadeInLogo {
+    to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeInDot {
+    to { opacity: 1; }
+}
+
+/* Эффект пульсации «онлайн» статуса у точки */
+@keyframes pulseDot {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 199, 89, 0.6);
+    }
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 6px rgba(52, 199, 89, 0);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(52, 199, 89, 0);
+    }
+}
+
+
+/* ==========================================================================
+   CHRONOLOGY BLOCK V3 EXTENSION (APPLE STYLE)
+   ========================================================================== */
+
+/* Негізгі ортақ контейнер стильдері (Егер сізде бұрын жазылмаған болса) */
+.luxury-promo-card-v3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 28px;
+    padding: 40px;
+    gap: 30px;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.03);
+    margin-bottom: 24px;
+}
+
+/* Хронология блогының тақырыптық реңкі */
+.chronology-card-theme .redirect-badge-v3 {
+    background: rgba(255, 107, 0, 0.08) !important;
+    color: #ff6b00 !important;
+}
+
+/* Оң жақтағы визуалды бөлімнің теңшелімі */
+.chronology-visual-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+}
+
+/* Орталық визуалды құрылғы (Таймлайн виджеті) */
+.timeline-clock-widget {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Матовый шыны эффектісі (Apple Glassmorphism) */
+.clock-glass-surface {
+    width: 110px;
+    height: 110px;
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 20px 50px rgba(255, 107, 0, 0.12);
+    z-index: 10;
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.luxury-promo-card-v3:hover .clock-glass-surface {
+    transform: scale(1.06) rotate(5deg);
+    border-color: rgba(255, 107, 0, 0.2);
+}
+
+/* Хронология белгішесі (Иконка) */
+.timeline-main-icon {
+    font-size: 2.4rem;
+    color: #ff6b00;
+    filter: drop-shadow(0 4px 8px rgba(255, 107, 0, 0.2));
+}
+
+/* Толқынды пульсациялық сақиналар анимациясы */
+.pulse-ring {
+    position: absolute;
+    width: 110px;
+    height: 110px;
+    border: 1px solid rgba(255, 107, 0, 0.3);
+    border-radius: 50%;
+    animation: timelinePulse 3s infinite linear;
+    z-index: 1;
+    pointer-events: none;
+}
+.pulse-ring.delay-1 { animation-delay: 1s; }
+.pulse-ring.delay-2 { animation-delay: 2s; }
+
+@keyframes timelinePulse {
+    0% { transform: scale(1); opacity: 0.6; }
+    100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* Жетістік жылдарының (1465, 1729, 1991) қалқымалы қозғалысы */
+.floating-year {
+    position: absolute;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+    font-size: 0.95rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    background: #ffffff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+    border: 1px solid rgba(0,0,0,0.03);
+    animation: floatingFloat 4s ease-in-out infinite;
+    z-index: 15;
+}
+
+.yr-1 { top: 0; left: -10px; animation-delay: 0s; }
+.yr-2 { bottom: 15px; right: -20px; animation-delay: 1.3s; }
+.yr-3 { top: 25px; right: -15px; animation-delay: 2.5s; }
+
+@keyframes floatingFloat {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-8px); }
+    100% { transform: translateY(0px); }
+}
+
+/* Сотка нұсқасына (Мобилкаға) бейімделуі */
+@media (max-width: 768px) {
+    .luxury-promo-card-v3 {
+        flex-direction: column !important;
+        padding: 30px 24px;
+        text-align: center;
+        align-items: center;
+    }
+    .card-left-info-v3 {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    .card-right-visual-v3 {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .timeline-clock-widget {
+        width: 160px;
+        height: 160px;
+    }
+    .clock-glass-surface {
+        width: 90px;
+        height: 90px;
+    }
+    .timeline-main-icon {
+        font-size: 2rem;
+    }
+    .pulse-ring {
+        width: 90px;
+        height: 90px;
+    }
+}
+
+
+/* ==========================================================================
+   100 DATES PREMIUM ORANGE WIDGET STYLES
+   ========================================================================== */
+:root {
+    --ios-accent-pure: #ff9500; /* Сенің фирмалық таза оранжевый түсің */
+    --ios-accent-glow-pure: rgba(255, 149, 0, 0.08);
+}
+
+/* Оң жақтағы жұмсақ оранжевый артқы жарық */
+.soft-orange-blur-v3 {
+    position: absolute;
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle, rgba(255,149,0,0.2) 0%, rgba(255,149,0,0) 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Виджеттің сыртқы контейнері */
+.dates-visual-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 160px;
+    position: relative;
+    z-index: 2;
+}
+
+.dates-counter-widget {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+/* Орталықтағы шыны эффектілі шеңбер */
+.counter-glass-surface {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border: 2px solid var(--ios-accent-pure);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    box-shadow: 0 10px 25px rgba(255, 149, 0, 0.12);
+}
+
+/* Ортадағы басты иконка */
+.dates-main-icon {
+    font-size: 2rem;
+    color: var(--ios-accent-pure);
+}
+
+/* Таза оранжевый импульстік анимациялық шеңберлер */
+.orange-pulse-ring {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(255, 149, 0, 0.4);
+    border-radius: 50%;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    animation: orangePulse 3s infinite cubic-bezier(0.215, 0.610, 0.355, 1);
+    opacity: 0;
+}
+
+.orange-delay-1 { animation-delay: 1s; }
+.orange-delay-2 { animation-delay: 2s; }
+
+@keyframes orangePulse {
+    0% {
+        transform: scale(0.95);
+        opacity: 0.8;
+    }
+    50% {
+        opacity: 0.4;
+    }
+    100% {
+        transform: scale(1.6);
+        opacity: 0;
+    }
+}
+
+/* Қалқымалы даталар мен сандардың стильдері */
+.floating-stat-badge {
+    position: absolute;
+    background: var(--ios-accent-glow-pure);
+    color: var(--ios-accent-pure);
+    border: 1px solid rgba(255, 149, 0, 0.25);
+    padding: 4px 10px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 0.75rem;
+    z-index: 6;
+    animation: floatUpDown 4s infinite ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+}
+
+/* Орындарды реттеу және жеке жылдамдықтар */
+.stat-1 { top: -15px; left: -25px; animation-delay: 0s; }
+.stat-2 { bottom: -10px; right: -30px; animation-delay: 1.3s; font-size: 0.85rem; padding: 5px 12px; border-width: 1.5px; }
+.stat-3 { top: 35px; left: -45px; animation-delay: 0.7s; }
+
+@keyframes floatUpDown {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* ==========================================================================
+   QUIZ INTERACTIVE PREMIUM ORANGE WIDGET STYLES
+   ========================================================================== */
+:root {
+    /* Егер алдыңғы кодта қосылмаған болса, айнымалылар */
+    --ios-accent-pure: #ff9500; 
+    --ios-accent-glow-pure: rgba(255, 149, 0, 0.08);
+}
+
+/* Виджеттің сыртқы флекс контейнері */
+.quiz-visual-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    min-height: 160px;
+    position: relative;
+    z-index: 2;
+}
+
+.quiz-game-widget {
+    position: relative;
+    width: 90px;
+    height: 90px;
+}
+
+/* Орталықтағы геймпад шыны шеңбері */
+.quiz-glass-surface {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #ffffff;
+    border: 2px solid var(--ios-accent-pure);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5;
+    box-shadow: 0 10px 25px rgba(255, 149, 0, 0.12);
+}
+
+/* Ортадағы басты ойын иконкасы */
+.quiz-main-icon {
+    font-size: 2.2rem;
+    color: var(--ios-accent-pure);
+}
+
+/* Қалқымалы кішігірім викторина элементтері (Quiz Иконкалары) */
+.floating-quiz-badge {
+    position: absolute;
+    width: 32px;
+    height: 32px;
+    background: #ffffff;
+    color: var(--ios-accent-pure);
+    border: 1.5px solid rgba(255, 149, 0, 0.3);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 0.85rem;
+    z-index: 6;
+    box-shadow: 0 4px 12px rgba(255, 149, 0, 0.1);
+    animation: quizFloat 3.5s infinite ease-in-out;
+}
+
+/* Әр элементтің орналасуы мен жеке анимация уақыттары */
+.q-item-1 { top: -12px; left: -20px; animation-delay: 0s; }
+.q-item-2 { bottom: -8px; right: -22px; animation-delay: 1.2s; font-size: 0.9rem; border-color: var(--ios-accent-pure); }
+.q-item-3 { top: 40px; left: -42px; animation-delay: 0.6s; }
+
+@keyframes quizFloat {
+    0%, 100% { 
+        transform: translateY(0) rotate(0deg); 
+    }
+    50% { 
+        transform: translateY(-8px) rotate(10deg); 
+        border-color: var(--ios-accent-pure);
+        background: var(--ios-accent-glow-pure);
+    }
+}
+
+
+/* ==========================================================================
+   GLOSSARY & MATERIALS CARD SPECIAL EXTENSION STYLES (PURE ORANGE)
+   ========================================================================== */
+/* Тематический градиент карточки глоссария */
+.glossary-card-theme {
+    background: linear-gradient(135deg, #ffffff 0%, #fffbf7 100%) !important;
+}
+
+/* Бейдж в тон основного оранжевого */
+.glossary-badge {
+    background: rgba(255, 107, 0, 0.08) !important;
+    color: #ff6b00 !important;
+}
+
+/* Мягкое неоновое свечение на заднем фоне */
+.glossary-blur {
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.12) 0%, transparent 70%) !important;
+}
+
+/* Стеклянный виджет книги */
+.glossary-book-widget {
+    background: rgba(255, 255, 255, 0.7) !important;
+    border: 1px solid rgba(255, 107, 0, 0.15) !important;
+    box-shadow: 0 20px 40px rgba(255, 107, 0, 0.06) !important;
+}
+
+/* Иконка книги */
+.glossary-icon {
+    color: #ff6b00 !important;
+}
+
+/* Пульсирующие кольца вокруг книги */
+.glossary-ring {
+    border: 1px solid rgba(255, 107, 0, 0.2) !important;
+}
+
+/* Эффект при наведении на кнопку */
+.glossary-btn:hover {
+    background: #ff6b00 !important;
+    color: #ffffff !important;
+    box-shadow: 0 8px 20px rgba(255, 107, 0, 0.2) !important;
+}
+
+/* Позиционирование и анимация летящих букв и иконки PDF */
+.letter-1 {
+    top: -15px !important;
+    left: 10px !important;
+    font-size: 1.2rem !important;
+    font-weight: 800 !important;
+    color: #ff6b00 !important;
+    background: rgba(255, 107, 0, 0.06) !important;
+    animation: floatingWidgetAlpha 4s ease-in-out infinite;
+}
+
+.letter-2 {
+    bottom: -10px !important;
+    right: 15px !important;
+    font-size: 1.1rem !important;
+    font-weight: 800 !important;
+    color: #e05e00 !important;
+    background: rgba(224, 94, 0, 0.06) !important;
+    animation: floatingWidgetAlpha 4.5s ease-in-out infinite 0.5s;
+}
+
+.letter-3 {
+    top: 50% !important;
+    right: -25px !important;
+    transform: translateY(-50%);
+    font-size: 1rem !important;
+    color: #ff6b00 !important;
+    background: rgba(255, 107, 0, 0.08) !important;
+    border-radius: 50% !important;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: floatingWidgetAlpha 5s ease-in-out infinite 1s;
+}
+
+/* Анимация покачивания в воздухе */
+@keyframes floatingWidgetAlpha {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(6deg); }
+}
+
+
+/* ==========================================================================
+   UNUSUAL INTERACTIVE BOOK SHELF CARD (index.html -> books.html)
+   ========================================================================== */
+.zamanat-premium-shelf-container {
+    width: 100%;
+    max-width: 760px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.unusual-book-card-link {
+    display: block;
+    position: relative;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.06);
+    border-radius: 20px;
+    padding: 24px;
+    text-decoration: none;
+    color: #1d1d1f;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.02);
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Эффект скрытого неонового свечения при наведении */
+.unusual-book-glow-layer {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(255, 107, 0, 0.08) 0%, transparent 70%);
+    transform: translate(-50%, -50%) scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.5s ease;
+}
+
+.unusual-book-content {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    position: relative;
+    z-index: 2;
+}
+
+/* Стилизация объемной 3D оранжевой книги */
+.unusual-book-cover-wrapper {
+    width: 90px;
+    height: 125px;
+    position: relative;
+    perspective: 1000px;
+    flex-shrink: 0;
+}
+
+.unusual-spine {
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 10px;
+    background: linear-gradient(to right, #e05e00, #ff6b00);
+    border-radius: 4px 0 0 4px;
+    z-index: 3;
+    box-shadow: inset -2px 0 5px rgba(0,0,0,0.2);
+}
+
+.unusual-front-cover {
+    position: absolute;
+    left: 8px; right: 0; top: 0; bottom: 0;
+    background: linear-gradient(135deg, #ff9500 0%, #ff6b00 100%);
+    border-radius: 0 8px 8px 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    box-shadow: 5px 8px 20px rgba(255, 107, 0, 0.25);
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    transform-origin: left center;
+}
+
+.unusual-icon-space {
+    color: #ffffff;
+    font-size: 1.8rem;
+    animation: floatingSpace 3s ease-in-out infinite;
+}
+
+.unusual-cover-badge {
+    font-size: 0.6rem;
+    font-weight: 800;
+    color: #ffffff;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 3px 6px;
+    border-radius: 4px;
+    letter-spacing: 0.05em;
+}
+
+/* Текстовый блок карточки */
+.unusual-book-text-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.unusual-mini-tag {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #ff6b00;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.02em;
+}
+
+.unusual-book-text-details h3 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1d1d1f;
+    letter-spacing: -0.02em;
+}
+
+.unusual-book-text-details p {
+    font-size: 0.9rem;
+    color: #6e6e73;
+    line-height: 1.45;
+    margin-bottom: 6px;
+}
+
+.unusual-action-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 4px;
+}
+
+.unusual-stat-pill {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #86868b;
+    background: #f5f5f7;
+    padding: 4px 10px;
+    border-radius: 100px;
+}
+
+.unusual-action-arrow {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ff6b00;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+}
+
+.unusual-action-arrow i {
+    transition: transform 0.3s ease;
+}
+
+/* ==========================================================================
+   МАГИЯ АНИМАЦИИ ПРИ НАВЕДЕНИИ КУРСОРА (HOVER EFFECTS)
+   ========================================================================== */
+.unusual-book-card-link:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255, 107, 0, 0.2);
+    box-shadow: 0 20px 40px rgba(255, 107, 0, 0.05);
+}
+
+.unusual-book-card-link:hover .unusual-book-glow-layer {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+}
+
+/* Имитация приоткрытия книги при наведении на всю карточку */
+.unusual-book-card-link:hover .unusual-front-cover {
+    transform: rotateY(-22deg);
+    box-shadow: 12px 12px 25px rgba(255, 107, 0, 0.35);
+}
+
+.unusual-book-card-link:hover .unusual-action-arrow {
+    color: #e05e00;
+}
+
+.unusual-book-card-link:hover .unusual-action-arrow i {
+    transform: translateX(5px);
+}
+
+@keyframes floatingSpace {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-4px) rotate(5deg); }
+}
+
+/* Адаптивность для мобилок */
+@media (max-width: 550px) {
+    .unusual-book-content { flex-direction: column; align-items: flex-start; gap: 20px; }
+    .unusual-action-row { width: 100%; }
+}
+
+     /* Виджеттің негізгі стильдері (Apple Orange стилі) */
+        .ai-widget-container { position: fixed; bottom: 30px; right: 30px; z-index: 9999; font-family: 'Inter', sans-serif; }
+        .ai-trigger-btn { width: 60px; height: 60px; background: linear-gradient(135deg, #ff9500, #ff6b00); border: none; border-radius: 50%; color: white; font-size: 1.5rem; cursor: pointer; box-shadow: 0 8px 24px rgba(255,107,0,0.3); position: relative; display: flex; align-items: center; justify-content: center; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ai-trigger-btn:hover { transform: scale(1.08); }
+        .ai-pulse-glow { position: absolute; top:0; left:0; right:0; bottom:0; border-radius:50%; background: rgba(255,107,0,0.4); z-index: -1; animation: aiPulse 2s infinite; }
+        
+        .ai-window-box { position: absolute; bottom: 80px; right: 0; width: 420px; height: 600px; background: #ffffff; border-radius: 24px; box-shadow: 0 12px 40px rgba(0,0,0,0.15); border: 1px solid rgba(0,0,0,0.05); display: flex; flex-direction: column; opacity: 0; transform: translateY(20px) scale(0.95); pointer-events: none; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1); }
+        .ai-window-box.is-active { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+        
+        .ai-window-header { padding: 16px 20px; background: #f5f5f7; border-top-left-radius: 24px; border-top-right-radius: 24px; border-bottom: 1px solid #e5e5ea; display: flex; justify-content: space-between; align-items: center; }
+        .ai-profile { display: flex; align-items: center; gap: 12px; }
+        .ai-avatar { width: 36px; height: 36px; background: #ff6b00; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; }
+        .ai-profile h4 { font-size: 0.95rem; font-weight: 700; color: #1d1d1f; margin: 0; }
+        .ai-profile p { font-size: 0.75rem; color: #6e6e73; margin: 0; }
+        .ai-status-dot { width: 6px; height: 6px; background: #34c759; display: inline-block; border-radius: 50%; margin-right: 4px; }
+        .ai-close-x { background: none; border: none; color: #86868b; font-size: 1.2rem; cursor: pointer; transition: color 0.2s; }
+        .ai-close-x:hover { color: #1d1d1f; }
+        
+        .ai-messages-body { flex: 1; padding: 20px; overflow-y: auto; display: flex; flex-direction: column; gap: 14px; background: #fafafa; }
+        .ai-msg { max-width: 88%; padding: 12px 16px; border-radius: 18px; font-size: 0.88rem; line-height: 1.5; word-wrap: break-word; }
+        .ai-msg.System { background: #ffffff; color: #1d1d1f; align-self: flex-start; border-top-left-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.03); border: 1px solid rgba(0,0,0,0.03); }
+        .ai-msg.User { background: linear-gradient(135deg, #ff9500, #ff6b00); color: white; align-self: flex-end; border-top-right-radius: 4px; box-shadow: 0 4px 12px rgba(255,107,0,0.2); }
+        .ai-msg.Loading { background: #e5e5ea; color: #6e6e73; align-self: flex-start; border-radius: 100px; padding: 8px 16px; font-style: italic; }
+        .ai-msg.Warning { background: #ffebeb; color: #d93838; align-self: center; border-radius: 12px; font-weight: 500; text-align: center; max-width: 95%; border: 1px solid #fabad0; }
+        
+        .ai-suggestions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+        .ai-suggest-btn { background: #f5f5f7; border: 1px solid #e5e5ea; padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; color: #1d1d1f; cursor: pointer; transition: all 0.2s; }
+        .ai-suggest-btn:hover { background: #ff6b00; color: white; border-color: #ff6b00; }
+        
+        .ai-search-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; color: #ff6b00; font-weight: 600; text-decoration: none; font-size: 0.85rem; }
+        .ai-search-link:hover { text-decoration: underline; }
+
+        .ai-input-footer { padding: 14px 16px; border-top: 1px solid #e5e5ea; display: flex; gap: 10px; background: #ffffff; border-bottom-left-radius: 24px; border-bottom-right-radius: 24px; }
+        .ai-query-input { flex: 1; border: 1px solid #e5e5ea; background: #f5f5f7; padding: 10px 16px; border-radius: 100px; outline: none; font-size: 0.88rem; transition: all 0.2s; }
+        .ai-query-input:focus { border-color: #ff6b00; background: #fff; box-shadow: 0 0 0 3px rgba(255,107,0,0.1); }
+        .ai-input-footer button { background: #ff6b00; border: none; color: white; width: 38px; height: 38px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.2s; flex-shrink: 0; }
+        .ai-input-footer button:hover { background: #e05e00; }
+        
+        @keyframes aiPulse { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.3); opacity: 0; } }
+        .ai-messages-body::-webkit-scrollbar { width: 4px; }
+        .ai-messages-body::-webkit-scrollbar-track { background: transparent; }
+        .ai-messages-body::-webkit-scrollbar-thumb { background: #e5e5ea; border-radius: 10px; }
+        @media (max-width: 450px) { .ai-window-box { width: calc(100vw - 40px); right: -10px; height: 500px; } }
+    </style>
+</head>
+<div id="minimal-preloader" class="apple-clean-preloader">
+    <div class="preloader-branding">
+        <div class="logo-container">
+            <h1 class="pure-logo">ZAMANAT</h1>
+            <span class="live-dot"></span>
+        </div>
+        
+        <div class="progress-wrapper">
+            <div id="preloader-progress-line" class="progress-core-line"></div>
+        </div>
+    </div>
+</div>
+<body>
+<div id="browser-warning-modal" class="premium-modal-overlay">
+    <div class="premium-modal-window">
+        <div class="modal-icon-wrapper">
+            <i class="fa-solid fa-circle-info"></i>
+        </div>
+        <h3 class="modal-welcome-title">Құрметті пайдаланушы!</h3>
+        <p class="modal-welcome-text">Сіздің қолайлығыңыз үшін және интерактивті картаның мінсіз жұмыс жасауы үшін <strong>Яндекс</strong> немесе <strong>Google Chrome</strong> браузерлерін қолдануды ұсынамыз.</p>
+        <button id="close-welcome-modal-btn" class="modal-submit-btn">Түсінікті</button>
+    </div>
+</div>
+
+<header id="main-header">
+    <div class="header-container">
+        <div class="logo-block" onclick="showPage('home')">
+            <span class="logo-text">ZAMANAT</span>
+            <span class="logo-dot"></span>
+        </div>
+        
+        <button class="menu-toggle" id="menu-toggle" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+
+        <nav id="main-nav">
+            <a onclick="handleNavMobile('home')" id="nav-home" class="active">Басты бет</a>
+            <a onclick="handleNavMobile('tests')" id="nav-tests">Тесттер аймағы</a>
+
+            <a onclick="handleNavMobile('about')" id="nav-about">Біз туралы</a>
+            <a onclick="handleNavMobile('history')" id="nav-history">Менің нәтижелерім</a>
+        </nav>
+    </div>
+</header>
+
+
+    <main>
+        <section id="home" class="page-section active">
+    <div class="hero-home">
+        <div class="container hero-wrapper">
+            <div class="hero-content">
+                <div class="hero-badge"><i class="fa-solid fa-fire"></i> ҰБТ-2026 Жаңа Формат</div>
+                <h1>Уақыт үнемде және ҰБТ-ға тиімді дайындал! <span>ZAMANAT интеллектуалды платформасы.</span></h1>
+                <p>Күнделікті сабақта қолданылатын ұғымдар мен мәліметтерді оқулықтардан жылдам тап. Интеллектуалды тестілеу жүйесі арқылы білім деңгейіңді AI аналитикамен тексер.</p>
+                <div class="hero-buttons">
+                    <button class="btn" onclick="showPage('courses')">Платформаға өту <i class="fa-solid fa-arrow-right"></i></button>
+                    <button class="btn btn-secondary" onclick="showPage('tests')">Тест тапсыру</button>
+                </div>
+            </div>
+            
+            <div class="hero-visual">
+                <div class="floating-card card-1">
+                    <div class="icon-box-premium"><i class="fa-solid fa-chart-pie"></i></div>
+                    <div class="text">AI Аналитика<span class="sub">Қатемен жұмыс</span></div>
+                </div>
+                <div class="floating-card card-2">
+                    <div class="icon-box-premium"><i class="fa-solid fa-stopwatch"></i></div>
+                    <div class="text">Нақты уақыт<span class="sub">Шектеулі таймер</span></div>
+                </div>
+                <div class="floating-card card-3">
+                    <div class="icon-box-premium"><i class="fa-solid fa-bullseye"></i></div>
+                    <div class="text">140 Балл<span class="sub">Грант кепілдігі</span></div>
+                </div>
+                <div class="main-glow-circle"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-strip">
+        <div class="container">
+            <div class="stats-grid-strip">
+                <div class="stat-strip-card">
+                    <h3>95%</h3>
+                    <p>Қолданушылардың грантқа түсу көрсеткіші</p>
+                </div>
+                <div class="stat-strip-card">
+                    <h3>10K+</h3>
+                    <p>Қордағы базалық ресми сұрақтар</p>
+                </div>
+                <div class="stat-strip-card">
+                    <h3>24/7</h3>
+                    <p>Кез келген құрылғыдан қолжетімділік</p>
+                </div>
+                <div class="stat-strip-card">
+                    <h3>0 ₸</h3>
+                    <p>Бастапқы деңгейді тегін тексеру</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="workflow-section">
+        <div class="container">
+            <h2 class="section-title">Тестілеу жүйесі қалай жұмыс істейді?</h2>
+            <p class="section-desc">Бар болғаны 3 қарапайым қадам арқылы өз біліміңді шыңда және арманыңдағы грантқа жақында.</p>
+            
+            <div class="workflow-grid">
+                <div class="workflow-card">
+                    <div class="step-number">01</div>
+                    <h3>Пәнді таңдаңыз</h3>
+                    <p>Тесттер аймағына өтіп, өзіңізге қажетті бейіндік немесе міндетті пәндер жинағын белгілеңіз.</p>
+                </div>
+                <div class="workflow-card">
+                    <div class="step-number">02</div>
+                    <h3>Интерактивті тест тапсырыңыз</h3>
+                    <p>Нақты емтихан атмосферасында, ыңғайлы premium интерфейс пен таймер көмегімен сұрақтарға жауап беріңіз.</p>
+                </div>
+                <div class="workflow-card">
+                    <div class="step-number">03</div>
+                    <h3>Толық анализ алыңыз</h3>
+                    <p>Тест соңында жүйе сіздің әрбір қатеңізді ресми оқулықтар сілтемесімен көрсетіп, қатемен жұмыс жасауға мүмкіндік береді.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="white-luxury-redirect-card">
+    
+    <div class="card-left-info-v3">
+        <div class="badge-row-v3">
+            <span class="redirect-badge-v3">Интерактивті жүйе</span>
+        </div>
+        <h2 class="card-main-title-v3">Қазақстанның интерактивті картасы</h2>
+        <p class="card-sub-text-v3">Жаңаланған 17 облыс шекаралары мен аймақтардың тарихи мұрағаты орнатылған негізгі бөлімге өтіңіз.</p>
+        
+        <a href="karta.html" class="card-action-btn-v3">
+            Картаға өту
+            <svg class="btn-arrow-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="card-right-visual-v3">
+        <div class="soft-orange-blur"></div>
+        
+        <div class="animated-image-holder">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/55/Kazakhstan_provinces_blank.png/1280px-Kazakhstan_provinces_blank.png" alt="Қазақстан картасы" class="kazakhstan-map-photo">
+        </div>
+    </div>
+</div>
+
+<div class="luxury-promo-card-v3 chronology-card-theme">
+    
+    <div class="card-left-info-v3">
+        <div class="badge-row-v3">
+            <span class="redirect-badge-v3">Цифрлық шежіре</span>
+        </div>
+        <h2 class="card-main-title-v3">Ұлы Дала Хронологиясы</h2>
+        <p class="card-sub-text-v3">Сақ дәуірінен бүгінгі күнге дейінгі ең маңызды тарихи оқиғалар, ұлы шайқастар мен хандардың заңдар жүйесі енгізілген уақыт таспасы.</p>
+        
+        <a href="chronology.html" class="card-action-btn-v3">
+            Хронологияны ашу
+            <svg class="btn-arrow-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="card-right-visual-v3">
+        <div class="soft-orange-blur"></div>
+        
+        <div class="animated-image-holder chronology-visual-wrapper">
+            <div class="timeline-clock-widget">
+                <div class="clock-glass-surface">
+                    <i class="fa-solid fa-timeline timeline-main-icon"></i>
+                    <div class="pulse-ring"></div>
+                    <div class="pulse-ring delay-1"></div>
+                    <div class="pulse-ring delay-2"></div>
+                </div>
+                <span class="floating-year yr-1">1465</span>
+                <span class="floating-year yr-2">1729</span>
+                <span class="floating-year yr-3">1991</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="luxury-promo-card-v3 dates-card-theme">
+    
+    <div class="card-left-info-v3">
+        <div class="badge-row-v3">
+            <span class="redirect-badge-v3">Тарихи белестер</span>
+        </div>
+        <h2 class="card-main-title-v3">100 Маңызды Дата</h2>
+        <p class="card-sub-text-v3">Ұлы Дала тарихын өзгерткен ең басты жүз оқиға. Мемлекеттіліктің қалыптасу кезеңдері мен маңызды сәттердің толық жинағы.</p>
+        
+        <a href="100data.html" class="card-action-btn-v3">
+            Даталарды көру
+            <svg class="btn-arrow-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="card-right-visual-v3">
+        <div class="soft-orange-blur-v3"></div>
+        
+        <div class="animated-image-holder dates-visual-wrapper">
+            <div class="dates-counter-widget">
+                <div class="counter-glass-surface">
+                    <i class="fa-solid fa-list-check dates-main-icon"></i>
+                    
+                    <div class="orange-pulse-ring"></div>
+                    <div class="orange-pulse-ring orange-delay-1"></div>
+                    <div class="orange-pulse-ring orange-delay-2"></div>
+                </div>
+                <span class="floating-stat-badge stat-1">552</span>
+                <span class="floating-stat-badge stat-2">100</span>
+                <span class="floating-stat-badge stat-3">2024</span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="luxury-promo-card-v3 quiz-card-theme">
+    
+    <div class="card-left-info-v3">
+        <div class="badge-row-v3">
+            <span class="redirect-badge-v3">Білімді тексеру</span>
+        </div>
+        <h2 class="card-main-title-v3">Тарихи Викторина</h2>
+        <p class="card-sub-text-v3">Өз біліміңді интерактивті тест арқылы тексер. Ұлы Дала шежіресі бойынша арнайы дайындалған сұрақтар мен қызықты тапсырмалар.</p>
+        
+        <a href="quiz.html" class="card-action-btn-v3">
+            Тестті бастау
+            <svg class="btn-arrow-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="card-right-visual-v3">
+        <div class="soft-orange-blur-v3"></div>
+        
+        <div class="animated-image-holder quiz-visual-wrapper">
+            <div class="quiz-game-widget">
+                <div class="quiz-glass-surface">
+                    <i class="fa-solid fa-gamepad quiz-main-icon"></i>
+                    
+                    <div class="orange-pulse-ring"></div>
+                    <div class="orange-pulse-ring orange-delay-1"></div>
+                    <div class="orange-pulse-ring orange-delay-2"></div>
+                </div>
+                <span class="floating-quiz-badge q-item-1"><i class="fa-solid fa-question"></i></span>
+                <span class="floating-quiz-badge q-item-2"><i class="fa-solid fa-star"></i></span>
+                <span class="floating-quiz-badge q-item-3"><i class="fa-solid fa-award"></i></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="luxury-promo-card-v3 glossary-card-theme">
+    
+    <div class="card-left-info-v3">
+        <div class="badge-row-v3">
+            <span class="redirect-badge-v3 glossary-badge">Академиялық база</span>
+        </div>
+        <h2 class="card-main-title-v3">Терминдер мен Материалдар</h2>
+        <p class="card-sub-text-v3">Тарих пәнінен кездесетін күрделі ұғымдардың, лауазымдар мен шайқастардың ресми сөздігі және жүктеп алуға арналған PDF конспектілер жинағы.</p>
+        
+        <a href="search.html" class="card-action-btn-v3 glossary-btn">
+            Сөздікті ашу
+            <svg class="btn-arrow-v3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+        </a>
+    </div>
+    
+    <div class="card-right-visual-v3">
+        <div class="soft-orange-blur glossary-blur"></div>
+        
+        <div class="animated-image-holder glossary-visual-wrapper">
+            <div class="timeline-clock-widget glossary-book-widget">
+                <div class="clock-glass-surface">
+                    <i class="fa-solid fa-book-open timeline-main-icon glossary-icon"></i>
+                    <div class="pulse-ring glossary-ring"></div>
+                    <div class="pulse-ring glossary-ring delay-1"></div>
+                </div>
+                <span class="floating-year letter-1">А</span>
+                <span class="floating-year letter-2">Қ</span>
+                <span class="floating-year letter-3"><i class="fa-solid fa-file-pdf"></i></span>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+    <div class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Жиі Қойылатын Сұрақтар (FAQ)</h2>
+            <div class="faq-container">
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Платформадағы мәліметтер қаншалықты ресми? <span><i class="fa-solid fa-plus"></i></span></div>
+                    <div class="faq-answer">Барлық ақпараттар, терминдер мен тест сұрақтары ҚР Білім және Ғылым министрлігі бекіткен ресми мектеп оқулықтары негізінде жасалған.</div>
+                </div>
+                <div class="faq-item" onclick="toggleFaq(this)">
+                    <div class="faq-question">Қатемен жұмыс істеу үшін нәтижелер сақтала ма? <span><i class="fa-solid fa-plus"></i></span></div>
+                    <div class="faq-answer">Иә, сіз тапсырған әрбір тесттің толық анализы мен сіз таңдаған жауаптар «Менің нәтижелерім» бөлімінде автоматты түрде сақталып тұрады.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+        <section id="tests" class="page-section">
+
+
+            
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Академиялық емтихан нұсқалары</h2>
+                    <p class="section-desc">Арнайы дайындалған интерактивті нұсқаларды таңдап, нақты білім деңгейіңізді анықтаңыз.</p>
+                </div>
+
+                            <div class="zamanat-premium-shelf-container">
+    <a href="books.html" class="unusual-book-card-link">
+        <div class="unusual-book-glow-layer"></div>
+        <div class="unusual-book-content">
+            <div class="unusual-book-cover-wrapper">
+                <div class="unusual-spine"></div>
+                <div class="unusual-front-cover">
+                    <i class="fa-solid fa-shuttle-space unusual-icon-space"></i>
+                    <span class="unusual-cover-badge">ТАРИХ • ХАБ</span>
+                </div>
+            </div>
+            <div class="unusual-book-text-details">
+                <span class="unusual-mini-tag"><i class="fa-solid fa-sparkles"></i> ЖАҢА ИНТЕРАКТИВТІ КЕНЕСТІК</span>
+                <h3>Мектеп Оқулықтары Залы</h3>
+                <p>Қазақстан тарихын «не как обычный» — 3D карталармен, интерактивті даталармен және медиа-хаб арқылы зерттеңіз.</p>
+                <div class="unusual-action-row">
+                    <span class="unusual-stat-pill">6-11 сыныптар</span>
+                    <span class="unusual-action-arrow">Оқу залына өту <i class="fa-solid fa-arrow-right-long"></i></span>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+                <div class="category-title" id="title-available-container">Қолжетімді нұсқалар <span id="count-available">0</span></div>
+                <div class="test-grid" id="test-list-available"></div>
+
+                <div class="category-title" id="title-completed-container" style="margin-top: 60px;">Тапсырылған нұсқалар <span id="count-completed">0</span></div>
+                <div class="test-grid" id="test-list-completed"></div>
+            </div>
+
+
+        </section>
+
+        <section id="active-test-section" class="page-section">
+            <div class="container">
+                <div class="test-container-box">
+                    <div class="test-top-bar">
+                        <div class="top-info-wrapper">
+                            <h2 id="active-test-title" class="test-live-title">Тест өту үстінде...</h2>
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <button class="btn btn-secondary" style="padding: 6px 14px; font-size: 13px; border-color: var(--error-color); color: var(--error-color);" onclick="reportTestError()">⚠️ Қате туралы хабарлау</button>
+                                <div class="timer-premium-box" id="timer-box">
+                                    <span style="font-size: 13px; color: var(--text-secondary); font-family: sans-serif; font-weight:500; margin-right:4px;">Қалған уақыт:</span>
+                                    <span id="timer-val">30:00</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" id="test-progress-fill" style="width: 0%;"></div>
+                        </div>
+                    </div>
+
+                    <div id="quiz-area"></div>
+
+                    <div class="test-footer-actions">
+                        <button class="btn btn-secondary" id="prev-q-btn" onclick="goToPrevQuestion()">← Алдыңғы сұрақ</button>
+                        <button class="btn" id="next-q-btn" onclick="goToNextQuestion()">Келесі сұрақ →</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="result-section" class="page-section">
+            <div class="container">
+                <div class="score-card">
+                    <h2 id="result-test-title" style="font-size:28px; font-weight:800; letter-spacing:-0.02em;">Тест Нәтижесі</h2>
+                    <div class="score-num" id="final-score">0 / 0</div>
+                    <p id="result-status-text" style="font-size:16px; font-weight:600; max-width:500px; margin:0 auto 32px auto;"></p>
+                    <button class="btn" onclick="showPage('tests')">Тесттер тізіміне қайту</button>
+                </div>
+
+                <div class="section-header" style="padding-top:20px;">
+                    <h3 style="font-size:24px; font-weight:800; text-align:center;">Толық қатемен жұмыс анализы</h3>
+                    <p class="section-desc">Төменде сіздің берген жауаптарыңыз бен дұрыс нұсқалар салыстырмалы көрсетілген.</p>
+                </div>
+
+                <div id="review-area" class="review-container-list"></div>
+                
+                <div style="text-align: center; margin: 40px 0 80px 0;">
+                    <button class="btn btn-secondary" onclick="showPage('tests')">Тізімге оралу</button>
+                </div>
+            </div>
+        </section>
+
+<section id="courses" class="page-section">
+    <div class="ld-hero">
+        <div class="container">
+            <span class="ld-badge"><i class="fa-solid fa-brain"></i> Тарихтан үздік жаттықтырушы ұжым</span>
+            <h1>Historica курсы</h1>
+            <p>Мектеп бағдарламасындағы және ҰБТ-да кездесетін барлық анықтамалықтар мен терминдерді бір жерден жылдам іздеп табуға арналған бірегей жүйе.</p>
+            <div class="ld-stats" style="max-width: 900px; margin-left: auto; margin-right: auto;">
+                
+            </div>
+        </div>
+    </div>
+
+    <div class="historica-premium-showcase">
+        <div class="container historica-wrapper">
+            <div class="historica-info">
+                <span class="historica-badge"><i class="fa-solid fa-star"></i> Эксклюзивті Серіктес</span>
+                <h2>🚀 HISTORICA.KZ Инновациялық Платформасы!</h2>
+                <p class="historica-main-desc">Қазақстан тарихы мен Дүниежүзі тарихын жаттамай, бейнелі түрде түсінуге арналған ең заманауи интерактивті курс. ҰБТ-да тарих пәндерінен 100% жоғары балл алудың құпия әдістемесі.</p>
+                
+                <div class="historica-features-grid">
+                    <div class="historica-feat-item">
+                        <div class="h-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                        <div>
+                            <h4>Интерактивті карталар</h4>
+                            <p>Тарихи шайқастар мен мемлекеттердің шекараларын динамикалық 3D картадан көріп, жадыда мәңгі сақтаңыз.</p>
+                        </div>
+                    </div>
+                    <div class="historica-feat-item">
+                        <div class="h-icon"><i class="fa-solid fa-diagram-project"></i></div>
+                        <div>
+                            <h4>Интеллект-карталар (Mind Maps)</h4>
+                            <p>Күрделі тарихи кезеңдер мен даталар хронологиясын қарапайым құрылымдық сызбалар арқылы оңай жаттаңыз.</p>
+                        </div>
+                    </div>
+                    <div class="historica-feat-item">
+                        <div class="h-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <div>
+                            <h4>Мемоникалық техникалар</h4>
+                            <p>Құрғақ фактілерді қызықты ассоциациялар мен визуалды бейнелерге айналдырып оқыту жүйесі.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="historica-action-zone">
+                    <a href="https://historica.kz/" target="_blank" class="btn btn-historica-cta">Historica Платформасына өту <i class="fa-solid fa-arrow-up-right-from-square"></i></a>
+                    <span class="historica-promo-text"><i class="fa-solid fa-gift"></i> ZAMANAT оқушыларына арналған арнайы жеңілдіктер қарастырылған!</span>
+                </div>
+            </div>
+
+            <div class="historica-visual-preview">
+                <div class="preview-window">
+                    <div class="window-header">
+                        <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                        <span class="window-title">historica.kz/ubt-history</span>
+                    </div>
+                    <div class="window-body">
+                        <div class="mock-badge">Қазақстан Тарихы</div>
+                        <h4>Ұлы Қағанаттар Дәуірі</h4>
+                        <div class="mock-progress-bar"><div class="fill"></div></div>
+                        <div class="mock-stats-row">
+                            <span><i class="fa-solid fa-video"></i> 24 видеосабақ</span>
+                            <span><i class="fa-solid fa-file-invoice"></i> 120+ конспект</span>
+                        </div>
+                        <div class="mock-map-graphic">
+                            <i class="fa-solid fa-earth-asia"></i>
+                            <span>Интерактивті Хронология Қосылды</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container" style="padding: 80px 24px; text-align: center;">
+        <h2 class="section-title">Қолжетімді Дайындық Пакеттері</h2>
+        <p class="section-desc">Өзіңізге ыңғайлы тарифті таңдап, интеллектуалды іздеу жүйесі мен жабық тесттер базасына толық рұқсат алыңыз.</p>
+        
+        <div class="pricing-grid">
+            <div class="price-card">
+                <div>
+                    <h3 class="price-title">Базалық Сынақ</h3>
+                    <p class="price-desc">Платформа мүмкіндіктерімен танысуға арналған тегін нұсқа.</p>
+                    <div class="price-num-display">0 ₸ <span>/ шектеулі</span></div>
+                    <ul class="price-features-list">
+                        <li><i class="fa-solid fa-check text-success"></i> Тек 2 жалпы тарих тесті</li>
+                        <li><i class="fa-solid fa-check text-success"></i> Іздеу жүйесінің демо нұсқасы</li>
+                        <li><i class="fa-solid fa-check text-success"></i> Қатемен жұмыс анализы</li>
+                    </ul>
+                </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 20px;" onclick="showPage('tests')">Қазір бастау</button>
+            </div>
+
+            <div class="price-card featured">
+                <span class="badge-premium-card"><i class="fa-solid fa-bolt"></i> Ең көп таңдалатын</span>
+                <div>
+                    <h3 class="price-title">Historica </h3>
+                    <p class="price-desc">ҰБТ-ға толыққанды дайындалып, уақытты максималды үнемдегісі келетіндерге.</p>
+                    <div class="price-num-display">60,000₸ <span>/ айына</span></div>
+                    <ul class="price-features-list">
+                        <li><i class="fa-solid fa-check"></i> Барлық 45+ meктеп оқулығына рұқсат</li>
+                        <li><i class="fa-solid fa-check"></i> Шектеусіз интеллектуалды іздеу</li>
+                        <li><i class="fa-solid fa-check"></i> Барлық жаңа апталық тесттер нұсқасы</li>
+                        <li><i class="fa-solid fa-check"></i> Жеке бақылау статистикасы</li>
+                    </ul>
+                </div>
+                <button class="btn" style="width: 100%; margin-top: 20px;" onclick="openEnrollModal('Historica  тарифі')">Толығырақ</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+        <section id="about" class="page-section">
+            <div class="container" style="padding-top: 60px; padding-bottom: 80px; max-width: 800px;">
+                <div class="section-header">
+                    <h2 class="section-title">Біз туралы</h2>
+                </div>
+                <div style="background: #ffffff; padding: 40px; border-radius: var(--radius-lg); border: 1px solid var(--gray-border); box-shadow: var(--shadow-sm); line-height: 1.8; font-size: 16px; color: var(--text-color);">
+                    <p style="margin-bottom: 20px; font-weight: 500;">
+                        <strong>ZAMANAT</strong> — оқушыларға уақыт үнемдеуге және ҰБТ-ға дайындалуға қажетті мәліметтер мен күнделікті сабақта қолданылатын ұғымдарды оқулықтардан жылдам табуға көмектесетін жоба. Біздің мақсат — білім алу жолын жеңілдетіп, ізденуді нәтижелі ету.
+                    </p>
+                    <p style="margin-bottom: 30px;">
+                        Жоба Қазақстандағы білім сапасын арттыруға және заманауи технологияларды тиімді пайдалануға деген ұмтылыстан туған. Автор әрі негізгі әзірлеуші — <strong>Базарғали Саят</strong>. ZAMANAT әр оқушы үшін сенімді серік болып, білім жолында бағыт-бағдар беретін құралға айналуды мақсат етеді.
+                    </p>
+                    <div style="margin: 20px 0; padding: 20px; background: #f5f5f7; border-radius: var(--radius-sm); border-left: 4px solid var(--accent-color);">
+                        Серіктесіміздің ресми білім беру жобасы: <a href="https://historica.kz/" target="_blank" style="color: var(--accent-color); font-weight: 700; text-decoration: none;">HISTORICA.KZ ↗</a>
+                    </div>
+                    <hr style="border: none; border-top: 1px solid var(--gray-border); margin: 30px 0;">
+                    <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px; color: var(--accent-color);">Кері байланыс</h3>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px;">
+                        Платформадан қате байқасаңыз немесе ұсынысыңыз болса, бізге хабарласыңыз. Сіздің пікіріңіз біз үшін өте құнды.
+                    </p>
+                    <button class="btn" style="width: 100%;" onclick="openFeedbackModal()">Кері байланыс / Ұсыныс хат қалдыру</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="history" class="page-section">
+            <div class="container" style="padding-top: 40px; padding-bottom: 80px;">
+                <div class="section-header">
+                    <h2 class="section-title">Тапсырылған Тесттер Тарихы</h2>
+                    <p class="section-desc">Бұл жерде сіздің осыған дейін орындаған барлық сынақтарыңыздың тарихы мен қорытынды ұпайлары сақталады.</p>
+                </div>
+
+                <div id="history-log-table-container">
+                    </div>
+            </div>
+        </section>
+
+        
+    </main>
+
+  <footer id="main-footer">
+    <div class="footer-container">
+        <div class="footer-brand">
+            <div class="footer-logo">ZAMANAT<span class="logo-dot"></span></div>
+            <p class="brand-desc">Болашақтың білім платформасы. ҰБТ-ға, емтихандарға және олимпиадаларға сапалы әрі тиімді дайындық.</p>
+            
+            <div class="footer-socials">
+                <a href="https://www.instagram.com/zamanat_online?igsh=MWszYzNnbGJocWNjOQ%3D%3D&utm_source=qr" class="social-icon instagram" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram"></i>
+                </a>
+                <a href="" class="social-icon whatsapp" aria-label="WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <a href="#" class="social-icon telegram" aria-label="Telegram">
+                    <i class="fa-brands fa-telegram"></i>
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-nav-col">
+            <h4>Платформа</h4>
+            <ul>
+                <li><a href="#" onclick="showPage('home')">Басты бет</a></li>
+                <li><a href="#" onclick="showPage('tests')">Тесттер тізімі</a></li>
+                <li><a href="#" onclick="showPage('courses')">HISTORICA</a></li>
+                <li><a href="chronology.html">Уақыт таспасы</a></li>
+                <li><a href="100data.html">100 дата</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-nav-col">
+            <h4>Қолдау</h4>
+            <ul>
+                <li><a href="privacy.html">Құпиялылық саясаты</a></li>
+                <li><a href="rules.html">Қолдану шарттары</a></li>
+                <li><a href="#" onclick="showPage('about')">Біз туралы</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <div class="footer-bottom-container">
+            <p>© 2026 ZAMANAT Интеллектуалды Білім Платформасы. Барлық құқықтар қорғалған.</p>
+            <p class="developer-tag">Әзірлеуші: <span>Базарғали Саят</span></p>
+        </div>
+    </div>
+</footer>
+
+    <div class="modal-overlay" id="enroll-modal">
+        <div class="modal-window">
+            <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;" id="modal-tariff-title">Historica  тарифі </h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 28px;">Мәліметтерді толтырыңыз, біз сізбен тез арада байланысамыз.</p>
+            
+            <form onsubmit="submitEnrollToWhatsapp(event)">
+                <div class="form-group">
+                    <label for="enroll-name">Сіздің есіміңіз:</label>
+                    <input type="text" id="enroll-name" class="form-control" placeholder="Мысалы: Санат" required>
+                </div>
+                <div class="form-group">
+                    <label for="enroll-phone">Телефон нөміріңіз:</label>
+                    <input type="tel" id="enroll-phone" class="form-control" placeholder="+7 (707) 000-00-00" required>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 32px;">
+                    <button type="button" class="btn btn-secondary" style="flex:1; padding: 12px;" onclick="closeEnrollModal()">Бас тарту</button>
+                    <button type="submit" class="btn" style="flex:2; padding: 12px;">Жіберу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="feedback-modal">
+        <div class="modal-window">
+            <h3 style="font-size: 24px; font-weight: 800; margin-bottom: 8px;">Кері байланыс / Ұсыныс хат қалдыру</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 28px;">Мәліметтерді толтырыңыз, біз сізбен тез арада байланысамыз.</p>
+            
+            <form onsubmit="submitFeedbackToWhatsapp(event)">
+                <div class="form-group">
+                    <label for="feedback-name">Сіздің есіміңіз:</label>
+                    <input type="text" id="feedback-name" class="form-control" placeholder="Мысалы: Санат" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-phone">Телефон нөміріңіз:</label>
+                    <input type="tel" id="feedback-phone" class="form-control" placeholder="+7 (707) 000-00-00" required>
+                </div>
+                <div class="form-group">
+                    <label for="feedback-text">Сіздің пікіріңіз немесе ұсынысыңыз:</label>
+                    <textarea id="feedback-text" class="form-control" style="height: 100px; resize: none;" placeholder="Пікіріңізді осында жазыңыз..." required></textarea>
+                </div>
+                <div style="display: flex; gap: 12px; margin-top: 32px;">
+                    <button type="button" class="btn btn-secondary" style="flex:1; padding: 12px;" onclick="closeFeedbackModal()">Бас тарту</button>
+                    <button type="submit" class="btn" style="flex:2; padding: 12px;">Жіберу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="confirm-finish-modal">
+        <div class="modal-window" style="max-width: 400px; padding: 30px;">
+            <div style="font-size: 48px; margin-bottom: 15px;">❓</div>
+            <h3 style="font-size: 20px; font-weight: 700; margin-bottom: 12px;">Сынақты аяқтау</h3>
+            <p style="color: var(--text-secondary); font-size: 14px; margin-bottom: 24px;">Сынақты аяқтағыңыз келетініне сенімдісіз бе?</p>
+            <div style="display: flex; gap: 12px;">
+                <button class="btn btn-secondary" style="flex: 1; padding: 10px;" onclick="closeConfirmFinishModal()">Қайта оралу</button>
+                <button class="btn" style="flex: 1; padding: 10px; background: var(--success-color); border-color: var(--success-color);" onclick="executeQuizFinish()">Иә, аяқтау</button>
+            </div>
+        </div>
+    </div>
+
+
+</head>
+<body>
+
+<div id="ai-chat-widget" class="ai-widget-container">
+    <button id="ai-widget-trigger" class="ai-trigger-btn">
+        <i class="fa-solid fa-robot ai-icon-main"></i>
+        <span class="ai-pulse-glow"></span>
+    </button>
+    
+    <div id="ai-chat-window" class="ai-window-box">
+        <div class="ai-window-header">
+            <div class="ai-profile">
+                <div class="ai-avatar"><i class="fa-solid fa-brain"></i></div>
+                <div>
+                    <h4>AI Тарихшы</h4>
+                    <p><span class="ai-status-dot"></span> Онлайн • Экстра-сарапшы ИИ</p>
+                </div>
+            </div>
+            <button id="ai-close-btn" class="ai-close-x"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="ai-messages-body" id="ai-messages">
+            <div class="ai-msg System">
+                <p>Сәлем, жас зерттеуші! 🌟 Мен ZAMANAT платформасының интеллектуалды тарихшысымын. <br><br>Маған Қазақстан тарихының кез келген кезеңі бойынша сұрақ қоя аласыз.</p>
+                <div class="ai-suggestions">
+                    <button class="ai-suggest-btn" onclick="setQuery('Алтын адам')">🏆 Алтын адам</button>
+                    <button class="ai-suggest-btn" onclick="setQuery('Қазақ хандығы 1465')">👑 Қазақ хандығы</button>
+                    <button class="ai-suggest-btn" onclick="setQuery('Аңырақай шайқасы')">⚔️ Аңырақай</button>
+                </div>
+            </div>
+        </div>
+        <div class="ai-input-footer">
+            <input type="text" id="ai-query-input" placeholder="Тарихи сұрақ немесе дата жазыңыз..." autocomplete="off">
+            <button id="ai-send-btn"><i class="fa-solid fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+
+
+
+    <script>
+        // Менеджердің WhatsApp нөмірі (халықаралық форматта, мысалы: 77071234567)
+        const WHATSAPP_NUMBER = "77718287771"; 
+
+        // ТЕСТТЕР ДЕЛАДАННЫХ БАЗАСЫ (Екі нұсқа: Қазақстан тарихы)
+        const testDatabase = [
+            {
+                id: "history-1",
+                title: "Қазақстан тарихы — Алаш қозғалысы және XX ғасыр басы",
+                description: "Алаш партиясының құрылуы, Алашорда үкіметі, бірінші дүниежүзілік соғыс кезеңіндегі Қазақстан тарихына арналған тереңдетілген сынақ нұсқасы.",
+                duration: 20, // минут
+                questions: [
+                    {
+                        q: "«Қазақ» газетінің бас редакторы кім болды?",
+                        a: ["Әлихан Бөкейханов", "Ахмет Байтұрсынов", "Міржақып Дулатов", "Мустафа Шоқай"],
+                        correct: 1
+                    },
+                    {
+                        q: "Алашорда үкіметінің төрағасы кім болып сайланды?",
+                        a: ["Әлихан Бөкейханов", "Мұхамеджан Тынышпаев", "Халел Досмухамедов", "Жаһанша Досмухамедов"],
+                        correct: 0
+                    },
+                    {
+                        q: "Алаш автономиясы қай жылы жарияланды?",
+                        a: ["1916 ж", "1917 ж", "1918 ж", "1920 ж"],
+                        correct: 1
+                    },
+                    {
+                        q: "Міржақып Дулатовтың 1909 жылы жарық көрген атақты өлеңдер жинағы?",
+                        a: ["Оян, қазақ!", "Маса", "Көксерек", "Қалың мал"],
+                        correct: 0
+                    },
+                    {
+                        q: "Түркістан автономиясы қай қалада жарияланды?",
+                        a: ["Перовск", "Қоқан", "Шымкент", "Верный"],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+                id: "history-2",
+                title: "Қазақстан тарихы — Алтын Орда және Қазақ хандығының құрылуы",
+                description: "Жошы ұлысы, хандықтың негезін салушы Керей мен Жәнібек хандардың тарихи рөлі мен мемлекет құрылымы.",
+                duration: 15,
+                questions: [
+                    {
+                        q: "Қазақ хандығының негізі қаланған шамамен алынған мерзім?",
+                        a: ["1456-1465 жж.", "1391-1400 жж.", "1511-1518 жж.", "1227-1230 жж."],
+                        correct: 0
+                    },
+                    {
+                        q: "Қазақ хандығы алғаш құрылған кезде қоныстанған аймақ?",
+                        a: ["Батыс Қазақстан, Жайық бойы", "Шығыс Дешті Қыпшақ, Қозыбасы", "Оңтүстік Түркістан маңы", "Сырдария бойы"],
+                        correct: 1
+                    },
+                    {
+                        q: "Қазақ хандығының алғашқы ресми ханы кім?",
+                        a: ["Керей", "Жәнібек", "Қасым", "Хақназар"],
+                        correct: 0
+                    },
+                    {
+                        q: "Алтын Орданың негізін қалаған хан?",
+                        a: ["Шыңғысхан", "Бату (Жошыұлы)", "Берке", "Өзбек"],
+                        correct: 1
+                    },
+                    {
+                        q: "Қасым ханның тұсындағы заңдар жинағы қалай аталды?",
+                        a: ["Жеті жарғы", "Қасым ханның қасқа жолы", "Есім ханның ескі жолы", "Ақсақ құлан заңы"],
+                        correct: 1
+                    }
+                ]
+            },
+            {
+    id: "history-3",
+    title: "Қазақстан тарихы — Ұлыстың ыдырауы және Ақ Орда кезеңі",
+    description: "Алтын Орданың әлсіреуі, Ақ Орданың күшеюі және Әбілқайыр хандығынан бөлінудің алғышарттары.",
+    duration: 15,
+    questions: [
+        {
+            q: "Алтын Орда ыдырағаннан кейін Қазақстанның орталық және шығыс аймақтарында құрылған мемлекет?",
+            a: ["Ақ Орда", "Ноғай Ордасы", "Сібір хандығы", "Моғолстан"],
+            correct: 0
+        },
+        {
+            q: "Ақ Орданың дербес мемлекетке айналуына үлкен үлес қосқан, өз атынан теңге соқтырған хан?",
+            a: ["Орыс хан", "Барақ хан", "Тоқтамыс хан", "Әбілқайыр хан"],
+            correct: 0
+        },
+        {
+            q: "Керей мен Жәнібек хандар бөлініп кеткенге дейін қай мемлекеттің құрамында болды?",
+            a: ["Әбілқайыр хандығы (Өзбек ұлысы)", "Моғолстан", "Ноғай Ордасы", "Аштархан хандығы"],
+            correct: 0
+        },
+        {
+            q: "1457 жылы Әбілқайыр ханның сыртқы саяси беделіне нұқсан келтірген Сығанақ түбіндегі шайқаста кімдерден жеңілді?",
+            a: ["Ойраттардан (жоңғарлардан)", "Моғолдардан", "Темір әулетінен", "Ресей князьдігінен"],
+            correct: 0
+        },
+        {
+            q: "Керей мен Жәнібек хандарды құшақ жая қарсы алып, Шу мен Қозыбасы өңірін берген Моғолстан билеушісі?",
+            a: ["Есенбұға", "Тоғлық Темір", "Жүніс хан", "Абдар Рашид"],
+            correct: 0
+        }
+    ]
+},
+
+{
+    id: "history-4",
+    title: "Қазақ хандығы — Мемлекеттің нығаюы мен заңдар жүйесі",
+    description: "Хақназар, Есім және Тәуке хандардың тұсындағы қазақ қоғамы, сыртқы саясат және құқықтық реформалар.",
+    duration: 15,
+    questions: [
+        {
+            q: "Қазақ хандығының территориясын кеңейтіп, 'Қазақ пен қырғыздың ханы' деп аталған билеуші?",
+            a: ["Хақназар хан", "Тәуекел хан", "Шығай хан", "Бұрындық хан"],
+            correct: 0
+        },
+        {
+            q: "Есім ханның тұсында қабылданған әскери-әкімшілік заңдар жинағы қалай аталды?",
+            a: ["Есім ханның ескі жолы", "Жеті жарғы", "Қасқа жол", "Марқа заңы"],
+            correct: 0
+        },
+        {
+            q: "XVII ғасырдың соңы мен XVIII ғасырдың басында Қазақ хандығының бірлігін қалпына келтірген, 'Жеті жарғы' заңын шығарған хан?",
+            a: ["Тәуке хан", "Әбілқайыр хан", "Абылай хан", "Болат хан"],
+            correct: 0
+        },
+        {
+            q: "Тәуке ханның тұсында тұрақты жұмыс істеген, мемлекеттік маңызы бар шешімдер қабылдайтын орган?",
+            a: ["Билер кеңесі", "Ақсақалдар алқасы", "Құрылтай", "Уәзірлер кеңесі"],
+            correct: 0
+        },
+        {
+            q: "Қазақ хандығының XVI-XVIII ғасырлардағы бас қаласы, хандар жерленген рухани орталық?",
+            a: ["Түркістан (Ясы)", "Сығанақ", "Сауран", "Тараз"],
+            correct: 0
+        }
+    ]
+},
+
+{
+    id: "history-5",
+    title: "Қазақ хандығы — Мемлекеттің нығаюы мен заңдар жүйесі",
+    description: "Хақназар, Есім және Тәуке хандардың тұсындағы қазақ қоғамы, сыртқы саясат және құқықтық реформалар.",
+    duration: 15,
+    questions: [
+        {
+            q: "Қазақ хандығының территориясын кеңейтіп, 'Қазақ пен қырғыздың ханы' деп аталған билеуші?",
+            a: ["Хақназар хан", "Тәуекел хан", "Шығай хан", "Бұрындық хан"],
+            correct: 0
+        },
+        {
+            q: "Есім ханның тұсында қабылданған әскери-әкімшілік заңдар жинағы қалай аталды?",
+            a: ["Есім ханның ескі жолы", "Жеті жарғы", "Қасқа жол", "Марқа заңы"],
+            correct: 0
+        },
+        {
+            q: "XVII ғасырдың соңы мен XVIII ғасырдың басында Қазақ хандығының бірлігін қалпына келтірген, 'Жеті жарғы' заңын шығарған хан?",
+            a: ["Тәуке хан", "Әбілқайыр хан", "Абылай хан", "Болат хан"],
+            correct: 0
+        },
+        {
+            q: "Тәуке ханның тұсында тұрақты жұмыс істеген, мемлекеттік маңызы бар шешімдер қабылдайтын орган?",
+            a: ["Билер кеңесі", "Ақсақалдар алқасы", "Құрылтай", "Уәзірлер кеңесі"],
+            correct: 0
+        },
+        {
+            q: "Қазақ хандығының XVI-XVIII ғасырлардағы бас қаласы, хандар жерленген рухани орталық?",
+            a: ["Түркістан (Ясы)", "Сығанақ", "Сауран", "Тараз"],
+            correct: 0
+        }
+    ]
+},
+{
+    id: "history-6",
+    title: "Жоңғар шапқыншылығы — Азаттық жолындағы ұлы шайқастар",
+    description: "XVIII ғасырдағы қазақ-жоңғар соғыстары, Ақтабан шұбырынды, Бұланды және Аңырақай шайқастарының тарихы.",
+    duration: 15,
+    questions: [
+        {
+            q: "Тәуке хан 'Жеті жарғы' заңдар жинағын өңдеп, қабылдау үшін қай тарихи мекенде билер құрылтайын өткізді?",
+            a: ["Күлтөбе", "Мәртөбе", "Ордабасы", "Ұлытау"],
+            correct: 0
+        },
+        {
+            q: "Жәңгір ханның тұсындағы қазақ-жоңғар соғысының ең даңқты беттерінің бірі болған, 600 қазақ сарбазы жоңғардың 50 мың әскеріне қарсы тұрған шайқас?",
+            a: ["Орбұлақ шайқасы", "Аңырақай шайқасы", "Бұланды шайқасы", "Қатаған қырғыны"],
+            correct: 0
+        },
+        {
+            q: "1723 жылы Жоңғар қонтайшысы Цеван Рабданның қазақ жеріне тұтқиылдан жасаған жойқын жорығы тарихта қандай атпен қалды?",
+            a: ["Ақтабан шұбырынды, Алқакөл сұлама", "Қалмақ қырылған", "Шаңды жорық", "Бәрібір қырғыны"],
+            correct: 0
+        },
+        {
+            q: "1726 (немесе 1728) жылы қазақ жасақтарының жоңғарларға алғашқы ірі соққы беріп, жеңіске жеткен шайқасы қалай аталады?",
+            a: ["Бұланды шайқасы", "Аңырақай шайқасы", "Орбұлақ шайқасы", "Аягөз шайқасы"],
+            correct: 0
+        },
+        {
+            q: "1729-1730 жылдары Балқаш көлінің маңында Үш жүздің біріккен әскері жоңғарларды толықтай талқандаған ең соңғы шешуші шайқас?",
+            a: ["Аңырақай шайқасы", "Бұланды шайқасы", "Ордабасы шайқасы", "Шалдуар шайқасы"],
+            correct: 0
+        }
+    ]
+},
+{
+    id: "history-7",
+    title: "Қазақ хандары мен билері — Тұлғалар тарихы",
+    description: "Есім ханның бүлікті басуы, Хақназар ханның дипломатиясы және Тәуке хан мен Үш жүз билерінің мемлекетті сақтаудағы рөлі.",
+    duration: 15,
+    questions: [
+        {
+            q: "Есім ханның тұсында Ташкентті билеп, Қазақ хандығына қарсы бүлік шығарған, тарихта 'Қатаған қырғынына' себепші болған билеуші?",
+            a: ["Тұрсын Мұхаммед хан", "Имамқұли хан", "Абдаллах хан", "Баба сұлтан"],
+            correct: 0
+        },
+        {
+            q: "Хақназар ханның сыртқы саясаттағы басты жетістіктерінің бірі — қай мемлекеттің билеушісі Абдаллах II-мен 'достық әрі әскери одақ' құруы болды?",
+            a: ["Бұхар хандығы", "Моғолстан", "Сібір хандығы", "Ноғай Ордасы"],
+            correct: 0
+        },
+        {
+            q: "'Жеті жарғы' заңдар жүйесін жасауға Тәуке ханмен бірге тікелей қатысып, Үш жүздің бірлігін ту еткен Ұлы жүздің атақты биі?",
+            a: ["Төле би", "Қазыбек би", "Әйтеке би", "Мөңке би"],
+            correct: 0
+        },
+        {
+            q: "Орта жүздің атынан Тәуке ханның кеңесіне кірген, өткір тілі мен дипломатиялық шеберлігі үшін жоңғар қонтайшысы 'Қаз дауысты' деп атаған би?",
+            a: ["Қазыбек би", "Төле би", "Әйтеке би", "Сырым би"],
+            correct: 0
+        },
+        {
+            q: "Кіші жүздің бас биі, 'Тура биде туған жоқ' деген ұстаныммен ел арасындағы дауларды әділ шешіп, Тәуке ханның бас кеңесшісі болған тұлға?",
+            a: ["Әйтеке би", "Қазыбек би", "Төле би", "Бөгенбай би"],
+            correct: 0
+        }
+    ]
+}
+
+        ];
+
+        // Жаһандық күй айнымалылары
+        let currentTest = null;
+        let currentQuestionIndex = 0;
+        let userAnswers = {}; // { questionIndex: selectedOptionIndex }
+        let timerInterval = null;
+        let secondsLeft = 0;
+
+        // ПАРАҚШАЛАРДЫ АУЫСТЫРУ КӨРІНІС СЕРВИСІ
+        function showPage(pageId) {
+            // Барлық секцияларды жабу
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(s => s.classList.remove('active'));
+
+            // Қажетті секцияны ашу
+            const target = document.getElementById(pageId);
+            if (target) target.classList.add('active');
+
+            // Навигациялық сілтемелерді жаңарту
+            const links = document.querySelectorAll('nav a');
+            links.forEach(l => l.classList.remove('active'));
+            
+            const activeLink = document.getElementById(`nav-${pageId}`);
+            if (activeLink) activeLink.classList.add('active');
+
+            // Тест барысында хидер мен футерді жасыру логикасы
+            const header = document.getElementById('main-header');
+            const footer = document.getElementById('main-footer');
+            if (pageId === 'active-test-section') {
+                header.style.display = 'none';
+                footer.style.display = 'none';
+            } else {
+                header.style.display = 'block';
+                footer.style.display = 'block';
+            }
+
+            // Егер тарих немесе тесттер беті ашылса, мәліметтерді қайта жүктейміз
+            if (pageId === 'tests') {
+                renderTestDatabase();
+            } else if (pageId === 'history') {
+                renderHistoryLogs();
+            }
+
+            window.scrollTo(0, 0);
+        }
+
+        // ТЕСТТЕР ТІЗІМІН ЭКРАНҒА ШЫҒАРУ (РЕНДЕРИНГ)
+        function renderTestDatabase() {
+            const availableContainer = document.getElementById('test-list-available');
+            const completedContainer = document.getElementById('test-list-completed');
+            
+            availableContainer.innerHTML = '';
+            completedContainer.innerHTML = '';
+
+            const completedIds = JSON.parse(localStorage.getItem('zamanat_completed_ids') || '[]');
+
+            let availableCount = 0;
+            let completedCount = 0;
+
+            testDatabase.forEach(test => {
+                const isDone = completedIds.includes(test.id);
+                const cardHtml = `
+                    <div class="test-card ${isDone ? 'completed-card' : ''}">
+                        <div>
+                            <span class="status-badge ${isDone ? 'done' : 'available'}">
+                                ${isDone ? 'Тапсырылған' : 'Қолжетімді'}
+                            </span>
+                            <h3>${test.title}</h3>
+                            <p>${test.description}</p>
+                        </div>
+                        <div>
+                            <div style="font-size:13px; color:var(--text-muted); margin-bottom:14px; font-weight:500;">
+                                ⏱ Уақыты: ${test.duration} минут | 📝 Сұрақ саны: ${test.questions.length}
+                            </div>
+                            ${isDone ? `
+                                <button class="btn-card-disabled" disabled>Тапсырылды</button>
+                            ` : `
+                                <button class="card-action-btn" onclick="startTestProcess('${test.id}')">
+                                    Сынақты бастау <span class="arrow-icon">→</span>
+                                </button>
+                            `}
+                        </div>
+                    </div>
+                `;
+
+                if (isDone) {
+                    completedContainer.innerHTML += cardHtml;
+                    completedCount++;
+                } else {
+                    availableContainer.innerHTML += cardHtml;
+                    availableCount++;
+                }
+            });
+
+            document.getElementById('count-available').innerText = availableCount;
+            document.getElementById('count-completed').innerText = completedCount;
+        }
+
+        // ТЕСТТІ БАСТАУ ПРОЦЕСІ
+        function startTestProcess(testId) {
+            const found = testDatabase.find(t => t.id === testId);
+            if (!found) return;
+
+            currentTest = found;
+            currentQuestionIndex = 0;
+            userAnswers = {};
+            secondsLeft = found.duration * 60;
+
+            document.getElementById('active-test-title').innerText = found.title;
+            showPage('active-test-section');
+            setupQuizView();
+            startTimerCountdown();
+        }
+
+        // ТАЙМЕР ОРНАТУ СИСТЕМА СЕРВИСІ
+        function startTimerCountdown() {
+            clearInterval(timerInterval);
+            const timerBox = document.getElementById('timer-box');
+            timerBox.classList.remove('warning');
+
+            function updateDisplay() {
+                if (secondsLeft <= 0) {
+                    clearInterval(timerInterval);
+                    autoSubmitQuiz();
+                    return;
+                }
+
+                if (secondsLeft < 120) { // 2 минут қалғанда қызыл ескерту
+                    timerBox.classList.add('warning');
+                }
+
+                const m = Math.floor(secondsLeft / 60);
+                const s = secondsLeft % 60;
+                document.getElementById('timer-val').innerText = `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                secondsLeft--;
+            }
+
+            updateDisplay();
+            timerInterval = setInterval(updateDisplay, 1000);
+        }
+
+        // СҰРАҚТАРДЫ ЖҮКТЕУ КӨРІНІСІ
+        function setupQuizView() {
+            if (!currentTest) return;
+
+            const quizArea = document.getElementById('quiz-area');
+            const q = currentTest.questions[currentQuestionIndex];
+
+            // Прогресс бару жаңарту
+            const totalQ = currentTest.questions.length;
+            const progressPercent = ((currentQuestionIndex + 1) / totalQ) * 100;
+            document.getElementById('test-progress-fill').style.width = `${progressPercent}%`;
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+            let answersHtml = '';
+
+            q.a.forEach((ans, index) => {
+                const isSelected = userAnswers[currentQuestionIndex] === index;
+                answersHtml += `
+                    <li class="ans-item ${isSelected ? 'selected' : ''}" onclick="selectAnswerOption(${index})">
+                        <span class="ans-prefix">${prefixes[index]}</span>
+                        <span>${ans}</span>
+                    </li>
+                `;
+            });
+
+            quizArea.innerHTML = `
+                <div class="q-card">
+                    <div class="q-title">Сұрақ ${currentQuestionIndex + 1} / ${totalQ}: <br><br> ${q.q}</div>
+                    <ul class="ans-list">${answersHtml}</ul>
+                </div>
+            `;
+
+            // Батырмалар күйі
+            document.getElementById('prev-q-btn').disabled = currentQuestionIndex === 0;
+            
+            const nextBtn = document.getElementById('next-q-btn');
+            if (currentQuestionIndex === totalQ - 1) {
+                nextBtn.innerText = "Тестті аяқтау ✓";
+                nextBtn.style.background = "var(--success-color)";
+                nextBtn.style.borderColor = "var(--success-color)";
+            } else {
+                nextBtn.innerText = "Келесі сұрақ →";
+                nextBtn.style.background = "var(--accent-color)";
+                nextBtn.style.borderColor = "var(--accent-color)";
+            }
+        }
+
+        // ЖАУАП НҰСҚАСЫН ТАНДАУ
+        function selectAnswerOption(optionIndex) {
+            userAnswers[currentQuestionIndex] = optionIndex;
+            setupQuizView(); // Көріністі қайта жаңарту
+        }
+
+        // АЛДЫҢҒЫ СҰРАҚҚА ӨТУ
+        function goToPrevQuestion() {
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                setupQuizView();
+            }
+        }
+
+        // КЕЛЕСІ СҰРАҚҚА ӨТУ НЕМЕСЕ БІТІРУ
+        function goToNextQuestion() {
+            const totalQ = currentTest.questions.length;
+            if (currentQuestionIndex < totalQ - 1) {
+                currentQuestionIndex++;
+                setupQuizView();
+            } else {
+                // Аяқтау батырмасы басылғанда модальді терезені ашу
+                openConfirmFinishModal();
+            }
+        }
+
+        // ТЕСТТІ АЯҚТАУДЫ РАСТАУ МОДАЛЫ
+        function openConfirmFinishModal() {
+            document.getElementById('confirm-finish-modal').classList.add('active');
+        }
+
+        function closeConfirmFinishModal() {
+            document.getElementById('confirm-finish-modal').classList.remove('active');
+        }
+
+        function executeQuizFinish() {
+            closeConfirmFinishModal();
+            finishQuizCalculation();
+        }
+
+        // ТЕСТ БАРЫСЫНДА ҚАТЕ ТУРАЛЫ ХАБАРЛАУ (WHATSAPP)
+        function reportTestError() {
+            if (!currentTest) return;
+            const q = currentTest.questions[currentQuestionIndex];
+            const message = `⚠️ ZAMANAT Қате туралы хабарлама!\n\nТест: ${currentTest.title}\nСұрақ №${currentQuestionIndex + 1}: ${q.q}`;
+            const encoded = encodeURIComponent(message);
+            window.open(`https://api.whatsapp.com/send?phone=${77058486656}&text=${encoded}`, '_blank');
+        }
+
+        // УАҚЫТ БІТКЕНДЕ АВТОМАТТЫ ТҮРДЕ ЖІБЕРУ
+        function autoSubmitQuiz() {
+            alert("Уақыт аяқталды! Сынақ нәтижесі автоматты түрде есептеледі.");
+            finishQuizCalculation();
+        }
+
+        // НӘТИЖЕНІ ЕСЕПТЕУ ЖӘНЕ БАЗАҒА (LOCALSTORAGE) САҚТАУ
+        function finishQuizCalculation() {
+            clearInterval(timerInterval);
+            if (!currentTest) return;
+
+            const totalQ = currentTest.questions.length;
+            let correctAnswersCount = 0;
+
+            const reviewArea = document.getElementById('review-area');
+            reviewArea.innerHTML = '';
+
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            currentTest.questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.correct;
+                if (isCorrect) correctAnswersCount++;
+
+                let detailsHtml = '';
+                q.a.forEach((ans, oIdx) => {
+                    let styleExtension = '';
+                    if (oIdx === q.correct) styleExtension = `style="color: var(--success-color); font-weight:700;"`;
+                    if (oIdx === userAns && !isCorrect) styleExtension = `style="color: var(--error-color); font-weight:700; text-decoration:line-through;"`;
+                    
+                    detailsHtml += `<div ${styleExtension}><strong style="color:var(--text-color);">${prefixes[oIdx]})</strong> ${ans}</div>`;
+                });
+
+                reviewArea.innerHTML += `
+                    <div class="review-card-item ${isCorrect ? 'correct' : 'wrong'}">
+                        <h4 style="font-size:16px; font-weight:700; margin-bottom:12px;">Сұрақ ${idx + 1}: ${q.q}</h4>
+                        <div style="font-size:14px; display:flex; flex-direction:column; gap:6px;">${detailsHtml}</div>
+                        <div style="margin-top:14px; font-size:13px; font-weight:600; color:${isCorrect ? 'var(--success-color)' : 'var(--error-color)'};">
+                            ${isCorrect ? '✓ Дұрыс жауап бердіңіз' : `✗ Қате. Сіздің жауабыңыз: ${userAns !== undefined ? prefixes[userAns] : 'Жауап берілмеді'}`}
+                        </div>
+                    </div>
+                `;
+            });
+
+            // Экранографикалық көрсеткіштерді толтыру
+            document.getElementById('result-test-title').innerText = currentTest.title;
+            document.getElementById('final-score').innerText = `${correctAnswersCount} / ${totalQ}`;
+
+            const percent = (correctAnswersCount / totalQ) * 100;
+            const statusElem = document.getElementById('result-status-text');
+            if (percent >= 80) {
+                statusElem.innerText = "Керемет нәтиже! Сіз бұл тақырыпты өте жоғары деңгейде меңгергенсіз.";
+                statusElem.style.color = "var(--success-color)";
+            } else if (percent >= 50) {
+                statusElem.innerText = "Жақсы нәтиже. Тұрақты ізденіспен біліміңізді одан әрі жетілдіре аласыз.";
+                statusElem.style.color = "var(--gold-color)";
+            } else {
+                statusElem.innerText = "Тақырыпты қайта оқып шығу ұсынылады. Оқулықтар арқылы қатемен жұмыс жасаңыз.";
+                statusElem.style.color = "var(--error-color)";
+            }
+
+            // Тапсырылды деп белгілеу жүйесі
+            const completedIds = JSON.parse(localStorage.getItem('zamanat_completed_ids') || '[]');
+            if (!completedIds.includes(currentTest.id)) {
+                completedIds.push(currentTest.id);
+                localStorage.setItem('zamanat_completed_ids', JSON.stringify(completedIds));
+            }
+
+            // Тарих архивіне жазу логтары
+            const historyLog = JSON.parse(localStorage.getItem('zamanat_history_logs') || '[]');
+            historyLog.unshift({
+                testId: currentTest.id,
+                title: currentTest.title,
+                scoreText: `${correctAnswersCount} / ${totalQ}`,
+                date: new Date().toLocaleString(),
+                savedAnswers: userAnswers
+            });
+            localStorage.setItem('zamanat_history_logs', JSON.stringify(historyLog));
+
+            showPage('result-section');
+        }
+
+        // ТАПСЫРЫЛҒАН ТЕСТТЕР ТАРИХЫН ЭКРАНҒА ШЫҒАРУ
+        function renderHistoryLogs() {
+            const container = document.getElementById('history-log-table-container');
+            const logs = JSON.parse(localStorage.getItem('zamanat_history_logs') || '[]');
+
+            if (logs.length === 0) {
+                container.innerHTML = `
+                    <div style="text-align:center; padding:40px; border:1px dashed var(--gray-border); border-radius:var(--radius-md); background:#ffffff;">
+                        <p style="color:var(--text-secondary);">Сіз әлі ешқандай сынақ тапсырған жоқсыз. Тесттер аймағына өтіп біліміңізді тексеріңіз.</p>
+                        <button class="btn" style="margin-top:16px;" onclick="showPage('tests')">Тесттерге өту</button>
+                    </div>
+                `;
+                return;
+            }
+
+            let rowsHtml = '';
+            logs.forEach((log, index) => {
+                rowsHtml += `
+                    <tr>
+                        <td style="font-weight:600; color:var(--text-color);">${log.title}</td>
+                        <td>${log.date}</td>
+                        <td style="font-weight:700; color:var(--accent-color);">${log.scoreText}</td>
+                        <td>
+                            <button class="btn btn-secondary" style="padding:6px 14px; font-size:12px; border-radius:12px;" onclick="reviewPastTestLog(${index})">
+                                Анализді көру
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            container.innerHTML = `
+                <div class="table-wrapper">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Нұсқа атауы</th>
+                                <th>Тапсырылған уақыты</th>
+                                <th>Қорытынды ұпай</th>
+                                <th>Әрекет</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            ${rowsHtml}
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        // ТАРИХТАН ЕСКІ АНАЛИЗДІ ҚАЙТА ЖҮКТЕУ
+        function reviewPastTestLog(logIndex) {
+            const logs = JSON.parse(localStorage.getItem('zamanat_history_logs') || '[]');
+            const currentLog = logs[logIndex];
+            if (!currentLog) return;
+
+            const foundTest = testDatabase.find(t => t.id === currentLog.testId);
+            if (!foundTest) {
+                alert("Бұл тесттің сұрақтар базасы жүйеден жойылған немесе өзгертілген.");
+                return;
+            }
+
+            // Жаһандық айнымалыларды архив деректерімен уақытша алмастыру
+            currentTest = foundTest;
+            userAnswers = currentLog.savedAnswers || {};
+
+            // Нәтиже парақшасын толтыру
+            document.getElementById('result-test-title').innerText = currentLog.title;
+            document.getElementById('final-score').innerText = currentLog.scoreText;
+            
+            const statusElem = document.getElementById('result-status-text');
+            statusElem.innerText = "Бұл нәтиже тарих архивінен жүктелген.";
+            statusElem.style.color = "var(--text-muted)";
+
+            // Ревизиографиялық аналитикалық тізім құру
+            const reviewArea = document.getElementById('review-area');
+            reviewArea.innerHTML = '';
+            const prefixes = ['A', 'B', 'C', 'D'];
+
+            foundTest.questions.forEach((q, idx) => {
+                const userAns = userAnswers[idx];
+                const isCorrect = userAns === q.correct;
+
+                let detailsHtml = '';
+                q.a.forEach((ans, oIdx) => {
+                    let styleExtension = '';
+                    if (oIdx === q.correct) styleExtension = `style="color: var(--success-color); font-weight:700;"`;
+                    if (oIdx === userAns && !isCorrect) styleExtension = `style="color: var(--error-color); font-weight:700; text-decoration:line-through;"`;
+                    detailsHtml += `<div ${styleExtension}><strong>${prefixes[oIdx]})</strong> ${ans}</div>`;
+                });
+
+                reviewArea.innerHTML += `
+                    <div class="review-card-item ${isCorrect ? 'correct' : 'wrong'}">
+                        <h4 style="font-size:16px; font-weight:700; margin-bottom:12px;">Сұрақ ${idx + 1}: ${q.q}</h4>
+                        <div style="font-size:14px; display:flex; flex-direction:column; gap:6px;">${detailsHtml}</div>
+                        <div style="margin-top:14px; font-size:13px; font-weight:600; color:${isCorrect ? 'var(--success-color)' : 'var(--error-color)'};">
+                            ${isCorrect ? '✓ Дұрыс жауап берілген' : `✗ Қате. Таңдалған жауап: ${userAns !== undefined ? prefixes[userAns] : 'Жауап берілмеді'}`}
+                        </div>
+                    </div>
+                `;
+            });
+
+            showPage('result-section');
+        }
+
+        // МОДАЛЬДІ БАСҚАРУ ФУНКЦИЯЛАРЫ
+        function openEnrollModal(tariffName = 'Курсқа өтінім') {
+            document.getElementById('enroll-modal').classList.add('active');
+        }
+
+        function closeEnrollModal() {
+            document.getElementById('enroll-modal').classList.remove('active');
+        }
+
+        function openFeedbackModal() {
+            document.getElementById('feedback-modal').classList.add('active');
+        }
+
+        function closeFeedbackModal() {
+            document.getElementById('feedback-modal').classList.remove('active');
+        }
+
+        // ТАРИФ ФОРМАСЫН WHATSAPP-ҚА ЖІБЕРУ
+        function submitEnrollToWhatsapp(event) {
+            event.preventDefault();
+            const name = document.getElementById('enroll-name').value;
+            const phone = document.getElementById('enroll-phone').value;
+            
+            const message = `🚀 ЖАҢА ӨТІНІМ!\n\nТариф: Silver пакетін аламын!\nЕсімі: ${name}\nТелефон: ${phone}`;
+            const encoded = encodeURIComponent(message);
+            
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encoded}`, '_blank');
+            closeEnrollModal();
+            document.getElementById('enroll-name').value = '';
+            document.getElementById('enroll-phone').value = '';
+        }
+
+        // КЕРІ БАЙЛАНЫС ФОРМАСЫН WHATSAPP-ҚА ЖІБЕРУ
+        function submitFeedbackToWhatsapp(event) {
+            event.preventDefault();
+            const name = document.getElementById('feedback-name').value;
+            const phone = document.getElementById('feedback-phone').value;
+            const text = document.getElementById('feedback-text').value;
+            
+            const message = `💬 КЕРІ БАЙЛАНЫС / ҰСЫНЫС ХАТ!\n\nЕсімі: ${name}\nТелефон: ${phone}\nПікір: ${text}`;
+            const encoded = encodeURIComponent(message);
+            
+            window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMBER}&text=${encoded}`, '_blank');
+            closeFeedbackModal();
+            document.getElementById('feedback-name').value = '';
+            document.getElementById('feedback-phone').value = '';
+            document.getElementById('feedback-text').value = '';
+        }
+
+        // ИНТЕРАКТИВТІ КАЛЬКУЛЯТОР ФУНКЦИЯСЫ
+        function calculateGrantChance() {
+            const score = parseInt(document.getElementById('calc-score').value);
+            const resultBox = document.getElementById('calc-result');
+
+            if (isNaN(score) || score < 0 || score > 140) {
+                resultBox.style.display = 'none';
+                return;
+            }
+
+            resultBox.style.display = 'block';
+
+            if (score >= 125) {
+                resultBox.innerText = "Ықтималдық: 99%. Сізде кез келген ЖОО грантына түсу мүмкіндігі өте жоғары!";
+                resultBox.style.background = "rgba(52, 199, 89, 0.1)";
+                resultBox.style.color = "var(--success-color)";
+            } else if (score >= 100) {
+                resultBox.innerText = "Ықтималдық: 80%. Мемлекеттік гранттан үміткер болу мүмкіндігіңіз зор.";
+                resultBox.style.background = "rgba(255, 149, 0, 0.1)";
+                resultBox.style.color = "var(--gold-color)";
+            } else if (score >= 75) {
+                resultBox.innerText = "Ықтималдық: 45%. Шекті балдан өттіңіз, бірақ грант үшін білімді арттыру қажет.";
+                resultBox.style.background = "rgba(255, 149, 0, 0.05)";
+                resultBox.style.color = "var(--text-secondary)";
+            } else {
+                resultBox.innerText = "Ықтималдық төмен. Ақылы бөлім немесе білімді жедел тереңдету қажет.";
+                resultBox.style.background = "rgba(255, 59, 48, 0.1)";
+                resultBox.style.color = "var(--error-color)";
+            }
+        }
+
+        // FAQ ТАБ АУЫСТЫРҒЫШЫ
+        function toggleFaq(element) {
+            const answer = element.querySelector('.faq-answer');
+            const span = element.querySelector('.faq-question span');
+            
+            if (answer.style.display === 'block') {
+                answer.style.display = 'none';
+                span.innerText = '+';
+            } else {
+                answer.style.display = 'block';
+                span.innerText = '−';
+            }
+        }
+
+        // ТАЙМЕР ҰБТ ЕСЕПТЕУ СЕРВИСІ (РЕАЛДЫ ҚАЛҒАН КҮНДЕР)
+        function initUbtCountdownTimer() {
+            const targetDate = new Date("June 1, 2026 09:00:00").getTime();
+
+            function updateTimer() {
+                const now = new Date().getTime();
+                const diff = targetDate - now;
+
+                if (diff <= 0) {
+                    document.getElementById('days-val').innerText = '00';
+                    document.getElementById('hours-val').innerText = '00';
+                    document.getElementById('minutes-val').innerText = '00';
+                    document.getElementById('seconds-val').innerText = '00';
+                    return;
+                }
+
+                const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+                document.getElementById('days-val').innerText = days.toString().padStart(2, '0');
+                document.getElementById('hours-val').innerText = hours.toString().padStart(2, '0');
+                document.getElementById('minutes-val').innerText = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds-val').innerText = seconds.toString().padStart(2, '0');
+            }
+
+            updateTimer();
+            setInterval(updateTimer, 1000);
+        }
+
+        window.onload = function() {
+            initUbtCountdownTimer();
+            renderTestDatabase();
+        }
+        
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+        // 1. Запрет контекстного меню (правой кнопки мыши)
+        document.addEventListener('contextmenu', (e) => {
+            e.preventDefault();
+            showProtectionAlert("Оң жақ батырма бұғатталған! / Контекстное меню заблокировано!");
+        });
+
+        // 2. Запрет копирования (Ctrl+C / СМD+C)
+        document.addEventListener('copy', (e) => {
+            e.preventDefault();
+            showProtectionAlert("Мәліметті көшіруге тыйым салынған! / Копирование информации запрещено!");
+        });
+
+        // 3. Запрет вырезания текста (Ctrl+X)
+        document.addEventListener('cut', (e) => {
+            e.preventDefault();
+        });
+
+        // 4. Запрет выделения текста двойным кликом или протяжкой (дополнительно к CSS)
+        document.addEventListener('selectstart', (e) => {
+            e.preventDefault();
+        });
+
+        // 5. Блокировка горячих клавиш разработчика и копирования
+        document.addEventListener('keydown', (e) => {
+            // Блокировка Ctrl+C, Ctrl+X, Ctrl+U (просмотр кода), Ctrl+S (сохранение страницы), Ctrl+P (печать)
+            if (e.ctrlKey || e.metaKey) {
+                if (['c', 'x', 'u', 's', 'p', 'a'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                    if(e.key.toLowerCase() === 'c') {
+                        showProtectionAlert("Көшіру бұғатталған! / Копирование заблокировано!");
+                    }
+                    return false;
+                }
+            }
+
+            // Блокировка F12 (Инструменты разработчика)
+            if (e.key === 'F12') {
+                e.preventDefault();
+                showProtectionAlert("Әзірлеуші саймандары жабық! / Инструменты разработчика недоступны!");
+                return false;
+            }
+
+            // Блокировка Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C (Комбинации для открытия консоли)
+            if ((e.ctrlKey || e.metaKey) && e.shiftKey) {
+                if (['i', 'j', 'c'].includes(e.key.toLowerCase())) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+        });
+
+        // 6. Предотвращение зажатия клавиши PrintScreen для создания скриншотов (для старых систем)
+        document.addEventListener('keyup', (e) => {
+            if (e.key === 'PrintScreen') {
+                navigator.clipboard.writeText(''); // Очищаем буфер обмена
+                showProtectionAlert("Скриншот алуға тыйым салынған! / Скриншоты запрещены!");
+            }
+        });
+
+        // Красивое кастомное уведомление вместо стандартного грубого alert()
+        function showProtectionAlert(message) {
+            // Проверяем, нет ли уже активного уведомления
+            if (document.querySelector('.protection-toast')) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'protection-toast';
+            toast.innerHTML = `
+                <div style="display:flex; align-items:center; gap:10px;">
+                    <span style="color:#ff6b00; font-size:20px;">⚠️</span>
+                    <span style="font-family:sans-serif; font-size:14px; font-weight:600; color:#1d1d1f;">${message}</span>
+                </div>
+            `;
+            
+            // Стили для всплывающего уведомления в стиле Apple/Premium
+            Object.assign(toast.style, {
+                position: 'fixed',
+                bottom: '30px',
+                left: '50%',
+                transform: 'translateX(-50%) translateY(100px)',
+                background: '#ffffff',
+                padding: '16px 24px',
+                borderRadius: '12px',
+                boxShadow: '0 10px 30px rgba(0,0,0,0.15)',
+                border: '1px solid rgba(255,107,0,0.2)',
+                zIndex: '999999',
+                transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
+                opacity: '0'
+            });
+
+            document.body.appendChild(toast);
+
+            // Анимация появления
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(0)';
+                toast.style.opacity = '1';
+            }, 50);
+
+            // Автоматическое скрытие и удаление через 2.5 секунды
+            setTimeout(() => {
+                toast.style.transform = 'translateX(-50%) translateY(100px)';
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 400);
+            }, 2500);
+        }
+    });
+
+
+function toggleMobileMenu() {
+    const nav = document.getElementById('main-nav');
+    const toggleBtn = document.getElementById('menu-toggle'); // ID сәйкес келуі керек
+    
+    if (nav && toggleBtn) {
+        nav.classList.toggle('mobile-active');
+        toggleBtn.classList.toggle('open'); // Осы класс анимацияны қосады
+    }
+}
+
+// Функция клика по пункту меню (переключает страницу и закрывает шторку)
+function handleNavMobile(pageId) {
+    // Вызов вашей основной функции смены страниц
+    if (typeof showPage === 'function') {
+        showPage(pageId);
+    }
+    
+    // Закрываем мобильное меню автоматически
+    const nav = document.getElementById('main-nav');
+    const toggleBtn = document.getElementById('menu-toggle');
+    
+    if (nav && toggleBtn) {
+        nav.classList.remove('mobile-active');
+        toggleBtn.classList.remove('open');
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const modal = document.getElementById("browser-warning-modal");
+    const closeBtn = document.getElementById("close-welcome-modal-btn");
+
+    // Пайдаланушы бұған дейін сайтқа кірген-кірмегенін тексеру
+    if (!localStorage.getItem("welcomeModalShown")) {
+        // Егер бірінші рет кірсе, модалды терезені шығару
+        setTimeout(() => {
+            modal.classList.add("is-active");
+        }, 600); // Сайт жүктелгеннен кейін 0.6 секундтан соң баяу шығады
+    }
+
+    // Батырманы басқан кезде жабу және жадқа сақтау
+    closeBtn.addEventListener("click", function() {
+        modal.classList.remove("is-active");
+        localStorage.setItem("welcomeModalShown", "true"); // Келесі жолы шықпайтын қылу
+    });
+});
+
+
+
+(function() {
+    // Включаем блокировку скролла
+    document.body.classList.add('preloader-active');
+
+    const progressLine = document.getElementById("preloader-progress-line");
+    const preloader = document.getElementById("minimal-preloader");
+    
+    let currentPercent = 0;
+    let targetPercent = 0;
+
+    // Умная симуляция на основе готовности документа браузера
+    function updateProgress() {
+        if (document.readyState === "loading") {
+            targetPercent = 30;
+        } else if (document.readyState === "interactive") {
+            targetPercent = 70;
+        } else if (document.readyState === "complete") {
+            targetPercent = 100;
+        }
+
+        // Плавное заполнение линии кадр за кадром
+        if (currentPercent < targetPercent) {
+            currentPercent += 2; // Скорость заполнения линии
+            if (currentPercent > targetPercent) currentPercent = targetPercent;
+            
+            if (progressLine) {
+                progressLine.style.width = currentPercent + "%";
+            }
+        }
+
+        if (currentPercent < 100) {
+            requestAnimationFrame(updateProgress);
+        } else {
+            // Как только линия достигла 100%, эффектно схлопываем экран
+            setTimeout(() => {
+                if (preloader) {
+                    preloader.classList.add("is-hidden");
+                    document.body.classList.remove('preloader-active');
+                }
+            }, 300); // Небольшая задержка на 100% для визуальной красоты
+        }
+    }
+
+    // Запускаем анимацию
+    requestAnimationFrame(updateProgress);
+
+    // Если всё мгновенно загрузилось из кэша
+    window.addEventListener("load", () => {
+        targetPercent = 100;
+    });
+})();
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+    const trigger = document.getElementById("ai-widget-trigger");
+    const windowBox = document.getElementById("ai-chat-window");
+    const closeBtn = document.getElementById("ai-close-btn");
+    const sendBtn = document.getElementById("ai-send-btn");
+    const input = document.getElementById("ai-query-input");
+    const msgContainer = document.getElementById("ai-messages");
+
+    // Тілді ашу/жабу
+    trigger.addEventListener("click", () => {
+        windowBox.classList.toggle("is-active");
+        if(windowBox.classList.contains("is-active")) input.focus();
+    });
+    closeBtn.addEventListener("click", () => windowBox.classList.remove("is-active"));
+
+    // ТЫЙЫМ САЛЫНҒАН СӨЗДЕР СҮЗГІСІ
+    // Мұнда негізгі бұғаттау санаттары қамтылған. Тізімді қажетінше кеңейтуге болады.
+    const bannedWords = [
+        "арақ", "алкоголь", "темекі", "вейп", "кальян", "есірткі", "нарко",
+        "пышақтау", "ату", "жару", "бомба", "қару", "соғыс ашу", "террор",
+        "сәләф", "экстремизм", "хакер", "взлом", "алаяқ", "лохотрон", "казино",
+        "боқтау", "мал", "ақымақ", "қота", "ам", "сәкіс", "порно", "интим"
+    ];
+    
+
+    // ІШКІ БІЛІМ БАЗАСЫ
+    const aiKnowledgeBase = [
+        {
+        keywords: ["алтын адам", "есік қорғаны", "сақтар", "ақышев"],
+        response: "<b>🏆 Есік Алтын Адамы:</b><br>1969 жылы Сақ қорғанынан табылды. Зерттеген — <b>Кемал Ақышев</b>. Жауынгердің үстінде 4 мыңнан астам алтын әшекей болған."
+    },
+    {
+        keywords: ["қазақ хандығы", "керей", "жәнібек", "1465"],
+        response: "<b>👑 Қазақ хандығы:</b><br>1465 жылы Керей мен Жәнібек хандар құрған алғашқы қазақ мемлекеті."
+    },
+    {
+        keywords: ["қасым хан", "қасқа жол"],
+        response: "<b>📜 Қасым хан:</b><br>'Қасым ханның қасқа жолы' заңдар жинағын енгізген қазақ ханы."
+    },
+    {
+        keywords: ["тәуке хан", "жеті жарғы"],
+        response: "<b>⚖️ Тәуке хан:</b><br>'Жеті Жарғы' заңдар жинағын қабылдаған хан."
+    },
+    {
+        keywords: ["абылай хан", "әбілмансұр"],
+        response: "<b>🦅 Абылай хан:</b><br>Қазақ хандығының беделді билеушісі, дипломат әрі қолбасшы."
+    },
+    {
+        keywords: ["кенесары", "1837", "көтеріліс"],
+        response: "<b>⚔️ Кенесары көтерілісі:</b><br>1837-1847 жылдары Ресей отаршылдығына қарсы болған ұлт-азаттық қозғалыс."
+    },
+    {
+        keywords: ["алаш", "алашорда", "бөкейханов"],
+        response: "<b>🦅 Алаш Орда:</b><br>1917 жылы құрылған ұлттық автономия."
+    },
+    {
+        keywords: ["тәуелсіздік", "1991"],
+        response: "<b>🇰🇿 Тәуелсіздік:</b><br>1991 жылы 16 желтоқсанда Қазақстан тәуелсіз мемлекет болды."
+    },
+    {
+        keywords: ["ботай", "жылқы"],
+        response: "<b>🐎 Ботай мәдениеті:</b><br>Жылқы алғаш қолға үйретілген ежелгі мәдениет."
+    },
+    {
+        keywords: ["ғұндар", "аттила"],
+        response: "<b>🏹 Ғұндар:</b><br>Еуразия тарихындағы қуатты көшпелі тайпа бірлестігі."
+    },
+    {
+        keywords: ["үйсін"],
+        response: "<b>🏕️ Үйсіндер:</b><br>Жетісу өңірінде өмір сүрген ежелгі тайпа."
+    },
+    {
+        keywords: ["қаңлы"],
+        response: "<b>⚔️ Қаңлылар:</b><br>Сырдария бойындағы ежелгі мемлекет."
+    },
+    {
+        keywords: ["түрік қағанаты", "552"],
+        response: "<b>🛡️ Түрік қағанаты:</b><br>552 жылы құрылған алғашқы түркі мемлекеті."
+    },
+    {
+        keywords: ["қарахан"],
+        response: "<b>🏰 Қарахан мемлекеті:</b><br>Исламды мемлекеттік дін еткен түркі мемлекеті."
+    },
+    {
+        keywords: ["оғыз"],
+        response: "<b>🌍 Оғыз мемлекеті:</b><br>IX-X ғасырларда Сыр бойында өмір сүрген мемлекет."
+    },
+    {
+        keywords: ["қыпшақ"],
+        response: "<b>⚔️ Қыпшақтар:</b><br>Дешті Қыпшақ даласын мекендеген түркі тайпалары."
+    },
+    {
+        keywords: ["моңғол", "шыңғыс хан"],
+        response: "<b>🐴 Моңғол шапқыншылығы:</b><br>1219 жылы Қазақстан аумағына шабуыл жасалды."
+    },
+    {
+        keywords: ["төле би"],
+        response: "<b>⚖️ Төле би:</b><br>Ұлы жүздің атақты биі."
+    },
+    {
+        keywords: ["қазыбек би"],
+        response: "<b>📖 Қазыбек би:</b><br>Орта жүздің әйгілі шешені."
+    },
+    {
+        keywords: ["әйтеке би"],
+        response: "<b>🗡️ Әйтеке би:</b><br>Кіші жүздің биі және мемлекет қайраткері."
+    },
+    {
+        keywords: ["ашаршылық", "1932"],
+        response: "<b>🥀 Ашаршылық:</b><br>1931-1933 жылдары халық ауыр қырғынға ұшырады."
+    },
+    {
+        keywords: ["екінші дүниежүзілік", "1941"],
+        response: "<b>🎖️ Ұлы Отан соғысы:</b><br>Қазақстандықтар майданда ерлік көрсетті."
+    },
+    {
+        keywords: ["желтоқсан", "1986"],
+        response: "<b>❄️ Желтоқсан оқиғасы:</b><br>1986 жылы Алматыда жастар көтерілісі болды."
+    },
+    {
+        keywords: ["алматы"],
+        response: "<b>🏔️ Алматы:</b><br>Қазақстанның ең ірі қаласы."
+    },
+    {
+        keywords: ["астана"],
+        response: "<b>🏙️ Астана:</b><br>Қазақстан Республикасының астанасы."
+    },
+    {
+        keywords: ["바이қоңыр", "байқоңыр"],
+        response: "<b>🚀 Байқоңыр:</b><br>Әлемдегі алғашқы ғарыш айлағы."
+    },
+    {
+        keywords: ["абай"],
+        response: "<b>📚 Абай Құнанбайұлы:</b><br>Қазақтың ұлы ақыны және ойшылы."
+    },
+    {
+        keywords: ["шоқан"],
+        response: "<b>🧭 Шоқан Уәлиханов:</b><br>Ғалым, этнограф және саяхатшы."
+    },
+    {
+        keywords: ["ыбырай"],
+        response: "<b>🏫 Ыбырай Алтынсарин:</b><br>Қазақ ағартушысы және педагог."
+    },
+    {
+        keywords: ["сармат"],
+        response: "<b>⚔️ Сарматтар:</b><br>Батыс Қазақстанды мекендеген тайпалар."
+    },
+    {
+        keywords: ["томирис"],
+        response: "<b>👑 {Томирис}:</b><br>Сақ патшайымы, Кир патшаны жеңген."
+    },
+    {
+        keywords: ["отырар"],
+        response: "<b>🏛️ Отырар:</b><br>Ұлы Жібек жолындағы ірі қала."
+    },
+    {
+        keywords: ["түркістан"],
+        response: "<b>🕌 Түркістан:</b><br>Қазақ халқының рухани астанасы."
+    },
+    {
+        keywords: ["қожа ахмет ясауи"],
+        response: "<b>🕋 Қожа Ахмет Ясауи:</b><br>Түркі сопылық поэзиясының негізін қалаушы."
+    },
+    {
+        keywords: ["махамбет"],
+        response: "<b>🎤 Махамбет Өтемісұлы:</b><br>Ақын және батыр."
+    },
+    {
+        keywords: ["исатай"],
+        response: "<b>⚔️ Исатай Тайманұлы:</b><br>1836-1838 жылдардағы көтеріліс жетекшісі."
+    },
+    {
+        keywords: ["әлия молдағұлова"],
+        response: "<b>🎖️ Әлия Молдағұлова:</b><br>Кеңес Одағының Батыры."
+    },
+    {
+        keywords: ["мәншүк мәметова"],
+        response: "<b>🎖️ Мәншүк Мәметова:</b><br>Қазақтың қаһарман қызы."
+    },
+    {
+        keywords: ["бауыржан момышұлы"],
+        response: "<b>🪖 Бауыржан Момышұлы:</b><br>Даңқты батыр және жазушы."
+    },
+    {
+        keywords: ["панфиловшылар"],
+        response: "<b>🛡️ {Панфиловшылар}:</b><br>Мәскеу түбіндегі шайқаста ерлік көрсеткен жауынгерлер."
+    },
+    {
+        keywords: ["наурыз"],
+        response: "<b>🌸 Наурыз:</b><br>Көктем мерекесі және жаңа жылдың бастауы."
+    },
+    {
+        keywords: ["домбыра"],
+        response: "<b>🎵 Домбыра:</b><br>Қазақ халқының ұлттық аспабы."
+    },
+    {
+        keywords: ["қобыз"],
+        response: "<b>🎻 Қобыз:</b><br>Ежелгі қазақ музыкалық аспабы."
+    },
+    {
+        keywords: ["құрманғазы"],
+        response: "<b>🎼 Құрманғазы:</b><br>Ұлы күйші-композитор."
+    },
+    {
+        keywords: ["дәулеткерей"],
+        response: "<b>🎶 Дәулеткерей:</b><br>Қазақтың әйгілі күйші-композиторы."
+    },
+    {
+        keywords: ["жамбыл"],
+        response: "<b>🖋️ Жамбыл Жабаев:</b><br>Халық ақыны және жыршы."
+    },
+    {
+        keywords: ["мұхтар әуезов"],
+        response: "<b>📖 Мұхтар Әуезов:</b><br>'Абай жолы' романының авторы."
+    },
+    {
+        keywords: ["сәкен сейфуллин"],
+        response: "<b>✍️ Сәкен Сейфуллин:</b><br>Қазақ әдебиетінің көрнекті өкілі."
+    },
+    {
+        keywords: ["бейімбет майлин"],
+        response: "<b>📚 Бейімбет Майлин:</b><br>Қазақ жазушысы және драматург."
+    },
+    {
+        keywords: ["ілес жансүгіров", "ілияс жансүгіров"],
+        response: "<b>📝 Ілияс Жансүгіров:</b><br>Қазақ поэзиясының классигі."
+    },
+    {
+        keywords: ["семей полигоны"],
+        response: "<b>☢️ Семей полигоны:</b><br>Ядролық сынақтар жүргізілген аймақ."
+    },
+    {
+        keywords: ["невада семей"],
+        response: "<b>✊ Невада-Семей:</b><br>Ядролық сынақтарға қарсы қозғалыс."
+    },
+    {
+        keywords: ["қаныш сәтбаев"],
+        response: "<b>⛏️ Қаныш Сәтбаев:</b><br>Белгілі ғалым-геолог."
+    },
+    {
+        keywords: ["әл-фараби"],
+        response: "<b>📘 Әл-Фараби:</b><br>Шығыстың ұлы ғалымы және философы."
+    },
+    {
+        keywords: ["тәңір", "тәңіршілдік"],
+        response: "<b>☀️ Тәңіршілдік:</b><br>Түркі халықтарының ежелгі сенімі."
+    },
+    {
+        keywords: ["алтын орда", "жошы"],
+        response: "<b>🔥 Алтын Орда:</b><br>Шыңғыс ханның үлкен ұлы Жошы негізін қалаған, Еуразия даласындағы ортағасырлық ірі мемлекет."
+    },
+    {
+        keywords: ["бату", "батый"],
+        response: "<b>👑 Бату хан:</b><br>Жошының ұлы, Алтын Орданың іс жүзіндегі алғашқы билеушісі, батысқа жорықтар жасаған қолбасшы."
+    },
+    {
+        keywords: ["берке хан"],
+        response: "<b>🕌 Берке хан:</b><br>Алтын Ордада ислам дінін алғаш рет ресми қабылдаған және мемлекет дербестігін күшейткен билеуші."
+    },
+    {
+        keywords: ["өзбек хан"],
+        response: "<b>🌟 Өзбек хан:</b><br>Алтын Орданың ең гүлденген кезеңінің билеушісі. Ислам дінін мемлекеттік дін ретінде жариялады."
+    },
+    {
+        keywords: ["жәнібек хан", "алтын орда жәнібек"],
+        response: "<b>📜 Жәнібек хан (Алтын Орда):</b><br>Өзбек ханның ұлы, оның тұсында мемлекеттің мәдениеті мен қалалық өмірі жоғары деңгейде дамыды."
+    },
+    {
+        keywords: ["тоқтамыс хан"],
+        response: "<b>⚔️ Тоқтамыс хан:</b><br>Алтын Орданың соңғы ірі билеушісі, Мәскеуді өртеген, бірақ Әмір Темірмен соғыста жеңіліс тапқан."
+    },
+    {
+        keywords: ["әмір темір", "тамерлан"],
+        response: "<b>⚔️ Әмір Темір:</b><br>XIV ғасырда Орталық Азияда алып империя құрған қолбасшы, Алтын Орданы әлсіретуде үлкен рөл атқарды."
+    },
+    {
+        keywords: ["ноғай ордасы"],
+        response: "<b>🌾 Ноғай Ордасы:</b><br>Алтын Орда ыдырағаннан кейін Батыс Қазақстан аумағында құрылған мемлекеттік бірлестік."
+    },
+    {
+        keywords: ["әбілқайыр хандығы", "көшпелі өзбектер"],
+        response: "<b>🛡️ Әбілқайыр хандығы:</b><br>XV ғасырдағы Шығыс Дешті Қыпшақ аумағындағы мемлекет. Одан Керей мен Жәнібек бөлініп шыққан."
+    },
+    {
+        keywords: ["моғолстан"],
+        response: "<b>🏹 Моғолстан:</b><br>XIV-XVI ғасырларда Жетісу мен Шығыс Түркістан аумағында өмір сүрген, Қазақ хандығының құрылуына қолдау көрсеткен мемлекет."
+    },
+    {
+        keywords: ["хақназар хан"],
+        response: "<b>⚔️ Хақназар хан:</b><br>XVI ғасырда Қазақ хандығын қайта біріктіріп, шекарасын кеңейткен айбынды билеуші."
+    },
+    {
+        keywords: ["тәуекел хан"],
+        response: "<b>👑 Тәуекел хан:</b><br>Ташкент пен Бұхара бағытында белсенді сыртқы саясат жүргізіп, хандықтың әскери қуатын арттырған хан."
+    },
+    {
+        keywords: ["есім хан", "ескі жол"],
+        response: "<b>⚖️ Есім хан:</b><br>'Есім ханның ескі жолы' атты әскери-заңдық реформа енгізген, Тұрсын ханның бүлігін басқан билеуші."
+    },
+    {
+        keywords: ["жәңгір хан", "салқам жәңгір"],
+        response: "<b>⚔️ Салқам Жәңгір хан:</b><br>Орбулақ шайқасында өзінің аз ғана әскерімен жоңғарлардың қалың қолына төтеп берген қаһарман хан."
+    },
+    {
+        keywords: ["орбулақ", "орбұлақ шайқасы"],
+        response: "<b>🛡️ Орбұлақ шайқасы (1643 ж):</b><br>Жәңгір хан бастаған 600 қазақ жауынгерінің жоңғардың 50 мыңдық әскерін тактикалық айламен тоқтатқан ұлы шайқасы."
+    },
+    {
+        keywords: ["ақтабан шұбырынды", "1723"],
+        response: "<b>🥀 Ақтабан шұбырынды, Алқакөл сулама:</b><br>1723 жылы жоңғарлардың тұтқиылдан жасаған шабуылы салдарынан болған қазақ халқының ең үлкен қасіретті кезеңі."
+    },
+    {
+        keywords: ["болат хан"],
+        response: "<b>👑 Болат хан:</b><br>Жоңғар шапқыншылығы басталған кезеңдегі Қазақ хандығының бас ханы."
+    },
+    {
+        keywords: ["әбілқайыр хан", "кіші жүз әбілқайыр"],
+        response: "<b>📜 Әбілқайыр хан (Кіші жүз):</b><br>Анракай шайқасында бас қолбасшы болған, кейін 1731 жылы Ресей империясының протекторатын қабылдаған хан."
+    },
+    {
+        keywords: ["бұланты шайқасы", "бұланты"],
+        response: "<b>⚔️ Бұланты шайқасы (1727 ж):</b><br>Қазақ жасақтарының жоңғарларды алғаш рет ірі көлемде талқандаған, халықтың рухын көтерген жеңісті шайқасы."
+    },
+    {
+        keywords: ["аңырақай шайқасы", "аңырақай"],
+        response: "<b>🛡️ Аңырақай шайқасы (1729/1730 ж):</b><br>Үш жүздің біріккен әскері жоңғар басқыншыларын біржола талқандаған, Балқаш көлінің маңындағы ұлы шайқас."
+    },
+    {
+        keywords: ["сырым датұлы", "сырым датов"],
+        response: "<b>⚔️ Сырым Датұлы бастаған көтеріліс:</b><br>1783-1797 жылдары Кіші жүзде патша үкіметінің отарлау саясатына және хан билігінің озбырлығына қарсы бағытталған қозғалыс."
+    },
+    {
+        keywords: ["бөкей ордасы", "ішкі орда"],
+        response: "<b>⛺ Бөкей Ордасы (Ішкі Орда):</b><br>1801 жылы Еділ мен Жайық аралығында құрылған, кейіннен ірі мәдени және экономикалық орталыққа айналған хандық құрылым."
+    },
+    {
+        keywords: ["жәңгір хан бөкей", "жәңгір бөкейұлы"],
+        response: "<b>🏫 Жәңгір хан (Бөкей Ордасы):</b><br>Қазақ даласында алғашқы еуропалық үлгідегі мектеп, мұражай және баспахана ашқан, бірақ саясаты халық наразылығын тудырған реформатор хан."
+    },
+    {
+        keywords: ["жанқожа батыр"],
+        response: "<b>🗡️ Жанқожа Нұрмұхаммедұлы:</b><br>Сырдария бойындағы қазақтардың Хиуа, Қоқан хандықтарына және Ресей отаршылдығына қарсы күресін басқарған атақты батыр."
+    },
+    {
+        keywords: ["есет батыр", "есет көтібарұлы"],
+        response: "<b>⚔️ Есет Көтібарұлы:</b><br>XIX ғасырдың ортасында Батыс Қазақстанда отаршылдыққа қарсы қарулы көтерілісті басқарған батыр."
+    },
+    {
+        keywords: ["амангелді иманов", "1916"],
+        response: "<b>🛡️ 1916 жылғы көтеріліс:</b><br>Патша үкіметінің қазақтарды тыл жұмыстарына алу туралы жарлығына қарсы бағытталған, Торғайда Амангелді Иманов басқарған ұлт-азаттық қозғалыс."
+    },
+    {
+        keywords: ["әлихан", "бөкейханов әлихан"],
+        response: "<b>🦅 Әлихан Бөкейханов:</b><br>Алаш қозғалысының саяси жетекшісі, Алаш Орда ұлттық үкіметінің төрағасы, ғұлама ғалым әрі публицист."
+    },
+    {
+        keywords: ["ахмет байтұрсынов"],
+        response: "<b>✍️ Ахмет Байтұрсынов:</b><br>Ұлт ұстазы, қазақ тіл білімі мен әдебиеттануының негізін қалаушы, Алаш қайраткері, тұңғыш әліпби авторы."
+    },
+    {
+        keywords: ["міржақып дулатов", "оян қазақ"],
+        response: "<b>📚 Міржақып Дулатов:</b><br>'Оян, қазақ!' кітабының авторы, Алаш Орда үкіметінің мүшесі, ақын, жазушы әрі қоғам қайраткері."
+    },
+    {
+        keywords: ["мұстафа шоқай", "түркістан автономиясы"],
+        response: "<b>🌍 Мұстафа Шоқай:</b><br>Түркістан автономиясының жетекшісі, бүкіл түркі халықтарының бірлігін ту еткен халықаралық деңгейдегі саяси қайраткер."
+    },
+    {
+        keywords: ["мағжан жұмабаев"],
+        response: "<b>✨ Мағжан Жұмабаев:</b><br>Қазақ поэзиясының шолпаны, Алаш қозғалысының мүшесі, ерекше лирик және педагог."
+    },
+    {
+        keywords: ["жүсіпбек аймауытов"],
+        response: "<b>🎭 Жүсіпбек Аймауытов:</b><br>Қазақ әдебиетіндегі тұңғыш романдардың авторы, психолог, аудармашы және Алаш зиялысы."
+    },
+    {
+        keywords: ["халел досмухамедов"],
+        response: "<b>🔬 Халел Досмұхамедов:</b><br>Алаш қозғалысының қайраткері, дәрігер, профессор, табиғаттанушы және тарихшы ғалым."
+    },
+    {
+        keywords: ["мұхамеджан тынышпаев"],
+        response: "<b>🚂 Мұхамеджан Тынышпаев:</b><br>Тұңғыш қазақ теміржол инженері, тарихшы, Түркістан автономиясының алғашқы төрағасы."
+    },
+    {
+        keywords: ["қазақ АКСР", "1920"],
+        response: "<b>🏛️ Қазақ АКСР:</b><br>1920 жылы құрылған Кеңестік автономиялық республика. Алғашқы астанасы Орынбор қаласы болды."
+    },
+    {
+        keywords: ["орынбор"],
+        response: "<b>🏢 Орынбор:</b><br>Қазақ АКСР-нің (1920-1925 жж.) тұңғыш астанасы, қазақ зиялыларының бас қосқан мәдени-саяси орталығы."
+    },
+    {
+        keywords: ["қызылорда"],
+        response: "<b>🌾 Қызылорда:</b><br>Қазақ автономиясының екінші астанасы (1925-1929 жж.), Сыр бойындағы тарихи қала."
+    },
+    {
+        keywords: ["түрксіб"],
+        response: "<b>🛤️ Түрксіб теміржолы:</b><br>Сібір мен Орталық Азияны байланыстырған, ХХ ғасырдың басында мыңдаған қазақтың қатысуымен салынған алып теміржол құрылысы."
+    },
+    {
+        keywords: ["голощекин", "кіші қазан"],
+        response: "<b>🥀 Филипп Голощекин:</b><br>Қазақстанда 'Кіші Қазан' саясатын жүргізіп, қолдан ашаршылық ұйымдастырған КСРО партия қайраткері."
+    },
+    {
+        keywords: ["кәріпбек күйіков", "күйіков"],
+        response: "<b>🎨 Кәріпбек Күйіков:</b><br>Семей полигонының зардабынан екі қолсыз дүниеге келген, бірақ аузымен сурет салатын халықаралық антиядролық қозғалыс белсендісі."
+    },
+    {
+        keywords: ["талғат бигелдинов"],
+        response: "<b>✈️ Талғат Бигелдинов:</b><br>Екінші дүниежүзілік соғыста екі мәрте Кеңес Одағының Батыры атағын алған аңызға айналған қазақ ұшқышы."
+    },
+    {
+        keywords: ["хиуаз доспанова"],
+        response: "<b>✈️ Хиуаз Доспанова:</b><br>Екінші дүниежүзілік соғыстағы тұңғыш қазақ әйел-ұшқышы, 'Халық Қаһарманы'."
+    },
+    {
+        keywords: ["рақымжан қошкарбаев", "қошқарбаев"],
+        response: "<b>🚩 Рақымжан Қошқарбаев:</b><br>1945 жылы Берлиндегі Рейхстаг ғимаратына алғашқылардың бірі болып Жеңіс туын тіккен қазақ батыры."
+    },
+    {
+        keywords: ["жұмабек ташенов", "тәшенов"],
+        response: "<b>🏛️ Жұмабек Тәшенов:</b><br>Қазақ КСР Министрлер Кеңесінің төрағасы, Хрущевтің қазақ жерлерін (Тың өлкесін) Ресейге қосу жоспарына ашық қарсы тұрған мемлекет қайраткері."
+    },
+    {
+        keywords: ["динмұхаммед қонаев", "қонаев"],
+        response: "<b>🏢 Дінмұхаммед Қонаев:</b><br>Қазақстанды ширек ғасырға жуық басқарған, оның тұсында елдің өнеркәсібі, мәдениеті мен қала құрылысы (әсіресе Алматы) зор өрлеуге қол жеткізген ұлы тұлға."
+    },
+    {
+        keywords: ["ермухан бекмаханов", "бекмаханов"],
+        response: "<b>📖 Ермұхан Бекмаханов:</b><br>Кенесары көтерілісінің тарихын шынайы жазғаны үшін қуғынға ұшыраған, тұңғыш қазақ тарихшы-профессоры."
+    },
+    {
+        keywords: ["әлкей марғұлан", "марғұлан"],
+        response: "<b>⛏️ Әлкей Марғұлан:</b><br>Орталық Қазақстанның Беғазы-Дәндібай мәдениетін ашқан, қазақ археология мектебінің негізін қалаушы атақты ғалым."
+    },
+    {
+        keywords: ["беғазы дәндібай"],
+        response: "<b>🏺 Беғазы-Дәндібай мәдениеті:</b><br>Қазақстан аумағындағы қола дәуірінің соңғы кезеңіне жататын, монументалды сәулет өнерімен ерекшеленетін тарихи-мәдени кешен."
+    },
+    {
+        keywords: ["андронов", "андронов мәдениеті"],
+        response: "<b>🏺 Андронов мәдениеті:</b><br>Қола дәуірінде (б.з.б. II-I мыңжылдықтарда) Еуразия мен Қазақстан аумағын мекендеген тайпалардың ортақ археологиялық мәдениеті."
+    },
+    {
+        keywords: ["ұлы жібек жолы", "жібек жолы"],
+        response: "<b>🐫 Ұлы Жібек жолы:</b><br>Шығыс пен Батысты байланыстырып, Қазақстанның оңтүстік қалалары арқылы өткен халықаралық сауда мен мәдениеттің алып күретамыры."
+    },
+    {
+        keywords: ["испиджаб", "сайрам"],
+        response: "<b>🏛️ Испиджаб (Сайрам):</b><br>Ұлы Жібек жолы бойындағы ең көне қалалардың бірі, қолөнер мен халықаралық сауданың ірі орталығы."
+    },
+    {
+        keywords: ["сығанақ"],
+        response: "<b>🏯 Сығанақ:</b><br>Қыпшақ хандығының және кейіннен Қазақ хандығының Сыр бойындағы маңызды саяси, экономикалық әрі стратегиялық астана қалаларының бірі."
+    },
+    {
+        keywords: ["сауран"],
+        response: "<b>🏰 Сауран:</b><br>Орта ғасырлардағы Сырдария өңіріндегі ерекше қорғаныс жүйесімен және қыш құбырлы су өткізу желісімен танымал болған қала."
+    },
+    {
+        keywords: ["сарайшық"],
+        response: "<b>🕌 Сарайшық:</b><br>Жайық өзенінің бойында орналасқан Алтын Орда мен Ноғай Ордасының астанасы, қазақ хандары жерленген қасиетті пантеон."
+    }
+    ];
+
+    window.setQuery = function(text) {
+        input.value = text;
+        sendMessage();
+    };
+
+    function sendMessage() {
+        const rawText = input.value.trim();
+        if (rawText === "") return;
+
+        // Бұғаттау сөздерін тексеру
+        const lowerText = rawText.toLowerCase();
+        let hasBannedWord = false;
+        for (let word of bannedWords) {
+            if (lowerText.includes(word)) {
+                hasBannedWord = true;
+                break;
+            }
+        }
+
+        if (hasBannedWord) {
+            appendMessage("⚠️ Жүйе қауіпсіздігі: Хабарламаңызда жіберуге рұқсат етілмеген немесе тақырыптан тыс сөздер анықталды.", "Warning");
+            input.value = "";
+            return;
+        }
+
+        // Пайдаланушы хабарламасын шығару
+        appendMessage(rawText, "User");
+        input.value = "";
+
+        const loadingId = appendMessage("<i class='fa-solid fa-spinner fa-spin'></i> Іздеудемін...", "Loading");
+
+        setTimeout(() => {
+            const botResponse = findAnswerInBase(rawText);
+            removeMessage(loadingId);
+            appendMessage(botResponse, "System");
+        }, 700);
+    }
+
+    function findAnswerInBase(userQuery) {
+        let cleanQuery = userQuery.toLowerCase()
+            .replace(/([ыіі]ның|[ыіі]н|ды|ді|ты|ті|ға|ге|қа|ке|да|де|та|те|мен|туралы|жайлы)/g, "")
+            .trim();
+
+        let bestMatch = null;
+        let maxScore = 0;
+
+        for (let item of aiKnowledgeBase) {
+            let score = 0;
+            for (let keyword of item.keywords) {
+                if (cleanQuery.includes(keyword) || userQuery.toLowerCase().includes(keyword)) {
+                    score++;
+                }
+            }
+            if (score > maxScore) {
+                maxScore = score;
+                bestMatch = item;
+            }
+        }
+
+        if (maxScore > 0 && bestMatch) {
+            return bestMatch.response;
+        } else {
+            // Ішкі базада жоқ болса, сыртқы ресурстарға сілтеме жасау
+            const encodedQuery = encodeURIComponent(userQuery + " Қазақстан тарихы");
+            return `<b>Ішкі базадан нақты мәлімет табылмады.</b> 😔<br><br>` +
+                   `Бұл тақырыпты сыртқы ақпараттық жүйелер арқылы лезде қарай аласыз:<br>` +
+                   `<a href="https://www.google.com/search?q=${encodedQuery}" target="_blank" class="ai-search-link"><i class="fa-solid fa-globe"></i> Google арқылы іздеу</a><br>` +
+                   `<a href="https://gemini.google.com/" target="_blank" class="ai-search-link"><i class="fa-solid fa-wand-magic-sparkles"></i> Gemini AI-дан сұрау</a>`;
+        }
+    }
+
+    function appendMessage(text, sender) {
+        const msgDiv = document.createElement("div");
+        const uniqueId = "msg-" + Date.now() + Math.random().toString(16).slice(2, 6);
+        
+        msgDiv.className = `ai-msg ${sender}`;
+        msgDiv.id = uniqueId;
+        msgDiv.innerHTML = sender === "Loading" ? text : `<p>${text}</p>`;
+        
+        msgContainer.appendChild(msgDiv);
+        msgContainer.scrollTop = msgContainer.scrollHeight;
+        
+        return uniqueId;
+    }
+
+    function removeMessage(id) {
+        const element = document.getElementById(id);
+        if (element) element.remove();
+    }
+
+    sendBtn.addEventListener("click", sendMessage);
+    input.addEventListener("keypress", (e) => {
+        if (e.key === "Enter") sendMessage();
+    });
+});
+    </script>
+</body>
+</html>

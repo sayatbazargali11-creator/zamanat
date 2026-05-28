@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAMANAT — Сандық мектеп оқулықтары</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. БАЗАЛЫҚ ОРТАҚ СТИЛЬДЕР (PREMIUM ORANGE LIGHT STYLE)
+           ========================================================================== */
+        :root {
+            --bg-color: #f5f5f7;
+            --surface-color: #ffffff;
+            --text-color: #1d1d1f;
+            --text-secondary: #6e6e73;
+            --accent-color: #ff6b00;
+            --accent-hover: #e05e00;
+            --gray-border: #e5e5ea;
+            --card-gradient: linear-gradient(135deg, #ff7b1a 0%, #e05e00 100%);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, sans-serif;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .page-global-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+        }
+
+        /* ==========================================================================
+           НАВИГАЦИЯ ЖӘНЕ АРТҚА БАТЫРМАСЫ (КНОПКА НАЗАД НА СТРАНИЦЕ)
+           ========================================================================== */
+        .navigation-top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+        }
+
+        .page-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--surface-color);
+            color: var(--text-color);
+            border: 1px solid var(--gray-border);
+            padding: 12px 24px;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+            transition: all 0.2s ease;
+        }
+
+        .page-back-btn i {
+            color: var(--accent-color);
+            transition: transform 0.2s ease;
+        }
+
+        .page-back-btn:hover {
+            background: var(--surface-color);
+            border-color: var(--accent-color);
+            box-shadow: 0 4px 15px rgba(255, 107, 0, 0.1);
+        }
+
+        .page-back-btn:hover i {
+            transform: translateX(-4px);
+        }
+
+        .page-back-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* ==========================================================================
+           2. HERO СЕКЦИЯСЫ
+           ========================================================================== */
+        .zamanat-hero-wide {
+            width: 100%;
+            background: var(--surface-color);
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            border-radius: 32px;
+            padding: 40px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.012);
+        }
+
+        .hero-title-center {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .pulse-orange-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--accent-color);
+            background: rgba(255, 107, 0, 0.08);
+            padding: 6px 14px;
+            border-radius: 100px;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            margin-bottom: 20px;
+        }
+
+        .hero-title-large {
+            font-size: 2.4rem;
+            font-weight: 800;
+            color: var(--text-color);
+            line-height: 1.25;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .orange-gradient-mark {
+            color: var(--accent-color);
+            background: linear-gradient(180deg, transparent 75%, rgba(255, 107, 0, 0.12) 25%);
+        }
+
+        .hero-desc-main {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            color: var(--text-secondary);
+        }
+
+        /* ==========================================================================
+           3. СЫНЫПТАРДЫ ТАНДАУ (ФИЛЬТР БЛОГЫ)
+           ========================================================================== */
+        .filter-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin: 10px 0;
+        }
+
+        .filter-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .class-filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            background: rgba(0, 0, 0, 0.03);
+            padding: 8px;
+            border-radius: 20px;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: none;
+            padding: 10px 22px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-color);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .filter-btn:hover {
+            background: rgba(0, 0, 0, 0.05);
+        }
+
+        .filter-btn.active {
+            background: var(--text-color);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Издеу жолағы */
+        .search-box-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .search-box-container i {
+            position: absolute;
+            left: 18px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .search-box-container input {
+            width: 100%;
+            height: 48px;
+            background: var(--surface-color);
+            border: 1px solid var(--gray-border);
+            border-radius: 14px;
+            padding: 0 20px 0 48px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .search-box-container input:focus {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 4px rgba(255, 107, 0, 0.1);
+        }
+
+        /* ==========================================================================
+           4. КІТАПТАР СЕТКАСЫ (ОРАНЖЕВЫЙ ДИЗАЙН)
+           ========================================================================== */
+        .books-section-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .books-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 25px;
+            width: 100%;
+        }
+
+        .book-card {
+            background: var(--surface-color);
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0, 0, 0, 0.04);
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .book-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 15px 35px rgba(255, 107, 0, 0.1);
+        }
+
+        /* Кітаптың сыртқы мұқабасы */
+        .book-cover-area {
+            background: var(--card-gradient);
+            padding: 30px 20px;
+            height: 220px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            position: relative;
+            color: #ffffff;
+        }
+
+        .book-cover-area::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 15px;
+            background: linear-gradient(90deg, rgba(0,0,0,0.15) 0%, transparent 100%);
+        }
+
+        .book-badge-class {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            padding: 4px 12px;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.02em;
+        }
+
+        .book-main-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            line-height: 1.2;
+            word-wrap: break-word;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .book-publisher-year {
+            font-size: 0.8rem;
+            opacity: 0.85;
+            font-weight: 500;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Кітаптың астыңғы ақ аймағы */
+        .book-info-area {
+            padding: 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 15px;
+            background: var(--surface-color);
+        }
+
+        .book-authors {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+            font-weight: 500;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .read-btn {
+            width: 100%;
+            height: 44px;
+            background: #f5f5f7;
+            border: none;
+            border-radius: 12px;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .book-card:hover .read-btn {
+            background: var(--accent-color);
+            color: #ffffff;
+        }
+
+        /* Бос нәтиже */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-secondary);
+        }
+
+        .no-results i {
+            font-size: 3rem;
+            color: #d1d1d6;
+            margin-bottom: 15px;
+        }
+
+        /* ==========================================================================
+           5. ІШКІ ПДФ ОҚУ МОДАЛДЫ ТЕРЕЗЕСІ (PDF VIEW SYSTEM)
+           ========================================================================== */
+        .pdf-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .pdf-modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .pdf-modal-container {
+            width: 90%;
+            max-width: 1000px;
+            height: 85vh;
+            background: var(--surface-color);
+            border-radius: 28px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.25);
+            transform: scale(0.95);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .pdf-modal-overlay.active .pdf-modal-container {
+            transform: scale(1);
+        }
+
+        .pdf-modal-header {
+            padding: 18px 24px;
+            background: var(--surface-color);
+            border-bottom: 1px solid var(--gray-border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-modal-title h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .pdf-modal-title p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            margin-top: 2px;
+        }
+
+        .pdf-close-btn {
+            background: #f5f5f7;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            color: var(--text-color);
+            transition: background 0.2s;
+        }
+
+        .pdf-close-btn:hover {
+            background: #e5e5ea;
+        }
+
+        .pdf-frame-body {
+            flex-grow: 1;
+            width: 100%;
+            height: 100%;
+            border: none;
+            background: #525659;
+        }
+
+        /* Адаптивтілік */
+        @media (max-width: 768px) {
+            body { padding: 20px 10px; }
+            .zamanat-hero-wide { padding: 24px; border-radius: 24px; }
+            .hero-title-large { font-size: 1.8rem; }
+            .pdf-modal-container { width: 95%; height: 90vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="page-global-container">
+        
+        <div class="navigation-top-bar">
+            <button class="page-back-btn" onclick="goToHome()">
+                <i class="fa-solid fa-arrow-left"></i> Артқа
+            </button>
+        </div>
+        
+        <div class="zamanat-hero-wide">
+            <div class="hero-title-center">
+                <span class="pulse-orange-badge"><i class="fa-solid fa-graduation-cap"></i> Оқулықтар қоры</span>
+                <h1 class="hero-title-large">ҰБТ-ға дайындыққа арналған <span class="orange-gradient-mark">Мектеп Оқулықтары</span></h1>
+                <p class="hero-desc-main">Керекті сыныпты таңдап, тақырыптарды тікелей сайт ішінде ыңғайлы PDF форматында оқыңыз.</p>
+            </div>
+        </div>
+
+        <div class="filter-wrapper">
+            <span class="filter-label">Сыныпты таңдаңыз:</span>
+            <div class="class-filter-container">
+                <button class="filter-btn active" data-class="all">Барлығы</button>
+                <button class="filter-btn" data-class="6">6-сынып</button>
+                <button class="filter-btn" data-class="7">7-сынып</button>
+                <button class="filter-btn" data-class="8">8-сынып</button>
+                <button class="filter-btn" data-class="9">9-сынып</button>
+                <button class="filter-btn" data-class="10">10-сынып</button>
+                <button class="filter-btn" data-class="11">11-сынып</button>
+            </div>
+            
+            <div class="search-box-container">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="bookSearchInput" placeholder="Пән немесе автор есімін іздеу...">
+            </div>
+        </div>
+
+        <div>
+            <h2 class="books-section-title" id="gridTitle"><i class="fa-solid fa-layer-group" style="color:var(--accent-color)"></i> Барлық кітаптар</h2>
+            <p style="color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 20px;">Жүйеде жалпы <span id="bookCount">0</span> оқулық бар</p>
+            
+            <div class="books-grid" id="booksGridContainer"></div>
+        </div>
+
+    </div>
+
+    <div class="pdf-modal-overlay" id="pdfModal">
+        <div class="pdf-modal-container">
+            <div class="pdf-modal-header">
+                <div class="pdf-modal-title">
+                    <h3 id="modalBookTitle">Кітап атауы</h3>
+                    <p id="modalBookMeta">Жүктелуде...</p>
+                </div>
+                <button class="pdf-close-btn" id="closeModalBtn"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <iframe class="pdf-frame-body" id="pdfViewerFrame" src=""></iframe>
+        </div>
+    </div>
+
+    <script>
+        // Базалық ауқымды кітаптар массиві
+        const booksData = [
+            // 6 СЫНЫП
+            { id: 1, class: "6", subject: "Қазақстан тарихы", publisher: "Атамұра", year: "2018", authors: "Б. Ә. Ғабдуллина, Т. Омарбеков", pdfUrl: "book1.pdf" },
+            { id: 2, class: "6", subject: "Дүниежүзі тарихы", publisher: "Мектеп", year: "2018", authors: "П. С. Мәшімбаев, Н. А. Алдабек", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 3, class: "6", subject: "Биология", publisher: "Атамұра", year: "2018", authors: "Ж. Жатқанбаев", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 4, class: "6", subject: "География", publisher: "Мектеп", year: "2018", authors: "Ә. Бейсенова, К. Каймулдинова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 5, class: "6", subject: "Математика", publisher: "Алматыкітап", year: "2018", authors: "Т. А. Алдамуратова, Е. С. Байшоланов", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 6, class: "6", subject: "Қазақ тілі", publisher: "Арман-ПВ", year: "2018", authors: "Ф. Ш. Оразбаева, Ж. Т. Дәулетбекова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 7, class: "6", subject: "Қазақ әдебиеті", publisher: "Атамұра", year: "2018", authors: "С. Чорманов, З. Құртаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 8, class: "6", subject: "Жаратылыстану", publisher: "Алматыкітап", year: "2018", authors: "Р. Башарулы, К. А. Жұмабаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+
+            // 7 СЫНЫП
+            { id: 9, class: "7", subject: "Биология", publisher: "Атамұра", year: "2017", authors: "А. Соловьева, Б. Ибраимова, Ж. Алина", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 10, class: "7", subject: "Биология", publisher: "Мектеп", year: "2017", authors: "Е. А. Очкур, Ж. Ж. Құрманғалиева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 11, class: "7", subject: "Қазақстан тарихы", publisher: "Атамұра", year: "2017", authors: "Х. Аяған, А. Нұрмуханова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 12, class: "7", subject: "Дүниежүзі тарихы", publisher: "Мектеп", year: "2017", authors: "К. Кожахметұлы, А. Чупеков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 13, class: "7", subject: "Физика", publisher: "Мектеп", year: "2017", authors: "Р. Башарұлы, У. Токбергенова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 14, class: "7", subject: "Химия", publisher: "Мектеп", year: "2017", authors: "M. Оспанова, Қ. Аухадиева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 15, class: "7", subject: "География", publisher: "Атамұра", year: "2017", authors: "Т. Увалиев, Г. Кудебаев", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 16, class: "7", subject: "Алгебра", publisher: "Атамұра", year: "2017", authors: "А. Әбілкасымова, Т. Кучер", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 17, class: "7", subject: "Геометрия", publisher: "Мектеп", year: "2017", authors: "В. Смирнов, Е. Туяков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 18, class: "7", subject: "Информатика", publisher: "Арман-ПВ", year: "2017", authors: "Г. И. Салгараева, Ж. Б. Базаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+
+            // 8 СЫНЫП
+            { id: 19, class: "8", subject: "Биология", publisher: "Атамұра", year: "2018", authors: "A. Соловьева, Б. Ибраимова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 20, class: "8", subject: "Қазақстан тарихы", publisher: "Мектеп", year: "2018", authors: "З. Қабылдинов, А. Тоқсанбаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 21, class: "8", subject: "Дүниежүзі тарихы", publisher: "Атамұра", year: "2018", authors: "С. Тұрсынбеков, Р. Сүлейменов", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 22, class: "8", subject: "Физика", publisher: "Мектеп", year: "2018", authors: "Б. Дүйсембаев, Г. Байжасарова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 23, class: "8", subject: "Химия", publisher: "Мектеп", year: "2018", authors: "Н. Нұрахметов, К. Сарманова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 24, class: "8", subject: "География", publisher: "Алматыкітап", year: "2018", authors: "М. Асылбекова, К. Лазарева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 25, class: "8", subject: "Алгебра", publisher: "Мектеп", year: "2018", authors: "А. Әбілкасымова, З. Жұмағұлова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 26, class: "8", subject: "Құқық негіздері", publisher: "Мектеп", year: "2018", authors: "Е. Баянов, А. Шәмен", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+
+            // 9 СЫНЫП
+            { id: 27, class: "9", subject: "Биология", publisher: "Атамұра", year: "2019", authors: "Н. Г. Асанов, А. Р. Соловьева, Б. Т. Ибраимова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 28, class: "9", subject: "Қазақстан тарихы", publisher: "Мектеп", year: "2019", authors: "Б. Аяған, М. Шаймерденова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 29, class: "9", subject: "Дүниежүзі тарихы", publisher: "Мектеп", year: "2019", authors: "К. Кожахметұлы, Б. Рахымбеков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 30, class: "9", subject: "Физика", publisher: "Арман-ПВ", year: "2019", authors: "Н. А. Закирова, Р. Р. Аширов", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 31, class: "9", subject: "Химия", publisher: "Мектеп", year: "2019", authors: "М. Оспанова, Қ. Аухадиева, Т. Белоусова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 32, class: "9", subject: "География", publisher: "Мектеп", year: "2019", authors: "К. Ахметов, В. В. Токмаков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 33, class: "9", subject: "Алгебра", publisher: "Атамұра", year: "2019", authors: "А. Н. Шыныбеков, Д. А. Шыныбеков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 34, class: "9", subject: "Информатика", publisher: "Арман-ПВ", year: "2019", authors: "Г. Салгараева, Ж. Базаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+
+            // 10 СЫНЫП
+            { id: 35, class: "10", subject: "Қазақстан тарихы (ҚГБ)", publisher: "Мектеп", year: "2019", authors: "З. Қабылдинов, А. Құдайбергенова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 36, class: "10", subject: "Қазақстан тарихы (ЖМБ)", publisher: "Атамұра", year: "2019", authors: "К. С. Қаражан, С. Әжіғали", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 37, class: "10", subject: "Дүниежүзі тарихы", publisher: "Мектеп", year: "2019", authors: "Р. Р. Сүлейменов, Б. С. Тұрсынбеков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 38, class: "10", subject: "Биология (ЖМБ)", publisher: "Атамұра", year: "2019", authors: "A. Р. Соловьева, Б. Т. Ибраимова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 39, class: "10", subject: "Физика (ЖМБ)", publisher: "Мектеп", year: "2019", authors: "Б. Кронгарт, В. Кем, Н. Козлова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 40, class: "10", subject: "Химия (ЖМБ)", publisher: "Мектеп", year: "2019", authors: "Н. Нұрахметов, К. Сарманова, К. Жексембина", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 41, class: "10", subject: "География (ЖМБ)", publisher: "Алматыкітап", year: "2019", authors: "В. В. Усиков, Е. Н. Ахметов", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 42, class: "10", subject: "Алгебра (ЖМБ)", publisher: "Мектеп", year: "2019", authors: "А. Әбілкасымова, З. Жұмағұлова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 43, class: "10", subject: "Құқық негіздері", publisher: "Мектеп", year: "2019", authors: "Г. Аманжолова, К. Ибраева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+
+            // 11 СЫНЫП
+            { id: 44, class: "11", subject: "Қазақстан тарихы (ҚГБ)", publisher: "Мектеп", year: "2020", authors: "З. Қабылдинов, Т. Сындыбаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 45, class: "11", subject: "Қазақстан тарихы (ЖМБ)", publisher: "Атамұра", year: "2020", authors: "Т. Тұрлығұл, С. Жолдасбаев", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 46, class: "11", subject: "Дүниежүзі тарихы", publisher: "Мектеп", year: "2020", authors: "К. Кожахметұлы, А. Чупеков", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 47, class: "11", subject: "Биология (ЖМБ)", publisher: "Атамұра", year: "2020", authors: "А. Р. Соловьева, Б. Т. Ибраимова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 48, class: "11", subject: "Физика (ЖМБ)", publisher: "Мектеп", year: "2020", authors: "Б. Кронгарт, В. Кем, Н. Козлова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 49, class: "11", subject: "Химия (ЖМБ)", publisher: "Мектеп", year: "2020", authors: "Т. А. Мансуров, К. О. Сарманова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 50, class: "11", subject: "География (ЖМБ)", publisher: "Алматыкітап", year: "2020", authors: "В. В. Усиков, Е. Н. Ахметов", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 51, class: "11", subject: "Алгебра (ЖМБ)", publisher: "Мектеп", year: "2020", authors: "А. Әбілкасымова, З. Жұмағұлова", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" },
+            { id: 52, class: "11", subject: "Aқпараттық технологиялар", publisher: "Арман-ПВ", year: "2020", authors: "Г. Салгараева, Ж. Базаева", pdfUrl: "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf" }
+        ];
+
+        // Басты бетке бағыттау функциясы (работает при клике на Артқа)
+        function goToHome() {
+            window.location.href = "index.html"; 
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            // DOM Элементтері
+            const booksGridContainer = document.getElementById("booksGridContainer");
+            const filterBtns = document.querySelectorAll(".filter-btn");
+            const bookSearchInput = document.getElementById("bookSearchInput");
+            const gridTitle = document.getElementById("gridTitle");
+            const bookCount = document.getElementById("bookCount");
+
+            // Модалды терезе элементтері
+            const pdfModal = document.getElementById("pdfModal");
+            const closeModalBtn = document.getElementById("closeModalBtn");
+            const pdfViewerFrame = document.getElementById("pdfViewerFrame");
+            const modalBookTitle = document.getElementById("modalBookTitle");
+            const modalBookMeta = document.getElementById("modalBookMeta");
+
+            // Ағымдағы белсенді сүзгілер күйі
+            let currentClassFilter = "all";
+            let currentSearchKeyword = "";
+
+            // ФУНКЦИЯ: Кітаптарды DOM-ға шығару және рендеринг жасау
+            function renderBooks() {
+                const filteredBooks = booksData.filter(book => {
+                    const matchesClass = (currentClassFilter === "all" || book.class === currentClassFilter);
+                    const matchesSearch = (
+                        book.subject.toLowerCase().includes(currentSearchKeyword) || 
+                        book.authors.toLowerCase().includes(currentSearchKeyword) ||
+                        book.publisher.toLowerCase().includes(currentSearchKeyword)
+                    );
+                    return matchesClass && matchesSearch;
+                });
+
+                bookCount.textContent = filteredBooks.length;
+
+                if (filteredBooks.length === 0) {
+                    booksGridContainer.innerHTML = `
+                        <div class="no-results">
+                            <i class="fa-solid fa-folder-open"></i>
+                            <p>Өкінішке орай, сұранысыңызға сай келетін мектеп оқулығы табылмады. Басқа кілт сөз жазып көріңіз.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                booksGridContainer.innerHTML = filteredBooks.map(book => `
+                    <div class="book-card" data-id="${book.id}">
+                        <div class="book-cover-area">
+                            <span class="book-badge-class">${book.class}-сынып</span>
+                            <div class="book-main-title">${book.subject}</div>
+                            <div class="book-publisher-year">
+                                <span>${book.publisher}</span>
+                                <span>${book.year} ж.</span>
+                            </div>
+                        </div>
+                        <div class="book-info-area">
+                            <div class="book-authors">${book.authors}</div>
+                            <button class="read-btn" onclick="openPdfReader(${book.id})">
+                                <i class="fa-solid fa-book-open"></i> Кітапты оқу
+                            </button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // ОҚИҒА: Сынып батырмаларын басқанда сүзу
+            filterBtns.forEach(btn => {
+                btn.addEventListener("click", (e) => {
+                    filterBtns.forEach(b => b.classList.remove("active"));
+                    e.target.classList.add("active");
+                    
+                    currentClassFilter = e.target.getAttribute("data-class");
+                    
+                    if (currentClassFilter === "all") {
+                        gridTitle.innerHTML = `<i class="fa-solid fa-layer-group" style="color:var(--accent-color)"></i> Барлық кітаптар`;
+                    } else {
+                        gridTitle.innerHTML = `<i class="fa-solid fa-filter" style="color:var(--accent-color)"></i> ${currentClassFilter}-сынып оқулықтары`;
+                    }
+
+                    renderBooks();
+                });
+            });
+
+            // ОҚИҒА: Іздеу жолағына мәтін жазғанда сүзу
+            bookSearchInput.addEventListener("input", (e) => {
+                currentSearchKeyword = e.target.value.toLowerCase().trim();
+                renderBooks();
+            });
+
+            // ФУНКЦИЯ: PDF оқу терезесін ашу
+            window.openPdfReader = function(bookId) {
+                const book = booksData.find(b => b.id === bookId);
+                if (!book) return;
+
+                modalBookTitle.textContent = book.subject;
+                modalBookMeta.textContent = `${book.class}-сынып оқулығы • Баспа: ${book.publisher} (${book.year} жыл) • Авторы: ${book.authors}`;
+                pdfViewerFrame.src = book.pdfUrl;
+
+                pdfModal.classList.add("active");
+                document.body.style.overflow = "hidden";
+            };
+
+            // ФУНКЦИЯ: Модалды терезені жабу
+            function closePdfReader() {
+                pdfModal.classList.remove("active");
+                pdfViewerFrame.src = ""; 
+                document.body.style.overflow = "auto"; 
+            }
+
+            closeModalBtn.addEventListener("click", closePdfReader);
+
+            pdfModal.addEventListener("click", (e) => {
+                if (e.target === pdfModal) {
+                    closePdfReader();
+                }
+            });
+
+            document.addEventListener("keydown", (e) => {
+                if (e.key === "Escape" && pdfModal.classList.contains("active")) {
+                    closePdfReader();
+                }
+            });
+
+            // Алғашқы рет жүктелгенде кітаптарды экранға толық шығару
+            renderBooks();
+        });
+    </script>
+</body>
+</html>
