@@ -1010,3 +1010,23 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+document.addEventListener("DOMContentLoaded", function() {
+    const banner = document.getElementById("cookie-banner");
+    const acceptBtn = document.getElementById("accept-cookies");
+
+    // Проверяем, давал ли пользователь согласие ранее
+    if (!localStorage.getItem("cookiesAccepted")) {
+        // Показываем баннер с небольшой задержкой
+        setTimeout(() => {
+            banner.classList.add("show");
+        }, 1000);
+    }
+
+    // Обработчик клика на кнопку «Принять»
+    acceptBtn.addEventListener("click", function() {
+        localStorage.setItem("cookiesAccepted", "true");
+        banner.classList.remove("show");
+    });
+});
+
+
