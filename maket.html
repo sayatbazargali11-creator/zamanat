@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAMANAT • ANTIQUE MAP | Қазақстанның Тарихи Картасы</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        /* ==========================================================================
+           1. PREMIUM MINIMALISTIC ORANGE DESIGN SYSTEM
+           ========================================================================== */
+        :root {
+            --z-bg: #f8f9fa;
+            --z-card: #ffffff;
+            --z-text-main: #111113;
+            --z-text-sub: #64646f;
+            --z-text-muted: #90909a;
+            --z-accent: #ff7300;
+            --z-accent-light: #ff9500;
+            --z-accent-glow: rgba(255, 115, 0, 0.08);
+            --z-border: rgba(0, 0, 0, 0.06);
+            --z-card-shadow: 0 16px 48px rgba(0, 0, 0, 0.04);
+            --z-modal-shadow: 0 40px 90px rgba(0, 0, 0, 0.12);
+            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+            --transition-smooth: all 0.5s var(--ease-apple);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--z-bg);
+            color: var(--z-text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ==========================================================================
+           2. NAVIGATION HEADER WITH "BACK" BUTTON
+           ========================================================================== */
+        header {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--z-border);
+            padding: 0 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 1100;
+            height: 76px;
+            transition: var(--transition-smooth);
+        }
+
+        .header-left-side {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-back {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            background: #ffffff;
+            color: var(--z-text-main);
+            border: 1px solid var(--z-border);
+            cursor: pointer;
+            transition: var(--transition-smooth);
+        }
+
+        .btn-back:hover {
+            background: var(--z-bg);
+            border-color: var(--z-text-muted);
+            transform: translateX(-2px);
+        }
+
+        .brand-block {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            background: linear-gradient(135deg, var(--z-accent), var(--z-accent-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 1.3rem;
+            box-shadow: 0 6px 20px rgba(255, 115, 0, 0.3);
+        }
+
+        .brand-title h1 {
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--z-text-main);
+            line-height: 1.1;
+        }
+
+        .brand-title p {
+            font-size: 0.72rem;
+            color: var(--z-text-sub);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-top: 2px;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-action {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 20px;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: var(--transition-smooth);
+            background: #ffffff;
+            color: var(--z-text-main);
+            border: 1px solid var(--z-border);
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .btn-action:hover {
+            transform: translateY(-2px);
+            border-color: var(--z-accent);
+            color: var(--z-accent);
+            box-shadow: 0 8px 24px rgba(255, 115, 0, 0.08);
+        }
+
+        .btn-action.primary {
+            background: var(--z-text-main);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-action.primary:hover {
+            background: var(--z-accent);
+            color: #ffffff;
+        }
+
+        /* ==========================================================================
+           3. MAIN WORKSPACE SETUP
+           ========================================================================== */
+        .z-workspace {
+            display: grid;
+            grid-template-columns: 400px 1fr;
+            height: calc(100vh - 76px);
+            margin-top: 76px;
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+            transition: grid-template-columns 0.5s var(--ease-apple);
+        }
+
+        .z-workspace.sidebar-collapsed {
+            grid-template-columns: 0px 1fr;
+        }
+
+        /* ==========================================================================
+           4. SIDEBAR & KHANATE SELECTOR
+           ========================================================================== */
+        .sidebar {
+            background: #ffffff;
+            border-right: 1px solid var(--z-border);
+            padding: 28px;
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            z-index: 1000;
+            position: relative;
+            min-width: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            transition: var(--transition-smooth);
+        }
+
+        .z-workspace.sidebar-collapsed .sidebar {
+            opacity: 0;
+            pointer-events: none;
+            padding: 28px 0;
+        }
+
+        .sidebar-toggle {
+            position: absolute;
+            top: 24px; right: -16px;
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 1px solid var(--z-border);
+            color: var(--z-text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1200;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-toggle:hover {
+            background: var(--z-accent);
+            color: #ffffff;
+            border-color: var(--z-accent);
+            transform: scale(1.1);
+        }
+
+        .z-workspace.sidebar-collapsed .sidebar-toggle {
+            right: auto;
+            left: 20px;
+            transform: rotate(180deg);
+        }
+
+        .info-panel {
+            background: linear-gradient(135deg, rgba(255,115,0,0.03), rgba(255,149,0,0.07));
+            border: 1px solid rgba(255, 115, 0, 0.12);
+            border-radius: 20px;
+            padding: 20px;
+        }
+
+        .info-panel h3 {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--z-accent);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .info-panel p {
+            font-size: 0.85rem;
+            color: var(--z-text-sub);
+            line-height: 1.5;
+        }
+
+        .interactive-select-section {
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--z-text-muted);
+            margin-bottom: 14px;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .compare-toggle-wrap {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            font-size: 0.75rem;
+            text-transform: none;
+            letter-spacing: normal;
+            color: var(--z-text-sub);
+        }
+
+        .compare-checkbox {
+            appearance: none;
+            width: 16px; height: 16px;
+            border: 2px solid var(--z-border);
+            border-radius: 5px;
+            outline: none;
+            transition: 0.2s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .compare-checkbox:checked {
+            background: var(--z-accent);
+            border-color: var(--z-accent);
+        }
+
+        .compare-checkbox:checked::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: white;
+            font-size: 10px;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .khanate-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+        }
+
+        .khanate-card {
+            background: var(--z-bg);
+            border: 1px solid transparent;
+            padding: 18px;
+            border-radius: 18px;
+            text-align: left;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: var(--transition-smooth);
+            width: 100%;
+        }
+
+        .khanate-card:hover {
+            background: #ffffff;
+            border-color: rgba(255, 115, 0, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.03);
+        }
+
+        .khanate-card.active {
+            background: #ffffff;
+            border-color: var(--z-accent);
+            box-shadow: 0 12px 30px rgba(255, 115, 0, 0.08);
+        }
+
+        .khanate-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .khanate-name {
+            font-size: 1rem;
+            font-weight: 800;
+            color: var(--z-text-main);
+            transition: color 0.3s;
+        }
+
+        .khanate-card.active .khanate-name {
+            color: var(--z-accent);
+        }
+
+        .khanate-period {
+            font-size: 0.8rem;
+            color: var(--z-text-sub);
+            font-weight: 500;
+        }
+
+        .khanate-icon-indicator {
+            width: 36px; height: 36px;
+            border-radius: 12px;
+            background: #ffffff;
+            border: 1px solid var(--z-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--z-text-muted);
+            transition: var(--transition-smooth);
+        }
+
+        .khanate-card.active .khanate-icon-indicator {
+            background: var(--z-accent-glow);
+            color: var(--z-accent);
+            border-color: transparent;
+            transform: rotate(45deg);
+        }
+
+        /* ==========================================================================
+           5. MAP VIEWPORT
+           ========================================================================== */
+        .map-viewport-wrapper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #fdfdfd;
+        }
+
+        #js-map {
+            width: 100%;
+            height: 100%;
+            background: #ffffff;
+        }
+
+        .historical-polygon {
+            filter: drop-shadow(0px 0px 12px rgba(255, 115, 0, 0.4));
+            transition: all 0.5s ease;
+        }
+
+        .radar-marker {
+            position: relative;
+            width: 30px;
+            height: 30px;
+        }
+
+        .radar-pulse {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: var(--z-accent);
+            border-radius: 50%;
+            opacity: 0.4;
+            animation: radarGlow 2.5s infinite ease-out;
+            top: -10px; left: -10px;
+        }
+
+        .radar-core {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: #ffffff;
+            border: 3px solid var(--z-accent);
+            border-radius: 50%;
+            box-shadow: 0 0 12px var(--z-accent);
+            top: 0; left: 0;
+        }
+
+        @keyframes radarGlow {
+            0% { transform: scale(0.5); opacity: 0.8; }
+            100% { transform: scale(3); opacity: 0; }
+        }
+
+        /* ==========================================================================
+           6. CUSTOM BEAUTIFUL ALERT (TOAST NOTIFICATION)
+           ========================================================================== */
+        .z-alert-toast {
+            position: fixed;
+            top: -120px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 115, 0, 0.25);
+            padding: 16px 24px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            z-index: 3000;
+            transition: top 0.5s var(--ease-apple), opacity 0.4s;
+            opacity: 0;
+            pointer-events: none;
+            max-width: 92%;
+            width: 380px;
+        }
+
+        .z-alert-toast.visible {
+            top: 24px;
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .z-alert-icon {
+            width: 38px; height: 38px;
+            border-radius: 50%;
+            background: var(--z-accent-glow);
+            color: var(--z-accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .z-alert-content {
+            flex-grow: 1;
+        }
+
+        .z-alert-title {
+            font-size: 0.9rem;
+            font-weight: 800;
+            color: var(--z-text-main);
+            margin-bottom: 2px;
+        }
+
+        .z-alert-text {
+            font-size: 0.8rem;
+            color: var(--z-text-sub);
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        /* ==========================================================================
+           7. INFORMATION PANEL SHEET
+           ========================================================================== */
+        .sheet-backdrop {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(17, 11, 7, 0.25);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .sheet-backdrop.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .sheet-window {
+            background: var(--z-card);
+            border: 1px solid var(--z-border);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 36px;
+            box-shadow: var(--z-modal-shadow);
+            transform: scale(0.94) translateY(30px);
+            transition: var(--transition-smooth);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sheet-backdrop.active .sheet-window {
+            transform: scale(1) translateY(0);
+        }
+
+        .sheet-header-block {
+            background: linear-gradient(180deg, var(--z-accent-glow) 0%, rgba(255,255,255,0) 100%);
+            padding: 36px 36px 20px 36px;
+            position: relative;
+            border-bottom: 1px solid var(--z-border);
+        }
+
+        .sheet-close-btn {
+            position: absolute;
+            top: 32px; right: 32px;
+            width: 40px; height: 40px;
+            border-radius: 50%;
+            background: rgba(0, 0, 0, 0.04);
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--z-text-main);
+            font-size: 1.1rem;
+            transition: 0.3s;
+        }
+
+        .sheet-close-btn:hover {
+            background: rgba(0, 0, 0, 0.08);
+            transform: rotate(90deg);
+        }
+
+        .sheet-tag-epoch {
+            background: #ffffff;
+            color: var(--z-accent);
+            border: 1px solid rgba(255, 115, 0, 0.2);
+            font-size: 0.72rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            padding: 6px 16px;
+            border-radius: 100px;
+            display: inline-block;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+        }
+
+        .sheet-main-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: var(--z-text-main);
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .btn-audio-speak {
+            background: transparent;
+            border: none;
+            color: var(--z-accent);
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-audio-speak:hover {
+            transform: scale(1.2);
+            color: var(--z-accent-light);
+        }
+
+        .sheet-analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-top: 20px;
+        }
+
+        .analytics-item {
+            background: #f8f9fa;
+            border: 1px solid var(--z-border);
+            padding: 12px 16px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .analytics-item i {
+            color: var(--z-accent);
+            font-size: 1.1rem;
+        }
+
+        .analytics-meta-text div:first-child {
+            font-size: 0.7rem;
+            color: var(--z-text-muted);
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+
+        .analytics-meta-text div:last-child {
+            font-size: 0.88rem;
+            color: var(--z-text-main);
+            font-weight: 700;
+        }
+
+        .sheet-body-content {
+            padding: 36px;
+            overflow-y: auto;
+            max-height: 350px;
+        }
+
+        .sheet-body-content p {
+            font-size: 1rem;
+            color: var(--z-text-sub);
+            line-height: 1.7;
+            margin-bottom: 24px;
+        }
+
+        .sheet-highlight-box {
+            background: #fffcf8;
+            border-left: 4px solid var(--z-accent);
+            padding: 20px;
+            border-radius: 0 16px 16px 0;
+        }
+
+        .sheet-highlight-box h5 {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            color: var(--z-accent);
+            margin-bottom: 6px;
+            font-weight: 800;
+        }
+
+        .sheet-highlight-box p {
+            font-size: 0.92rem;
+            color: var(--z-text-main);
+            line-height: 1.5;
+            margin-bottom: 0;
+            font-style: italic;
+        }
+
+        /* ==========================================================================
+           8. MOBILE RESPONSIVENESS ARCHITECTURE (UX UPGRADED & COMPACT LIST)
+           ========================================================================== */
+        @media (max-width: 1023px) {
+            header {
+                padding: 0 12px;
+                height: 64px;
+            }
+
+            .header-left-side {
+                gap: 8px;
+            }
+
+            .btn-back {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+                border-radius: 10px;
+            }
+
+            .brand-logo {
+                display: none;
+            }
+
+            .brand-title h1 { font-size: 0.95rem; }
+            .brand-title p { display: none; }
+            
+            .btn-action span { display: none; }
+            .btn-action { padding: 10px; border-radius: 10px; }
+
+            /* ПЕРЕКЛЮЧЕНИЕ НА ГИБКУЮ СЕТКУ ДЛЯ МОБИЛЬНЫХ: КАРТА И СПИСОК РАЗДЕЛЕНЫ */
+            .z-workspace {
+                display: flex !important;
+                flex-direction: column !important;
+                margin-top: 64px;
+                height: calc(100vh - 64px);
+            }
+
+            .map-viewport-wrapper {
+                flex: 1 1 auto !important;
+                width: 100% !important;
+                height: 65% !important; /* Карта занимает верхнюю область экрана */
+            }
+
+            /* Фикс отображения списка: убраны блокировки высоты и некорректный display */
+            .sidebar {
+                flex: 0 0 auto !important;
+                display: flex !important;
+                flex-direction: column !important;
+                width: 100% !important;
+                height: auto !important;
+                background: #ffffff !important;
+                border-top: 1px solid var(--z-border);
+                border-right: none;
+                padding: 12px 14px !important;
+                overflow: visible !important;
+                z-index: 1090;
+                opacity: 1 !important;
+                pointer-events: auto !important;
+            }
+
+            .info-panel, .sidebar-toggle, .section-title {
+                display: none !important;
+            }
+
+            .interactive-select-section {
+                display: flex !important;
+                width: 100% !important;
+            }
+
+            /* Список стран превращается в аккуратную горизонтальную прокручиваемую ленту */
+            .khanate-list {
+                display: flex !important;
+                flex-direction: row !important;
+                overflow-x: auto !important;
+                overflow-y: hidden !important;
+                scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch;
+                gap: 10px;
+                padding: 4px 2px !important;
+                width: 100% !important;
+            }
+
+            .khanate-list::-webkit-scrollbar {
+                display: none;
+            }
+
+            .khanate-card {
+                flex: 0 0 auto !important;
+                width: 210px !important;
+                padding: 12px 14px !important;
+                border-radius: 14px !important;
+                background: var(--z-bg) !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            }
+
+            .khanate-name {
+                font-size: 0.9rem !important;
+            }
+
+            .khanate-period {
+                font-size: 0.75rem !important;
+            }
+
+            .khanate-icon-indicator {
+                width: 28px !important;
+                height: 28px !important;
+                border-radius: 8px !important;
+                font-size: 0.75rem !important;
+            }
+
+            /* Apple Bottom Sheet Style */
+            .sheet-backdrop {
+                align-items: flex-end;
+            }
+
+            .sheet-window {
+                border-radius: 28px 28px 0 0;
+                max-height: 75vh;
+                transform: translateY(100%);
+            }
+
+            .sheet-backdrop.active .sheet-window {
+                transform: translateY(0);
+            }
+
+            .sheet-header-block {
+                padding: 24px 20px 16px 20px;
+            }
+
+            .sheet-close-btn {
+                top: 20px; right: 20px;
+                width: 36px; height: 36px;
+                font-size: 1rem;
+            }
+
+            .sheet-main-title {
+                font-size: 1.4rem;
+            }
+
+            .sheet-analytics-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .sheet-body-content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="z-alert-toast" id="js-custom-toast">
+        <div class="z-alert-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+        <div class="z-alert-content">
+            <div class="z-alert-title">Дереккөз мәліметі</div>
+            <div class="z-alert-text" id="js-toast-message">Академиялық деректер жүктелді.</div>
+        </div>
+    </div>
+
+    <header>
+        <div class="header-left-side">
+
+            <div class="brand-block">
+                <div class="brand-logo"><i class="fa-solid fa-scroll"></i></div>
+                <div class="brand-title">
+                    <h1>ZAMANAT ANTIQUE</h1>
+                    <p>Қазақстанның Нақты Тарихи Интерактивті Картасы</p>
+                </div>
+            </div>
+        </div>
+        <div class="header-controls">
+            <button class="btn-action" id="js-reset-map-view" title="Картаны бастапқы қалпына келтіру">
+                <i class="fa-solid fa-compass"></i> <span>Орталықтау</span>
+            </button>
+            <button class="btn-action primary" id="js-info-academic">
+                <i class="fa-solid fa-graduation-cap"></i> <span>Дереккөздер</span>
+            </button>
+
+            <a href="index.html" class="btn-back">
+                <i class="fa-solid fa-arrow-left"></i> <span>Артқа</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="z-workspace" id="js-workspace-node">
+        
+        <section class="sidebar">
+            <button class="sidebar-toggle" id="js-sidebar-trigger">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+
+            <div class="info-panel">
+                <h3><i class="fa-solid fa-circle-nodes"></i> Векторлық шекаралар</h3>
+                <p>Сол жақ мәзірден қағандықтарды таңдаңыз. Карта ақ түске өзгеріп, тарихи мемлекеттердің нақты шекаралық оранжевый аймағын сызып береді.</p>
+            </div>
+
+            <div class="interactive-select-section">
+                <div class="section-title">
+                    <span>Тарихи мемлекеттер</span>
+                    <label class="compare-toggle-wrap" title="Бірнеше каганатты картада бір уақытта салыстыру режимі">
+                        <input type="checkbox" class="compare-checkbox" id="js-compare-mode-cb">
+                        <span>Салыстыру</span>
+                    </label>
+                </div>
+
+                <div class="khanate-list" id="js-khanate-injector"></div>
+            </div>
+        </section>
+
+        <section class="map-viewport-wrapper">
+            <div id="js-map"></div>
+        </section>
+    </main>
+
+    <div class="sheet-backdrop" id="js-backdrop-node">
+        <div class="sheet-window">
+            <div class="sheet-header-block">
+                <button class="sheet-close-btn" id="js-sheet-dismiss-btn"><i class="fa-solid fa-xmark"></i></button>
+                <span class="sheet-tag-epoch" id="js-modal-epoch">VI - VIII ҒАСЫРЛАР</span>
+                <div class="sheet-main-title">
+                    <span id="js-modal-title">Оғыз Мемлекеті</span>
+                    <button class="btn-audio-speak" id="js-audio-trigger" title="Мәтінді дауыстап оқу (Аудиогид)">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+
+                <div class="sheet-analytics-grid">
+                    <div class="analytics-item">
+                        <i class="fa-solid fa-crown"></i>
+                        <div class="analytics-meta-text">
+                            <div>Ордасы / Астанасы</div>
+                            <div id="js-meta-capital">Янгикент (Жанкент)</div>
+                        </div>
+                    </div>
+                    <div class="analytics-item">
+                        <i class="fa-solid fa-users-rays"></i>
+                        <div class="analytics-meta-text">
+                            <div>Билеуші лауазымы</div>
+                            <div id="js-meta-ruler">Жабғу (Yabgu)</div>
+                        </div>
+                    </div>
+                    <div class="analytics-item">
+                        <i class="fa-solid fa-shield-halved"></i>
+                        <div class="analytics-meta-text">
+                            <div>Әскер саны (шамамен)</div>
+                            <div id="js-meta-army">90,000 атты әскер</div>
+                        </div>
+                    </div>
+                    <div class="analytics-item">
+                        <i class="fa-solid fa-chart-area"></i>
+                        <div class="analytics-meta-text">
+                            <div>Негізгі тайпалар</div>
+                            <div id="js-meta-tribes">24 Оғыз тайпасы (бойлар)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="sheet-body-content">
+                <p id="js-modal-description">Базалық сипаттама тарихы мұнда енгізіледі.</p>
+                <div class="sheet-highlight-box">
+                    <h5>Шежірелі дерек & Тарихи факт:</h5>
+                    <p id="js-modal-fact">Маңызды тарихи жәдігер немесе оқиға мәліметі.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+
+            const khanatesRegistry = [
+                {
+                    id: "oguz",
+                    name: "Оғыз мемлекеті",
+                    period: "IX - XI ғғ.",
+                    capital: "Жанкент (Янгикент)",
+                    ruler: "Жабғу",
+                    army: "~95,000 жауынгер",
+                    tribes: "Үш-оқ, Бұзуқ (24 тайпа)",
+                    desc: "Оғыз мемлекеті — Сырдария өзенінің орта және төменгі ағысы, Арал мен Каспий теңіздерінің аралығында орналасқан ортағасырлық қуатты мемлекет. Батысында Хазар қағанатымен, шығысында Қимақтармен шектесті.",
+                    fact: "Оғыздардың астанасы Жанкент толығымен күйдірілген қыштан салынған цитадельдері бар ең ірі сауда порты болған.",
+                    polygonGeo: [
+                        [46.5, 48.0], [48.0, 52.0], [47.5, 60.0], [45.0, 66.0], 
+                        [43.0, 68.0], [42.0, 64.0], [43.5, 55.0], [44.5, 49.0]
+                    ],
+                    hotspots: [
+                        { name: "Жанкент (Астана)", lat: 44.1523, lng: 62.1142, info: "Оғыз жабғуларының қысқы резиденциясы." },
+                        { name: "Жент", lat: 45.1215, lng: 64.1012, info: "Сыр бойындағы ірі ислами орталық." }
+                    ]
+                },
+                {
+                    id: "qipchaq",
+                    name: "Қыпшақ хандығы",
+                    period: "XI - XIII ғғ.",
+                    capital: "Сығанақ (Шығыс орда)",
+                    ruler: "Хан",
+                    army: "~150,000 атты әскер",
+                    tribes: "Елбөрі, Тоқсоба, Дурут",
+                    desc: "Дешті Қыпшақ даласында құрылған ең алып түркі мемлекеттерінің бірі. Олардың жері Алтайдан Дунайға дейінгі кеңістікті алып жатты.",
+                    fact: "Ортағасырлық Еуропа саяхатшылары бұл мемлекеттің аумағының үлкендігіне таң қалып, оны 'Қыпшақ даласы' (Сumania) деп картаға енгізген.",
+                    polygonGeo: [
+                        [49.5, 47.0], [53.5, 55.0], [54.5, 68.0], [52.0, 80.0], 
+                        [48.5, 83.0], [46.0, 75.0], [44.5, 68.0], [45.5, 55.0]
+                    ],
+                    hotspots: [
+                        { name: "Сығанақ (Астана)", lat: 44.7112, lng: 65.2114, info: "Қыпшақ хандығының бас саяси орталығы." },
+                        { name: "Сарайшық", lat: 47.2415, lng: 51.8124, info: "Жайық бойындағы сауда бекеті." }
+                    ]
+                },
+                {
+                    id: "qimaq",
+                    name: "Қимақ қағанаты",
+                    period: "VIII - XI ғғ.",
+                    capital: "Имақия (Ертіс бойы)",
+                    ruler: "Қаған",
+                    army: "~60,000 таңдаулы сарбаз",
+                    tribes: "Қимақ, Қыпшақ, Ланькани",
+                    desc: "Қимақ қағанаты — Қазақстанның Солтүстік, Шығыс және Орталық аймақтарын қамтыған Түркі мемлекеті. Олардың өркениет орталығы Ертіс өзенінің алқабы болды.",
+                    fact: "Қимақтар өте сирек кездесетін қамыш қаламдар мен қамыстан жасалған қағаздарды қолданып, өзіндік төл жазу жүйесін дамытқан.",
+                    polygonGeo: [
+                        [52.0, 65.0], [55.0, 72.0], [54.0, 81.0], [50.0, 85.0], 
+                        [47.5, 82.0], [48.0, 75.0], [49.5, 66.0]
+                    ],
+                    hotspots: [
+                        { name: "Имақия (Астана)", lat: 52.3012, lng: 76.9214, info: "Ертіс өзені бойындағы бекіністі қала." },
+                        { name: "Карантия қаласы", lat: 49.9123, lng: 78.4512, info: "Алакөл маңындағы қимақтардың ірі қолөнер шаһары." }
+                    ]
+                },
+                {
+                    id: "karakhan",
+                    name: "Қарахан мемлекеті",
+                    period: "X - XIII ғғ.",
+                    capital: "Баласағұн / Тараз",
+                    ruler: "Қаған",
+                    army: "~110,000 жауынгер",
+                    tribes: "Қарлық, Шігіл, Яғма",
+                    desc: "Қарахан мемлекеті — Жетісу мен Мәуреннахр аймағында ислам өркениетін ресми мемлекеттік дін ретінде қабылдаған алғашқы түркі империясы.",
+                    fact: "Дәл осы Қарахан дәуірінде Түркі тілінің алғашқы энциклопедиялық сөздігі — 'Диуани лұғат ат-түрк' кітабы жазылды.",
+                    polygonGeo: [
+                        [45.5, 68.0], [47.0, 74.0], [46.5, 80.0], [43.0, 81.0], 
+                        [41.5, 78.0], [41.8, 69.0], [43.5, 67.5]
+                    ],
+                    hotspots: [
+                        { name: "Тараз", lat: 42.8965, lng: 71.3912, info: "Қарахандықтардың ең гүлденген сауда астанасы." },
+                        { name: "Баласағұн", lat: 42.7412, lng: 75.2514, info: "Жетісудағы мәдениет пен ғылым ордасы." }
+                    ]
+                }
+            ];
+
+            const initialLat = 48.0;
+            const initialLng = 69.0;
+            const initialZoom = 5;
+
+            const map = L.map('js-map', {
+                zoomControl: false,
+                attributionControl: false,
+                minZoom: 4,
+                maxZoom: 10
+            }).setView([initialLat, initialLng], initialZoom);
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+                subdomains: 'abcd',
+                maxZoom: 20
+            }).addTo(map);
+
+            let activePolygons = {};
+            let activeMarkers = [];
+            let compareMode = false;
+
+            const khanateContainer = document.getElementById('js-khanate-injector');
+
+            // КРАСИВАЯ ФУНКЦИЯ ДЛЯ ВЫЗОВА УВЕДОМЛЕНИЙ (ВМЕСТО ALERT)
+            function showPremiumAlert(message) {
+                const toast = document.getElementById('js-custom-toast');
+                document.getElementById('js-toast-message').textContent = message;
+                
+                toast.classList.add('visible');
+                
+                setTimeout(() => {
+                    toast.classList.remove('visible');
+                }, 4000);
+            }
+
+            function renderSidebarCards() {
+                khanateContainer.innerHTML = '';
+                khanatesRegistry.forEach(item => {
+                    const card = document.createElement('button');
+                    card.className = 'khanate-card';
+                    card.setAttribute('data-id', item.id);
+                    card.innerHTML = `
+                        <div class="khanate-meta">
+                            <span class="khanate-name">${item.name}</span>
+                            <span class="khanate-period"><i class="fa-solid fa-clock-rotate-left" style="margin-right: 6px; font-size: 0.75rem; color: var(--z-accent);"></i>${item.period}</span>
+                        </div>
+                        <div class="khanate-icon-indicator">
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </div>
+                    `;
+                    card.addEventListener('click', () => handleKhanateSelection(item.id));
+                    khanateContainer.appendChild(card);
+                });
+            }
+
+            function handleKhanateSelection(id) {
+                const khanateData = khanatesRegistry.find(k => k.id === id);
+                if (!khanateData) return;
+
+                const cardElements = document.querySelectorAll('.khanate-card');
+
+                if (!compareMode) {
+                    clearAllMapLayers();
+                    cardElements.forEach(c => c.classList.remove('active'));
+                    
+                    const activeCard = document.querySelector(`.khanate-card[data-id="${id}"]`);
+                    if(activeCard) {
+                        activeCard.classList.add('active');
+                        activeCard.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+                    }
+
+                    drawOrangeZone(khanateData);
+                    injectHotspots(khanateData.hotspots);
+                    openDetailedArchivalSheet(khanateData);
+
+                    const polyBounds = L.polygon(khanateData.polygonGeo).getBounds();
+                    map.fitBounds(polyBounds, { padding: [40, 40], maxZoom: 6, animate: true, duration: 1 });
+
+                } else {
+                    if (activePolygons[id]) {
+                        map.removeLayer(activePolygons[id]);
+                        delete activePolygons[id];
+                        const targetCard = document.querySelector(`.khanate-card[data-id="${id}"]`);
+                        if(targetCard) targetCard.classList.remove('active');
+                    } else {
+                        drawOrangeZone(khanateData);
+                        const targetCard = document.querySelector(`.khanate-card[data-id="${id}"]`);
+                        if(targetCard) targetCard.classList.add('active');
+                    }
+                }
+            }
+
+            function drawOrangeZone(data) {
+                const poly = L.polygon(data.polygonGeo, {
+                    color: '#ff6a00',
+                    weight: 3,
+                    fillColor: '#ff9500',
+                    fillOpacity: 0.28,
+                    className: 'historical-polygon'
+                }).addTo(map);
+
+                poly.bindTooltip(`<div style="font-weight:800; color:#111; font-family:sans-serif; padding:4px 8px;">${data.name} аймағы</div>`, {
+                    permanent: false,
+                    direction: 'center',
+                    className: 'custom-polygon-tooltip'
+                });
+
+                poly.on('mouseover', function () {
+                    this.setStyle({ fillOpacity: 0.45, weight: 4, color: '#ff5100' });
+                });
+
+                poly.on('mouseout', function () {
+                    this.setStyle({ fillOpacity: 0.28, weight: 3, color: '#ff6a00' });
+                });
+
+                poly.on('click', function() {
+                    openDetailedArchivalSheet(data);
+                });
+
+                activePolygons[data.id] = poly;
+            }
+
+            function injectHotspots(hotspotsArray) {
+                activeMarkers.forEach(m => map.removeLayer(m));
+                activeMarkers = [];
+
+                hotspotsArray.forEach(spot => {
+                    const radarIcon = L.divIcon({
+                        className: 'custom-radar-marker-container',
+                        html: `
+                            <div class="radar-marker">
+                                <div class="radar-pulse"></div>
+                                <div class="radar-core"></div>
+                            </div>
+                        `,
+                        iconSize: [30, 30],
+                        iconAnchor: [5, 5]
+                    });
+
+                    const marker = L.marker([spot.lat, spot.lng], { icon: radarIcon }).addTo(map);
+                    
+                    marker.bindPopup(`
+                        <div style="padding: 6px; font-family: 'Plus Jakarta Sans', sans-serif;">
+                            <h4 style="font-weight:800; color: #ff7300; margin-bottom:4px; font-size:0.95rem;"><i class="fa-solid fa-fort-awesome" style="margin-right:6px;"></i>${spot.name}</h4>
+                            <p style="font-size:0.8rem; color:#555; line-height:1.4; margin:0;">${spot.info}</p>
+                        </div>
+                    `, { closeButton: false, offset: [0, -5] });
+
+                    activeMarkers.push(marker);
+                });
+            }
+
+            function clearAllMapLayers() {
+                Object.keys(activePolygons).forEach(key => {
+                    map.removeLayer(activePolygons[key]);
+                });
+                activePolygons = {};
+
+                activeMarkers.forEach(m => map.removeLayer(m));
+                activeMarkers = [];
+            }
+
+            let speechInstance = null;
+            const audioBtn = document.getElementById('js-audio-trigger');
+
+            function stopAudioGuide() {
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.cancel();
+                    audioBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                }
+            }
+
+            function playAudioGuide(textData) {
+                if (!window.speechSynthesis) return;
+                if (window.speechSynthesis.speaking) {
+                    stopAudioGuide();
+                    return;
+                }
+
+                speechInstance = new SpeechSynthesisUtterance(textData);
+                const voices = window.speechSynthesis.getVoices();
+                const ruVoice = voices.find(v => v.lang.includes('RU') || v.lang.includes('ru'));
+                if(ruVoice) speechInstance.voice = ruVoice;
+
+                speechInstance.onend = function() {
+                    audioBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+                };
+
+                audioBtn.innerHTML = '<i class="fa-solid fa-circle-stop" style="color: #ef4444;"></i>';
+                window.speechSynthesis.speak(speechInstance);
+            }
+
+            const backdropNode = document.getElementById('js-backdrop-node');
+            let currentOpenData = null;
+
+            function openDetailedArchivalSheet(data) {
+                currentOpenData = data;
+                
+                document.getElementById('js-modal-epoch').textContent = data.period + " ДӘУІРІ";
+                document.getElementById('js-modal-title').textContent = data.name;
+                document.getElementById('js-meta-capital').textContent = data.capital;
+                document.getElementById('js-meta-ruler').textContent = data.ruler;
+                document.getElementById('js-meta-army').textContent = data.army;
+                document.getElementById('js-meta-tribes').textContent = data.tribes;
+                document.getElementById('js-modal-description').textContent = data.desc;
+                document.getElementById('js-modal-fact').textContent = data.fact;
+
+                backdropNode.classList.add('active');
+            }
+
+            function closeDetailedArchivalSheet() {
+                backdropNode.classList.remove('active');
+                stopAudioGuide();
+            }
+
+            document.getElementById('js-sheet-dismiss-btn').addEventListener('click', closeDetailedArchivalSheet);
+            backdropNode.addEventListener('click', function(e) {
+                if (e.target === this) closeDetailedArchivalSheet();
+            });
+
+            audioBtn.addEventListener('click', function() {
+                if (currentOpenData) {
+                    const cleanTextToSpeak = `${currentOpenData.name}. Астанасы: ${currentOpenData.capital}.`;
+                    playAudioGuide(cleanTextToSpeak);
+                }
+            });
+
+            document.getElementById('js-reset-map-view').addEventListener('click', () => {
+                map.flyTo([initialLat, initialLng], initialZoom, { animate: true, duration: 1.2 });
+            });
+
+            const compareCheckbox = document.getElementById('js-compare-mode-cb');
+            compareCheckbox.addEventListener('change', function() {
+                compareMode = this.checked;
+                if (!compareMode) {
+                    clearAllMapLayers();
+                    document.querySelectorAll('.khanate-card').forEach(c => c.classList.remove('active'));
+                    closeDetailedArchivalSheet();
+                }
+            });
+
+            const workspaceNode = document.getElementById('js-workspace-node');
+            document.getElementById('js-sidebar-trigger').addEventListener('click', function() {
+                workspaceNode.classList.toggle('sidebar-collapsed');
+                setTimeout(() => map.invalidateSize(), 300);
+            });
+
+            // ЗАМЕНЕН ОБЫЧНЫЙ ALERT НА КРАСИВЫЙ PREMIUM TOAST
+            document.getElementById('js-info-academic').addEventListener('click', () => {
+                showPremiumAlert("Дереккөздер: Қазақстан Ұлттық Энциклопедиясы материалдары негізінде жасалған.");
+            });
+
+            renderSidebarCards();
+            
+            setTimeout(() => {
+                handleKhanateSelection("oguz");
+            }, 600);
+        });
+    </script>
+</body>
+</html>
