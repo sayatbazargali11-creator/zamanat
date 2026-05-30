@@ -1030,3 +1030,63 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
+// База данных терминов для карточек
+const flashcardsData = [
+    { term: "Сюбаши", definition: "Оғыз мемлекетіндегі әскер басшысы, әскери жетекші." },
+    { term: "Жабғу", definition: "Ерте ортағасырлық түркі мемлекеттеріндегі (оғыз, қарлұқ) жоғарғы билеуші лауазымы." },
+    { term: "Инал", definition: "Оғыз мемлекетіндегі жабғудың мұрагерлерін, яғни ханзадаларды тәрбиелеуші лауазым иесі." }
+];
+
+let currentCardIndex = 0;
+
+function updateFlashcard() {
+    const cardEl = document.getElementById('current-quiz-card');
+    const termEl = document.getElementById('card-term-display');
+    const defEl = document.getElementById('card-definition-display');
+    const counterEl = document.getElementById('card-counter');
+
+    if (!cardEl || !termEl || !defEl || !counterEl) return;
+
+    // Сбрасываем переворот карточки перед показом новой
+    cardEl.classList.remove('flipped');
+
+    // Ждем окончания анимации возврата, затем меняем текст
+    setTimeout(() => {
+        termEl.innerText = flashcardsData[currentCardIndex].term;
+        defEl.innerText = flashcardsData[currentCardIndex].definition;
+        counterEl.innerText = `${currentCardIndex + 1} / ${flashcardsData.length}`;
+    }, 200);
+}
+
+function handleSwipe(action) {
+    const cardEl = document.getElementById('current-quiz-card');
+    if (!cardEl) return;
+
+    // Добавляем класс анимации вылета (свайпа) в зависимости от выбора
+    if (action === 'know') {
+        cardEl.classList.add('swipe-right');
+    } else {
+        cardEl.classList.add('swipe-left');
+    }
+
+    // Переходим к следующей карточке после завершения анимации вылета
+    setTimeout(() => {
+        cardEl.classList.remove('swipe-right', 'swipe-left');
+        
+        currentCardIndex++;
+        if (currentCardIndex >= flashcardsData.length) {
+            // Если карточки закончились, запускаем круг заново
+            currentCardIndex = 0; 
+            alert("Құттықтаймыз! Барлық терминдерді қарап шықтыңыз. 🎉");
+        }
+        
+        updateFlashcard();
+    }, 400);
+}
+
+// Инициализируем при загрузке страницы
+document.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('current-quiz-card')) {
+        updateFlashcard();
+    }
+});
