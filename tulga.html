@@ -996,6 +996,10 @@
                 grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
                 gap: 20px;
             }
+            .circular-audio-btn {
+        width: 46px !important;
+        height: 46px !important;
+    }
             .hero-showcase h2 {
                 font-size: 34px;
             }
@@ -1559,6 +1563,42 @@
             buildSystemEpochTabs();
             runPrimaryGalleryRender();
         });
+
+
+
+
+
+
+        // Разблокировка SpeechSynthesis для мобильных устройств и планшетов
+document.addEventListener('click', function initAudioEngine() {
+    if (window.speechSynthesis) {
+        // Пустышка для пробуждения движка легитимным кликом
+        const u = new SpeechSynthesisUtterance('');
+        window.speechSynthesis.speak(u);
+    }
+    // Удаляем слушатель после первого тапа, чтобы не нагружать систему
+    document.removeEventListener('click', initAudioEngine);
+}, { passive: true });
+
+
+
+
+
+
+function startSpeechForCard(text) {
+    // Жёстко останавливаем всё, что говорило до этого (спасет от зависаний на планшетах)
+    window.speechSynthesis.cancel(); 
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'kk-KZ'; // Явно указываем локаль для планшетов
+    
+    // Обработка ошибок для отладки на планшете
+    utterance.onerror = function(event) {
+        console.error('Ошибка синтеза речи на планшете:', event.error);
+    };
+
+    window.speechSynthesis.speak(utterance);
+}
     </script>
 </body>
 </html>
