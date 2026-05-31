@@ -488,11 +488,12 @@
         }
 
         /* ==========================================================================
-           6. MODULE A: INTERACTIVE 3D ROTATING CARDS DESIGN
+           6. MODULE A: INTERACTIVE 3D ROTATING CARDS DESIGN (iOS FIX INCLUDED)
            ========================================================================== */
         .historical-figure-card {
             height: 520px;
             perspective: 1500px;
+            -webkit-perspective: 1500px;
             cursor: pointer;
             opacity: 0;
             transform: translateY(30px);
@@ -511,12 +512,14 @@
             text-align: left;
             transition: transform 0.7s var(--ease-3d);
             transform-style: preserve-3d;
+            -webkit-transform-style: preserve-3d;
             box-shadow: var(--shadow-md);
             border-radius: 24px;
         }
 
         .historical-figure-card.is-flipped .card-inner-rotator {
             transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
         }
 
         .card-facet-front, .card-facet-back {
@@ -533,15 +536,20 @@
             border: 1px solid var(--border-light);
         }
 
-        /* ВАЖНОЕ ИСПРАВЛЕНИЕ: Поворот контента задней стороны, чтобы текст не зеркалился */
+        /* ИСПРАВЛЕНИЕ ДЛЯ IPHONE И SAFARI: Полностью скрываем контент лицевой стороны при развороте карточки */
+        .historical-figure-card.is-flipped .card-facet-front {
+            opacity: 0 !important;
+            visibility: hidden !important;
+            pointer-events: none;
+        }
+
         .card-facet-back {
             transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
             padding: 26px;
             background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
             justify-content: flex-start;
             overflow-y: auto;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
         }
 
         /* Front Facet Components */
@@ -613,8 +621,6 @@
             padding: 6px 12px;
             border-radius: 10px;
             border: 1px solid rgba(255,255,255,0.1);
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
         }
 
         .action-flip-hint-icon {
@@ -1059,7 +1065,7 @@
                 margin: 0 !important;
             }
             
-            /* Меняем квадрат на иконку выключенного динамика/микрофона */
+            /* Меняем квадрат на иконку выключенного динамика */
             .audio-master-kill-switch i::before {
                 content: "\f6a9" !important; /* Код иконки fa-volume-xmark в FontAwesome */
             }
@@ -1209,7 +1215,7 @@
                     "Ресей империялық Мемлекеттік Думасына депутат ретінде қазақ жерлерінің колонизациялық тартып алынуына қарсы заңдық күрес ашты.",
                     "Қазақстанның бүгінгі ресми мемлекеттік территориялық-географиялық шекарасын ғылыми тұрғыда негіздеп, бекіттірді."
                 ],
-                narrationText: "Әлихан Нұрмұхамедұлы Бөкейханов — көрнекті мемлекет және қоғам қайраткері, ұлттық Алаш қозғалысының негезін салушы әрі саяси жетекшісі, ғұлама ғалым, публицист. Ол ХХ ғасырдың басында қазақ елінің автономиялы мемлекеттігін қалпына келтіру жолында жанқиярлықпен күресті."
+                narrationText: "Әлихан Нұрмұхамедұлы Бөкейханов — көрнекті мемлекет және қоғам қайраткері, ұлттық Алаш қозғалысының негезін салушы әрі саяси жетекшісі, ғұлама ғалым, публицист. Ол ХХ ғасырдың басында қазақ еліның автономиялы мемлекеттігін қалпына келтіру жолында жанқиярлықпен күресті."
             },
             {
                 id: "fig_002",
@@ -1222,7 +1228,7 @@
                 fallbackIcon: "fa-book-open-reader",
                 famousQuote: "«Атадан мал қалса, бір күндік, артынан сөз қалса — мәңгілік».",
                 threeAccomplishments: [
-                    "Араб графикасына негізделген тұңғыш реформаланған қазақ әліпбиін («Төте жазу») жасап, сауатсыздықты жойды.",
+                    "Араб графикасына негеделген тұңғыш реформаланған қазақ әліпбиін («Төте жазу») жасап, сауатсыздықты жойды.",
                     "Тұңғыш жалпыұлттық «Қазақ» газетінің бас редакторы ретінде халықтың саяси-мәдени санасын оятты.",
                     "Қазақ тіл білімі мен әдебиеттану ғылымының іргетасын қалап, алғашқы академиялық оқулықтарды жазды."
                 ],
@@ -1396,7 +1402,7 @@
             triggerScrollReveal(interactiveCardsContainer);
         }
 
-        // Module B: Audio Guide Grid Render (With Noise Equalizer)
+        // Module B: Audio Guide Grid Render
         function renderMultimediaAudioCards(dataList) {
             multimediaAudioContainer.innerHTML = '';
             document.getElementById('empty-state-audio').style.display = dataList.length === 0 ? 'block' : 'none';
@@ -1441,7 +1447,7 @@
         }
 
         /* ==========================================================================
-           AUDIO GUIDE MANAGEMENT ENGINE (WITH ADVANCED REAL NOISE EMULATION)
+           AUDIO GUIDE MANAGEMENT ENGINE
            ========================================================================== */
         function toggleAudioGuideNarration(figureId, txt) {
             if (speechActiveCardId === figureId) {
