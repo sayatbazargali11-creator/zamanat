@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Тарихи Тұлғалар • ZAMANAT Академиялық Галереясы</title>
+    <title>ZAMANAT • Бірыңғай Академиялық Портал</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -69,57 +69,18 @@
             background: #a1a1a6;
         }
 
-        /* Selection Color */
         ::selection {
             background: var(--orange-glow-heavy);
             color: var(--text-main);
         }
 
-        /* Utilities */
         .container {
             max-width: 1340px;
             margin: 0 auto;
             padding: 0 24px;
         }
 
-        /* ==========================================================================
-           NEW: MULTIMEDIA NAVIGATION TOGGLE (AUDIO / CARDS)
-           ========================================================================== */
-        .multimedia-toggle-container {
-            display: inline-flex;
-            background: rgba(0, 0, 0, 0.04);
-            padding: 4px;
-            border-radius: 16px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border-light);
-        }
-
-        .toggle-nav-link {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 10px 24px;
-            font-size: 14px;
-            font-weight: 600;
-            color: var(--text-sub);
-            text-decoration: none;
-            border-radius: 12px;
-            transition: all 0.25s var(--ease-ios);
-        }
-
-        .toggle-nav-link:hover {
-            color: var(--text-main);
-        }
-
-        .toggle-nav-link.active {
-            background: var(--bg-card);
-            color: var(--orange-dark);
-            box-shadow: var(--shadow-sm);
-        }
-
-        /* ==========================================================================
-           2. INTERACTIVE VISUAL EFFECTS & BACKGROUND ELEMENTS
-           ========================================================================== */
+        /* Ambient Orbs */
         .blur-ambient-orb-1 {
             position: fixed;
             top: -200px;
@@ -145,7 +106,7 @@
         }
 
         /* ==========================================================================
-           3. APPLE STICKY NAVIGATION BAR
+           2. NAVIGATION NAVBAR SYSTEM
            ========================================================================== */
         .app-navbar {
             background: rgba(255, 255, 255, 0.75);
@@ -166,9 +127,14 @@
         }
 
         .navbar-wrapper {
-            display: flex;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
             align-items: center;
-            justify-content: space-between;
+        }
+
+        .nav-back-container {
+            display: flex;
+            justify-content: flex-start;
         }
 
         .nav-back-button {
@@ -184,6 +150,7 @@
             border-radius: 14px;
             transition: all 0.2s var(--ease-ios);
             border: 1px solid transparent;
+            white-space: nowrap;
         }
 
         .nav-back-button:hover {
@@ -192,12 +159,16 @@
             transform: translateX(-2px);
         }
 
+        .nav-brand {
+            text-align: center;
+        }
+
         .nav-brand h1 {
             font-size: 22px;
             font-weight: 800;
             letter-spacing: -0.03em;
             color: var(--text-main);
-            display: flex;
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
@@ -220,8 +191,8 @@
 
         .nav-actions {
             display: flex;
-            align-items: center;
-            gap: 12px;
+            justify-content: flex-end;
+            gap: 10px;
         }
 
         .interactive-counter-pill {
@@ -235,14 +206,96 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            white-space: nowrap;
+            text-decoration: none;
+        }
+
+        .audio-master-kill-switch {
+            background: #f5f5f7;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            font-size: 13px;
+            font-weight: 500;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: none;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .audio-master-kill-switch:hover {
+            background: #e8e8ed;
+        }
+
+        .audio-master-kill-switch.playing {
+            background: #1d1d1f;
+            color: #ffffff;
+            border-color: transparent;
         }
 
         /* ==========================================================================
-           4. HERO LUXURY PRESENTATION SECTION
+           3. CENTRAL PLATFORM VIEW TOGGLE (APPLE STYLE)
+           ========================================================================== */
+        .platform-mode-switcher {
+            display: flex;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: -10px;
+            position: relative;
+            z-index: 50;
+        }
+
+        .segmented-control {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.05);
+            padding: 4px;
+            border-radius: 16px;
+            border: 1px solid var(--border-light);
+        }
+
+        .segment-btn {
+            background: transparent;
+            border: none;
+            outline: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 28px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-sub);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.25s var(--ease-ios);
+        }
+
+        .segment-btn:hover {
+            color: var(--text-main);
+        }
+
+        .segment-btn.active {
+            background: var(--bg-card);
+            color: var(--orange-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* View State Visibilities */
+        .view-section {
+            display: none;
+        }
+        .view-section.active-view {
+            display: block;
+        }
+
+        /* ==========================================================================
+           4. HERO SHOWCASE PRESENTATION
            ========================================================================== */
         .hero-showcase {
             text-align: center;
-            padding: 55px 0 35px 0;
+            padding: 40px 0 35px 0;
             position: relative;
         }
 
@@ -287,7 +340,7 @@
         }
 
         /* ==========================================================================
-           5. PREMIUM FILTERS AND CONTROL ENGINE (QUIZ.HTML COMPATIBLE)
+           5. DASHBOARD CONTROLS (SEARCH & SYSTEM FILTERS)
            ========================================================================== */
         .control-dashboard {
             background: var(--bg-card);
@@ -399,7 +452,6 @@
             color: #ffffff;
         }
 
-        /* Status & Guidance Label */
         .gallery-metrics-bar {
             display: flex;
             justify-content: space-between;
@@ -422,24 +474,51 @@
             color: var(--text-main);
         }
 
-        /* ==========================================================================
-           6. EXQUISITE RECTANGLE CARD GRID DESIGN WITH SCROLL TRIGGERS
-           ========================================================================== */
+        /* Grid Matrix Layout */
         .cards-matrix-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
             gap: 30px;
-            position: relative;
         }
 
+        /* Fallback Views */
+        .empty-grid-fallback-view {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+            background: var(--bg-card);
+            border-radius: 28px;
+            border: 1px dashed #d2d2d7;
+        }
+
+        .empty-grid-fallback-view i {
+            font-size: 48px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .empty-grid-fallback-view h4 {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 6px;
+        }
+
+        .empty-grid-fallback-view p {
+            font-size: 14px;
+            color: var(--text-sub);
+        }
+
+        /* ==========================================================================
+           6. MODULE A: INTERACTIVE 3D ROTATING CARDS DESIGN
+           ========================================================================== */
         .historical-figure-card {
-            background-color: transparent;
-            height: 520px; 
-            perspective: 2000px;
+            height: 520px;
+            perspective: 1500px;
             cursor: pointer;
             opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.6s ease, transform 0.6s var(--ease-ios);
+            transform: translateY(30px);
+            transition: opacity 0.6s var(--ease-ios), transform 0.6s var(--ease-ios);
         }
 
         .historical-figure-card.revealed {
@@ -451,12 +530,10 @@
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.65s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-align: left;
+            transition: transform 0.7s var(--ease-3d);
             transform-style: preserve-3d;
-        }
-
-        .historical-figure-card:hover .card-inner-rotator {
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-md);
             border-radius: 24px;
         }
 
@@ -471,37 +548,56 @@
             -webkit-backface-visibility: hidden;
             backface-visibility: hidden;
             border-radius: 24px;
-            border: 1px solid var(--border-light);
-            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            background-color: var(--bg-card);
             display: flex;
             flex-direction: column;
-            background: var(--bg-card);
-            overflow: hidden;
-            transition: border-color 0.3s ease;
+            border: 1px solid var(--border-light);
         }
 
-        .historical-figure-card:hover .card-facet-front {
-            border-color: var(--border-hover);
+        .card-facet-back {
+            transform: rotateY(180deg);
+            padding: 26px;
+            background: linear-gradient(180deg, #ffffff 0%, #fafafa 100%);
+            justify-content: flex-start;
+            overflow-y: auto;
         }
 
+        /* Front Facet Components */
         .front-image-canvas {
+            height: 58%;
             position: relative;
-            width: 100%;
-            height: 270px; 
-            background: #e8e8ed;
+            background-color: #e8e8ed;
             overflow: hidden;
-        }
-
-        .portrait-image {
+        } 
+        
+        .front-image-canvas img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            object-position: top center;
-            transition: transform 0.6s var(--ease-ios);
+            transition: transform 0.5s ease;
         }
 
-        .historical-figure-card:hover .portrait-image {
-            transform: scale(1.06);
+        .historical-figure-card:hover .front-image-canvas img {
+            transform: scale(1.04);
+        }
+
+        .image-absolute-placeholder {
+            position: absolute;
+            inset: 0;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #f5f5f7, #e8e8ed);
+            color: var(--text-muted);
+            gap: 12px;
+        }
+
+        .image-absolute-placeholder i {
+            font-size: 44px;
+            color: var(--orange-main);
+            opacity: 0.7;
         }
 
         .front-image-canvas::after {
@@ -535,169 +631,130 @@
             font-weight: 600;
             padding: 6px 12px;
             border-radius: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            letter-spacing: 0.02em;
+            border: 1px solid rgba(255,255,255,0.1);
         }
 
-        .role-pill-tag {
+        .action-flip-hint-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-main);
+            font-size: 12px;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s ease;
+        }
+
+        .historical-figure-card:hover .action-flip-hint-icon {
             background: var(--orange-gradient);
             color: #ffffff;
-            font-size: 11px;
-            font-weight: 700;
-            padding: 6px 14px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(255, 149, 0, 0.25);
-            max-width: 180px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            transform: scale(1.1);
         }
 
-        .portrait-bottom-overlay-name {
+        .front-canvas-caption-title {
             position: absolute;
-            bottom: 16px;
+            bottom: 18px;
             left: 20px;
             right: 20px;
             color: #ffffff;
             z-index: 2;
-            font-weight: 700;
-            font-size: 15px;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
-            opacity: 0.9;
-            letter-spacing: 0.02em;
-            display: flex;
-            align-items: center;
-            gap: 6px;
         }
 
-        .vector-avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #fcead2, #f3cd9d);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            color: var(--orange-dark);
-            gap: 12px;
+        .front-canvas-caption-title h3 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.2;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
-        .vector-avatar-placeholder i {
-            font-size: 64px;
-            opacity: 0.85;
-            filter: drop-shadow(0 4px 8px rgba(224,130,0,0.2));
-        }
-        
-        .vector-avatar-placeholder span {
-            font-size: 12px;
-            text-transform: uppercase;
-            font-weight: 700;
-            letter-spacing: 0.05em;
-            opacity: 0.6;
-        }
-
-        .front-details-block {
-            padding: 24px;
+        /* Front Content Details */
+        .card-front-brief-details {
+            padding: 20px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
             flex-grow: 1;
-            background: #ffffff;
-            position: relative;
         }
 
-        .figure-title-meta h3 {
-            font-size: 25px;
-            font-weight: 800;
-            color: var(--text-main);
-            letter-spacing: -0.03em;
-            margin-bottom: 10px;
-            line-height: 1.2;
-        }
-
-        .chronology-years-pill {
-            font-size: 13px;
+        .meta-role-label {
+            font-size: 14px;
             color: var(--orange-dark);
             font-weight: 600;
-            background: var(--orange-glow);
-            display: inline-flex;
+            display: flex;
             align-items: center;
             gap: 6px;
-            padding: 5px 14px;
-            border-radius: 10px;
-            border: 1px solid rgba(255, 149, 0, 0.1);
         }
 
-        .action-callout-hint {
-            border-top: 1px solid #f5f5f7;
-            padding-top: 18px;
-            margin-top: 10px;
-            font-size: 12.5px;
-            color: var(--text-muted);
+        .meta-chronology-span {
+            font-size: 13px;
+            color: var(--text-sub);
             font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            transition: color 0.2s ease;
+            margin-top: 4px;
         }
 
-        .historical-figure-card:hover .action-callout-hint {
-            color: var(--orange-dark);
+        .premium-quote-block {
+            border-left: 3px solid var(--orange-main);
+            padding: 2px 0 2px 12px;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 13px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-top: auto;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
-        .card-facet-back {
-            transform: rotateY(180deg);
-            padding: 26px;
-            justify-content: space-between;
-            background: #ffffff;
-            position: relative;
-        }
-
+        /* Back Facet Components */
         .back-facet-header {
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid #f5f5f7;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-light);
             padding-bottom: 14px;
-            margin-bottom: 16px;
         }
 
-        .back-facet-header-icon-box {
-            width: 38px;
-            height: 38px;
-            background: var(--orange-glow);
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--orange-main);
-            font-size: 16px;
-        }
-
-        .back-facet-header h4 {
-            font-size: 19px;
+        .back-facet-header h3 {
+            font-size: 20px;
             font-weight: 800;
             color: var(--text-main);
             letter-spacing: -0.02em;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 240px;
+            text-align: left;
         }
 
-        .philosophic-quote-box {
-            background: #f5f5f7;
-            border-left: 4px solid var(--orange-main);
-            padding: 14px 16px;
-            border-radius: 0 16px 16px 0;
+        .back-close-pill-hint {
+            font-size: 11px;
+            font-weight: 700;
+            background: var(--orange-glow);
+            border: 1px solid rgba(255,149,0,0.15);
+            padding: 6px 12px;
+            border-radius: 10px;
+            color: var(--orange-dark);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        .back-quote-callout {
+            background: rgba(0, 0, 0, 0.02);
+            border-radius: 14px;
+            border-left: 4px solid var(--text-main);
+            padding: 16px;
             font-family: 'Playfair Display', Georgia, serif;
             font-style: italic;
-            font-size: 13.5px;
-            color: var(--text-sub);
-            line-height: 1.55;
-            margin-bottom: 18px;
-            position: relative;
+            font-size: 14px;
+            color: var(--text-main);
+            line-height: 1.6;
+            margin-bottom: 22px;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.02);
+            text-align: left;
         }
 
         .accomplishments-section-title {
@@ -705,8 +762,8 @@
             font-weight: 700;
             color: var(--text-muted);
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 12px;
+            letter-spacing: 0.08em;
+            margin-bottom: 14px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -716,667 +773,775 @@
             list-style: none;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 16px;
         }
 
         .accomplishments-ordered-list li {
-            font-size: 13px;
+            font-size: 13.5px;
             color: var(--text-sub);
-            line-height: 1.5;
+            line-height: 1.55;
             display: flex;
             align-items: flex-start;
-            gap: 12px;
+            gap: 14px;
+            padding-bottom: 4px;
+            text-align: left;
         }
 
         .accomplishment-numeric-bullet {
-            background: var(--orange-glow);
-            color: var(--orange-dark);
+            background: var(--orange-gradient);
+            color: #ffffff;
             font-weight: 700;
             font-size: 11px;
-            min-width: 22px;
-            height: 22px;
-            border-radius: 50%;
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-top: 2px;
-            border: 1px solid rgba(255,149,0,0.1);
-        }
-
-        .accomplishment-text-payload {
-            flex-grow: 1;
-        }
-
-        .back-facet-footer-tap-return {
-            border-top: 1px solid #f5f5f7;
-            padding-top: 14px;
-            font-size: 12px;
-            color: var(--text-muted);
-            text-align: center;
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 6px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(255, 149, 0, 0.25);
+            margin-top: 1px;
         }
 
         /* ==========================================================================
-           7. BLANK STATE SEARCH VACUUM NOTIFIER
+           7. MODULE B: MULTIMEDIA AUDIO CARD INTERFACE DESIGN (WITH EQUALIZER & NOISE)
            ========================================================================== */
-        .empty-grid-fallback-view {
-            display: none;
-            text-align: center;
-            padding: 80px 30px;
+        .audio-museum-card {
             background: var(--bg-card);
-            border-radius: 28px;
+            border-radius: 24px;
             border: 1px solid var(--border-light);
+            overflow: hidden;
             box-shadow: var(--shadow-sm);
-            max-width: 500px;
-            margin: 40px auto 0 auto;
+            display: flex;
+            flex-direction: column;
+            height: 480px;
+            position: relative;
+            transition: all 0.4s var(--ease-ios);
+            opacity: 0;
+            transform: translateY(30px);
         }
 
-        .empty-grid-fallback-view i {
-            font-size: 54px;
-            color: var(--text-muted);
-            margin-bottom: 20px;
-            background: #f5f5f7;
-            width: 90px;
-            height: 90px;
-            line-height: 90px;
+        .audio-museum-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .audio-museum-card:hover {
+            transform: translateY(-6px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-hover);
+        }
+
+        .audio-museum-card.speaking {
+            border-color: var(--orange-main);
+            box-shadow: 0 12px 30px rgba(255, 149, 0, 0.12);
+        }
+
+        .card-multimedia-header-canvas {
+            height: 230px;
+            position: relative;
+            background: #e8e8ed;
+            overflow: hidden;
+        }
+
+        .card-multimedia-header-canvas img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .card-multimedia-header-canvas::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.05), rgba(0,0,0,0.3));
+        }
+
+        /* КРУГЛАЯ КНОПКА ВОСПРОИЗВЕДЕНИЯ С ЭКВАЛАЙЗЕРОМ ВНУТРИ */
+        .circular-audio-btn {
+            position: absolute;
+            bottom: 16px;
+            right: 16px;
+            width: 54px;
+            height: 54px;
+            background: var(--orange-gradient);
+            color: #ffffff;
+            border: none;
             border-radius: 50%;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 4px 14px rgba(255, 94, 0, 0.4);
+            z-index: 10;
+            transition: all 0.3s var(--ease-ios);
         }
 
-        .empty-grid-fallback-view h4 {
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 10px;
+        .circular-audio-btn:hover {
+            transform: scale(1.08);
+            box-shadow: 0 6px 20px rgba(255, 94, 0, 0.5);
+        }
+
+        .audio-museum-card.speaking .circular-audio-btn {
+            background: #1d1d1f;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+        }
+
+        /* ДИНАМИЧЕСКИЙ КОНТЕЙНЕР АНИМАЦИИ ЗВУКА: СТОЛБЦЫ И ШУМ */
+        .live-waveform-container {
+            display: none;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            width: 26px;
+            height: 22px;
+        }
+
+        .audio-museum-card.speaking .live-waveform-container {
+            display: flex;
+        }
+
+        .audio-museum-card.speaking .audio-play-icon {
+            display: none;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 1.5px;
+            transition: height 0.1s linear;
+        }
+
+        /* Эффект Столбцов и Белого Шума через CSS анимацию (как резерв) */
+        .audio-museum-card.speaking .wave-bar:nth-child(1) { animation: liveNoiseColumn 0.5s ease-in-out infinite alternate; }
+        .audio-museum-card.speaking .wave-bar:nth-child(2) { animation: liveNoiseColumn 0.35s ease-in-out infinite alternate 0.1s; }
+        .audio-museum-card.speaking .wave-bar:nth-child(3) { animation: liveNoiseColumn 0.6s ease-in-out infinite alternate 0.05s; }
+        .audio-museum-card.speaking .wave-bar:nth-child(4) { animation: liveNoiseColumn 0.45s ease-in-out infinite alternate 0.15s; }
+
+        @keyframes liveNoiseColumn {
+            0% { height: 20%; }
+            50% { height: 90%; }
+            100% { height: 40%; }
+        }
+
+        .card-multimedia-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+            background: #ffffff;
+            gap: 8px;
+        }
+
+        .figure-title-meta h3 {
+            font-size: 22px;
+            font-weight: 800;
             color: var(--text-main);
+            letter-spacing: -0.02em;
+            margin-bottom: 2px;
         }
 
-        .empty-grid-fallback-view p {
+        .multimedia-duration-badge {
+            position: absolute;
+            top: 16px;
+            left: 16px;
+            background: rgba(0, 0, 0, 0.55);
+            color: #ffffff;
+            backdrop-filter: blur(8px);
+            padding: 4px 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            z-index: 2;
+        }
+
+        .audio-narration-abstract-text {
+            font-size: 13.5px;
             color: var(--text-sub);
-            font-size: 14.5px;
+            line-height: 1.55;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* ==========================================================================
-           8. RESPONSIVE MEDIA QUERIES FOR COMPACT VIEWPORTS
+       /* ==========================================================================
+           8. RESPONSIVE DESIGN MEDIA QUERIES & MULTIMEDIA ADVANCED ANIMATIONS
            ========================================================================== */
+        
+        /* Инновационная анимация пульсации и микро-поворота фото при активном аудиогиде */
+        .audio-museum-card.speaking .card-multimedia-header-canvas img {
+            animation: premiumAudioPhotoPulse 4s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+        }
+
+        @keyframes premiumAudioPhotoPulse {
+            0% {
+                transform: scale(1.02) rotate(0deg);
+                filter: brightness(1.04) saturate(1.02);
+            }
+            50% {
+                transform: scale(1.08) rotate(0.4deg);
+                filter: brightness(0.96) saturate(1.08);
+            }
+            100% {
+                transform: scale(1.04) rotate(-0.4deg);
+                filter: brightness(1.02) saturate(1.04);
+            }
+        }
+
+        /* Плавный переход для картинок во всех режимах */
+        .card-multimedia-header-canvas img {
+            transition: transform 0.8s var(--ease-ios), filter 0.5s ease;
+        }
+
+        /* Медиа-запросы для планшетов */
         @media (max-width: 992px) {
-            .hero-showcase h2 { font-size: 36px; }
-            .cards-matrix-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+            .cards-matrix-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+                gap: 20px;
+            }
+            .hero-showcase h2 {
+                font-size: 34px;
+            }
         }
 
+        /* Медиа-запросы для смартфонов (Сотовый режим) */
         @media (max-width: 768px) {
-            body { padding-bottom: 60px; }
-            .container { padding: 0 16px; }
-            .hero-showcase h2 { font-size: 28px; }
-            .hero-showcase p { font-size: 15px; }
-            .control-dashboard { padding: 18px; border-radius: 20px; }
-            .premium-search-input { padding: 15px 15px 15px 48px; font-size: 15px; }
-            .search-icon-inside { left: 16px; font-size: 18px; }
-            .cards-matrix-grid { grid-template-columns: 1fr; }
-            .historical-figure-card { height: 490px; }
-            .front-image-canvas { height: 240px; }
-            .nav-brand h1 { font-size: 18px; }
-            .desktop-spacer-block { display: none; }
-        }
-
-        /* ==========================================================================
-           MOBILE OPTIMIZED NAVBAR OVERRIDES
-           ========================================================================== */
-        @media (max-width: 576px) {
-            .app-navbar {
-                padding: 8px 0; 
-            }
-            
+            /* Исправление разметки навигации — переключаем на гибкий Flexbox */
             .navbar-wrapper {
-                display: grid;
-                grid-template-columns: auto 1fr auto; 
+                display: flex !important;
+                justify-content: space-between;
                 align-items: center;
-                gap: 8px;
+                gap: 12px;
             }
 
-            .nav-back-button {
-                padding: 10px 12px;
-                border-radius: 50%;
-                justify-content: center;
-                background: rgba(0, 0, 0, 0.05);
-            }
-            
-            .nav-back-text {
-                display: none; 
+            .nav-back-container {
+                flex-shrink: 0;
             }
 
             .nav-brand {
+                flex-grow: 1;
                 text-align: center;
-                overflow: hidden;
             }
 
-            .nav-title {
-                font-size: 15px !important; 
+            .nav-brand h1 {
+                font-size: 16px;
                 justify-content: center;
-                white-space: nowrap;
             }
 
-            .nav-title-sub {
-                font-weight: 500;
-                opacity: 0.8;
-            }
-            
-            .nav-brand h1 span::after {
-                height: 1px; 
+            /* Включаем отображение панели действий на мобильных */
+            .nav-actions {
+                display: flex !important;
+                justify-content: flex-end;
+                flex-shrink: 0;
             }
 
-            .interactive-counter-pill {
-                padding: 6px 10px;
-                font-size: 11px;
-                border-radius: 12px;
-                white-space: nowrap;
+
+
+            /* ТРАНСФОРМАЦИЯ КНОПКИ: убираем текст, превращаем в круглую иконку выключения звука */
+            .audio-master-kill-switch {
+                width: 38px;
+                height: 38px;
+                padding: 0;
+                display: none; /* Будет переключено на 'flex' через JS / условия */
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                font-size: 0; /* Полностью скрывает текстовый узел «Тоқтату» */
+                background: #ff3b30; /* Внимание: благородный системный красный цвет Apple для Стоп-сигнала */
+                color: #ffffff;
+                border: none;
+                box-shadow: 0 4px 12px rgba(255, 59, 48, 0.3);
+            }
+
+            .audio-master-kill-switch.playing {
+                display: flex !important;
+                background: #ff3b30;
+                color: #ffffff;
+            }
+
+            /* Внутри кнопки подменяем или стилизуем иконку на иконку «без звука» */
+            .audio-master-kill-switch i {
+                font-size: 14px !important;
+                margin: 0 !important;
             }
             
-            .interactive-counter-pill i {
-                font-size: 11px;
+            /* Меняем квадрат на иконку выключенного динамика/микрофона */
+            .audio-master-kill-switch i::before {
+                content: "\f6a9" !important; /* Код иконки fa-volume-xmark в FontAwesome */
+            }
+
+            /* Адаптив контента */
+            .hero-showcase h2 {
+                font-size: 28px;
+            }
+            .hero-showcase p {
+                font-size: 15px;
+            }
+            .control-dashboard {
+                padding: 18px;
+                border-radius: 20px;
+            }
+            .cards-matrix-grid {
+                grid-template-columns: 1fr;
+            }
+            .audio-museum-card, .historical-figure-card {
+                height: auto;
+                min-height: 480px;
+            }
+        }
+
+        /* Дополнительная оптимизация для ультра-маленьких экранов */
+        @media (max-width: 576px) {
+            .app-navbar {
+                padding: 8px 0;
+            }
+            /* Прячем текст «Басты бет», оставляя только иконку-стрелочку */
+            .nav-back-text {
+                display: none !important;
+            }
+            .nav-back-button {
+                padding: 10px 14px;
+                border-radius: 50%; /* Превращаем кнопку назад в эстетичный круг */
+            }
+            .nav-brand h1 {
+                font-size: 14px;
+            }
+            .segment-btn {
+                padding: 10px 14px;
+                font-size: 11.5px;
+                gap: 4px;
+            }
+            .epoch-tab-btn {
+                padding: 10px 14px;
+                font-size: 12.5px;
             }
         }
     </style>
 </head>
 <body>
-
     <div class="blur-ambient-orb-1"></div>
     <div class="blur-ambient-orb-2"></div>
 
     <nav class="app-navbar" id="main-nav-bar">
         <div class="container navbar-wrapper">
-            <a href="index.html" class="nav-back-button" aria-label="Назад">
-                <i class="fa-solid fa-arrow-left"></i> <span class="nav-back-text">Басты бет</span>
-            </a>
-            <div class="nav-brand">
-                <h1 class="nav-title">ZAMANAT <span class="nav-title-sub">• Тұлғалар</span></h1>
+            <div class="nav-back-container">
+                <a href="index.html" class="nav-back-button">
+                    <i class="fa-solid fa-arrow-left"></i>
+                    <span class="nav-back-text">Басты бет</span>
+                </a>
             </div>
-            
+            <div class="nav-brand">
+                <h1>ZAMANAT <span>Академиясы</span></h1>
+            </div>
             <div class="nav-actions">
-                <div class="interactive-counter-pill">
-                    <i class="fa-solid fa-graduation-cap"></i>
-                    <span id="pill-counter-digits">16 Тұлға</span>
+                <div class="interactive-counter-pill" id="global-counter-badge">
+                    <i class="fa-solid fa-database"></i>
+                    <span id="counter-value-text">0</span> тұлға
                 </div>
+                <button class="audio-master-kill-switch" id="tts-kill-switch" onclick="stopGlobalSpeech()">
+                    <i class="fa-solid fa-square"></i> Тоқтату
+                </button>
             </div>
         </div>
     </nav>
 
     <main class="container">
-        
+        <div class="platform-mode-switcher">
+            <div class="segmented-control">
+                <button class="segment-btn active" id="seg-cards-btn" onclick="switchPlatformMode('cards')">
+                    <i class="fa-solid fa-id-card"></i> Интерактивті карточкалар
+                </button>
+                <button class="segment-btn" id="seg-audio-btn" onclick="switchPlatformMode('audio')">
+                    <i class="fa-solid fa-microphone-lines"></i> Мультимедиалық Аудиогид
+                </button>
+            </div>
+        </div>
+
         <header class="hero-showcase">
-            <div class="multimedia-toggle-container">
-                <a href="zamanat_multimedia.html" class="toggle-nav-link">
-                    <i class="fa-solid fa-headphones"></i> Аудиогид
-                </a>
-                <a href="tulga.html" class="toggle-nav-link active">
-                    <i class="fa-solid fa-address-card"></i> Карточкалар
-                </a>
-            </div>
-            <br>
-            <div class="luxury-badge">
-                <i class="fa-solid fa-star"></i> Ұлы Дала Енциклопедиясы
-            </div>
-            <h2>Ұлы Дала <em>Тарихи Тұлғалары</em> жинағы</h2>
-            <p>Қазақ мемлекеттігінің қалануына, қорғалуына және мәдени-жаңғыруына үлес қосқан ұлы хандар, батырлар мен Алаш зиялыларының панорамалық галереясы.</p>
+            <div class="luxury-badge" id="platform-badge-context"><i class="fa-solid fa-sparkles"></i> 3D Галереялық жүйе</div>
+            <h2 id="platform-main-heading">Тарихи <em>Тұлғалар</em> Галереясы</h2>
+            <p id="platform-sub-heading">Қазақ тарихының ұлы белестерін қалыптастырған кемеңгер көшбасшылар мен батырлардың өмір жолы мен басты жетістіктері.</p>
         </header>
 
         <section class="control-dashboard">
             <div class="search-engine-container">
                 <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
-                <input type="text" id="master-search-field" class="premium-search-input" placeholder="Тұлға есімін, заңдарын, шайқасын немесе кілт сөзді іздеңіз (мысалы: Бөкейханов, Абылай, Жеті Жарғы)...">
+                <input type="text" class="premium-search-input" id="system-search-field" placeholder="Тұлға есімін немесе тарихи рөлін енгізіңіз...">
             </div>
-
-            <div class="filter-header-title">
-                <i class="fa-solid fa-sliders"></i> Дәуірлер мен кезеңдерді сүзгілеу тақтасы
-            </div>
-            <div class="horizontal-epoch-scroller" id="epoch-buttons-scroller-rack">
-                <button class="epoch-tab-btn active" data-epoch-target="all"><i class="fa-solid fa-globe"></i> Барлық кезеңдер</button>
-                <button class="epoch-tab-btn" data-epoch-target="ancient"><i class="fa-solid fa-shield"></i> Ежелгі & Түркі дәуірі</button>
-                <button class="epoch-tab-btn" data-epoch-target="khanate1516"><i class="fa-solid fa-crown"></i> Қазақ хандығы (XV-XVI ғ.)</button>
-                <button class="epoch-tab-btn" data-epoch-target="khanate1718"><i class="fa-solid fa-gavel"></i> Қазақ хандығы (XVII-XVIII ғ.)</button>
-                <button class="epoch-tab-btn" data-epoch-target="colonial"><i class="fa-solid fa-flag"></i> Ұлт-азаттық күрес (XIX ғ.)</button>
-                <button class="epoch-tab-btn" data-epoch-target="alash"><i class="fa-solid fa-building-columns"></i> Алаш & Кеңес кезеңі</button>
-            </div>
+            <h3 class="filter-header-title"><i class="fa-solid fa-sliders"></i> Тарихи дәуірлер бойынша сүзгілеу</h3>
+            <div class="horizontal-epoch-scroller" id="epoch-scroller-tabs"></div>
         </section>
 
         <div class="gallery-metrics-bar">
-            <div id="counter-live-feedback-string">Сүзгі бойынша: <strong>16</strong> тарихи тұлға тізімделіп тұр</div>
-            <div class="desktop-spacer-block" style="font-size: 12px; color: var(--text-muted); font-weight: 500;">
-                <i class="fa-solid fa-circle-nodes" style="color: var(--orange-main);"></i> Карточка үстіне басып, 3D айналдыру әсерін іске қосыңыз
+            <div id="live-feedback-counter-text">Жүйеде сүзілген мәлімет саны: <strong>0</strong> дана</div>
+        </div>
+
+        <div class="view-section active-view" id="cards-view-section">
+            <div class="empty-grid-fallback-view" id="empty-state-cards">
+                <i class="fa-solid fa-id-card-clip"></i>
+                <h4>Ешқандай тарихи тұлға табылмады</h4>
+                <p>Енгізілген іздеу сөзіне сәйкес тұлғалар базада жоқ.</p>
             </div>
+            <section class="cards-matrix-grid" id="interactive-cards-container"></section>
         </div>
 
-        <div class="empty-grid-fallback-view" id="empty-state-card-view">
-            <i class="fa-solid fa-magnifying-glass-chart"></i>
-            <h4>Ештеңе табылмады</h4>
-            <p>Енгізілген кілт сөзге сәйкес мәлімет базада жоқ. Іздеу сұранысын өзгертіп көріңіз немесе басқа кезеңді таңдаңыз.</p>
+        <div class="view-section" id="audio-view-section">
+            <div class="empty-grid-fallback-view" id="empty-state-audio">
+                <i class="fa-solid fa-microphone-slash"></i>
+                <h4>Аудио-файлдар табылмады</h4>
+                <p>Енгізілген кілт сөзге сәйкес аудио-мәлімет базада жоқ.</p>
+            </div>
+            <section class="cards-matrix-grid" id="multimedia-audio-container"></section>
         </div>
-
-        <section class="cards-matrix-grid" id="main-injected-cards-grid-matrix">
-        </section>
-
     </main>
 
     <script>
-        const historicalFiguresDatabase = [
+        /* ==========================================================================
+           DATA DEPOSITORIES
+           ========================================================================== */
+        const historicalFiguresData = [
             {
                 id: "fig_001",
                 name: "Әлихан Бөкейханов",
                 epoch: "alash",
                 epochLabel: "XX ғ. басы",
-                roleName: "Алашорда Төрағасы",
+                roleName: "Алашорда Үкіметінің Төрағасы",
                 chronology: "1866 – 1937 жж.",
-                imageFile: "https://avatars.mds.yandex.net/i?id=d10c79c5e9983456a340ee7c0444c184_l-5221283-images-thumbs&n=13",
+                imageFile: "https://img.inform.kz/kazinform-photobank/media/2026-03-05/86f50492-e27c-4b13-8735-0544923b935b.jpeg",
                 fallbackIcon: "fa-building-columns",
                 famousQuote: "«Тірі болсам, хан баласында қазақтың хақысы бар еді, қазаққа қызмет қылмай қоймаймын!»",
                 threeAccomplishments: [
                     "Тұңғыш ұлттық «Алаш» саяси партиясы мен Алаш Автономиялы үкіметінің жалпыұлттық Саяси Төрағасы болып сайланды.",
-                    "Ресей империялық Мемлекеттік Думасына депутат ретінде қазақ жерлерінің colonisation-тық тартып алынуына қарсы заңдық күрес ашты.",
-                    "Қазақстанның бүгінгі ресми мемлекеттік территориялық-географиялық шекарасын ғылыми әрі заңгерлік тұрғыда негедеп, бекітті."
-                ]
+                    "Ресей империялық Мемлекеттік Думасына депутат ретінде қазақ жерлерінің колонизациялық тартып алынуына қарсы заңдық күрес ашты.",
+                    "Қазақстанның бүгінгі ресми мемлекеттік территориялық-географиялық шекарасын ғылыми тұрғыда негіздеп, бекіттірді."
+                ],
+                narrationText: "Әлихан Нұрмұхамедұлы Бөкейханов — көрнекті мемлекет және қоғам қайраткері, ұлттық Алаш қозғалысының негізін салушы әрі саяси жетекшісі, ғұлама ғалым, публицист. Ол ХХ ғасырдың басында қазақ елінің автономиялы мемлекеттігін қалпына келтіру жолында жанқиярлықпен күресті."
             },
             {
                 id: "fig_002",
-                name: "Томирис Патшайым",
-                epoch: "ancient",
-                epochLabel: "б.з.б. VI ғ.",
-                roleName: "Сақ-Массагет Билеушісі",
-                chronology: "б.з.б. 570 - 520 жж.",
-                imageFile: "assets/tomiris.jpg",
-                fallbackIcon: "fa-crown",
-                famousQuote: "«Қанға тоймап ең, есіл ер, енді мен сенің тоймаған қаныңды өз басыңа ішкізейін!»",
+                name: "Ахмет Байтұрсынұлы",
+                epoch: "alash",
+                epochLabel: "XX ғ. басы",
+                roleName: "Ұлт ұстазы, Ғалым-реформатор",
+                chronology: "1872 – 1937 жж.",
+                imageFile: "assets/ahmet.jpg",
+                fallbackIcon: "fa-book-open-reader",
+                famousQuote: "«Атадан мал қалса, бір күндік, артынан сөз қалса — мәңгілік».",
                 threeAccomplishments: [
-                    "Азияны тітіреткен Парсы империясының жеңілмейтін патшасы Кирдің әскерін Арал маңы даласында толығымен талқандады.",
-                    "Сақ-массагет көшпелі тайпаларының дербестігін, еркіндігі мен ежелгі егемендік құқығын жанқиярлықпен қорғап қалды.",
-                    "Әлемдік әскери тактика тарихында терең қорғаныстан шабуылға шығу стратегиясының классикалық үлгісін қалыптастырды."
-                ]
+                    "Араб графикасына негізделген тұңғыш реформаланған қазақ әліпбиін («Төте жазу») жасап, сауатсыздықты жойды.",
+                    "Тұңғыш жалпыұлттық «Қазақ» газетінің бас редакторы ретінде халықтың саяси-мәдени санасын оятты.",
+                    "Қазақ тіл білімі мен әдебиеттану ғылымының іргетасын қалап, алғашқы академиялық оқулықтарды жазды."
+                ],
+                narrationText: "Ахмет Байтұрсынұлы — қазақтың ақыны, әдебиет зерттеушісі, лингвист, педагог, мемлекеттік қайраткер. «Ұлт ұстазы» атанған ұлы тұлға қазақ балаларының ана тілінде білім алуы үшін өмірін арнап, Алаш зиялыларының рухани көшбасшысына айналды."
             },
             {
                 id: "fig_003",
-                name: "Абылай Хан",
-                epoch: "khanate1718",
-                epochLabel: "XVIII ғ.",
-                roleName: "Жалпықазақ Ұлы Ханы",
+                name: "Абылай хан",
+                epoch: "khanate",
+                epochLabel: "Қазақ хандығы",
+                roleName: "Тұтас Қазақ Елінің Ұлы Хандары",
                 chronology: "1711 – 1781 жж.",
                 imageFile: "assets/abylai.jpg",
-                fallbackIcon: "fa-feather",
-                famousQuote: "«Біз екі алып империя — Ресей мен Қытайдың арасындамыз, сондықтан дипломатиямыз қырағы болуы тиіс.»",
-                threeAccomplishments: [
-                    "Жоңғар басқыншыларының қаупін біржолата жойып, қазақ халқының ата-бабадан қалған жерлерін толық азат етті.",
-                    "Ресей империясы мен Қытайдың Цин әулеті арасында теңдессіз икемді әрі қосжақты тиімді геосаяси дипломатия жүргізді.",
-                    "1771 жылы Түркістан қаласында Қожа Ахмет Ясауи кесенесінде ресми түрде үш жүздің ортақ ханы ретінде танылды."
-                ]
-            },
-            {
-                id: "fig_004",
-                name: "Ахмет Байтұрсынұлы",
-                epoch: "alash",
-                epochLabel: "XX ғ. кезеңі",
-                roleName: "Ұлт Ұстазы, Реформатор",
-                chronology: "1872 – 1937 жж.",
-                imageFile: "assets/akhmet.jpg",
-                fallbackIcon: "fa-pen-clip",
-                famousQuote: "«Сөзі жоғалған халықтың өзі де жоғалады. Өз тілімен сөйлескен, өз тілімен жазған жұрттың ұлттығы еш уақытта құрымайды.»",
-                threeAccomplishments: [
-                    "Қазақ тіл білімі мен әдебиеттану ғылымдарының теориялық іргетасын қалап, тұңғыш төл ана тілі оқулықтарын шығарды.",
-                    "Араб графикасы негізінде қазақ дыбыстарына бейімделген «Төте жазу» әліпбиін жасап, жаппай сауаттандыру реформасын жасады.",
-                    "Аузы дуалы «Қазақ» газетінің бас редакторы ретінде ұлт зиялыларының саяси, интеллектуалды ояну орталығын ұйымдастырды."
-                ]
-            },
-            {
-                id: "fig_005",
-                name: "Керей Хан",
-                epoch: "khanate1516",
-                epochLabel: "XV ғ. ортасы",
-                roleName: "Тұңғыш Қазақ Ханы",
-                chronology: "билігі: 1465 – 1473 жж.",
-                imageFile: "assets/kerey.jpg",
-                fallbackIcon: "fa-chess-king",
-                famousQuote: "«Біздің мақсат — халықтың еркіндігі, өз алдына дербес ел болып, ата-баба дәстүрін сақтау.»",
-                threeAccomplishments: [
-                    "Жәнібек ханмен бірге Әбілқайырдың көшпелі өзбек мемлекетінен бөлініп, дербес Қазақ хандығының іргесін бекітті.",
-                    "Base-ыс Жетісу өңіріне (Шу мен Талас алқабына) тарихи ұлы көшті бастап келіп, жаңа этносаяси орталық құрды.",
-                    "Далалық еркін демократиялық басқару форматы мен «Қазақ» атауының ресми мемлекеттік деңгейге шығуына жол ашты."
-                ]
-            },
-            {
-                id: "fig_006",
-                name: "Жәнібек Хан",
-                epoch: "khanate1516",
-                epochLabel: "XV ғ. екінші жартысы",
-                roleName: "Қазақ мемлекеттігін қалаушы",
-                chronology: "билігі: 1473 – 1480 жж.",
-                imageFile: "assets/zhanibek.jpg",
                 fallbackIcon: "fa-crown",
-                famousQuote: "«Азаттықты аңсаған ел іргесін бөлек салады, біздің туымыз — бірлік пен тәуелсіздік!»",
+                famousQuote: "«Білекті бірді жығады, білімді мыңды жығады, ал бірлік бәрін жығады».",
                 threeAccomplishments: [
-                    "Моғолстан билеушісі Есенбұға ханмен сәтті келіссөздер жүргізіп, қазақтардың алғашқы территориялық орналасуын заңдастырды.",
-                    "Сырдария бойындағы маңызды сауда-экономикалық қалалар үшін Шайбани әулетіне қарсы табанды стратегиялық күрес жүргізді.",
-                    "Қазақ халқының этникалық тұтастығын, ішкі рулық басқару иерархиясын және әскери қорғаныс жүйесін ретке келтірді."
-                ]
-            },
-            {
-                id: "fig_007",
-                name: "Қасым Хан",
-                epoch: "khanate1516",
-                epochLabel: "XVI ғ. басы",
-                roleName: "Ұлы Заңгер, Хан",
-                chronology: "билігі: 1511 – 1521 жж.",
-                imageFile: "assets/kasym.jpg",
-                fallbackIcon: "fa-scale-balanced",
-                famousQuote: "«Біздің байлығымыз да, күшіміз де — кең байтақ даламыз мен еркін өскен халқымыз.»",
-                threeAccomplishments: [
-                    "«Қасым ханның қасқа жолы» атты қазақ тарихындағы алғашқы жүйелі мемлекеттік-құқықтық заңдар кодексін қабылдады.",
-                    "Хандықтың халқының сануюын 1 миллион адамға жеткізіп, шекараны Жайықтан Ертіс өзеніне дейін кеңгейтті.",
-                    "Мәскеу кінәздігімен және Батыс Еуропа елдерімен ресми елшілік байланыстар орнатып, халықаралық аренада танылды."
-                ]
-            },
-            {
-                id: "fig_008",
-                name: "Хақназар Хан",
-                epoch: "khanate1516",
-                epochLabel: "XVI ғ. ортасы",
-                roleName: "Қайта өрлеу дәуірінің ханы",
-                chronology: "билігі: 1538 – 1580 жж.",
-                imageFile: "assets/khaknazar.jpg",
-                fallbackIcon: "fa-arrows-to-circle",
-                famousQuote: "«Ішкі араздық хандықты құртады, тек бірлескенде ғана сыртқы жаулар бізден сескенеді.»",
-                threeAccomplishments: [
-                    "Қасым ханнан кейін ішкі рулық алауыздық салдарынан ыдырай бастаған Қазақ хандығының тұтастығын қайта қалпына келтірді.",
-                    "Ноғай Ордасының ыдыраған бөліктері мен Сібір хандығының оңтүстік аймақтарын қазақ мемлекетінің құрамына қосты.",
-                    "Бұхара хандығымен «достық әрі әскери көмек» келісімін жасап, оңтүстік шекаралардың қауіпсіддігін нығайтты."
-                ]
-            },
-            {
-                id: "fig_009",
-                name: "Салқам Жәңгір Хан",
-                epoch: "khanate1718",
-                epochLabel: "XVII ғ.",
-                roleName: "Ер жүрек Қолбасшы",
-                chronology: "билігі: 1629 – 1652 жж.",
-                imageFile: "assets/zhangir.jpg",
-                fallbackIcon: "fa-shield",
-                famousQuote: "«Санның аздығынан қорықпаймыз, Отан үшін жан пида қылу — біздің ежелгі сертіміз.»",
-                threeAccomplishments: [
-                    "1643 жылғы атақты Орбұлақ шайқасында 600 сарбазбен жоңғардың 50 мыңдық қалың әскерінің екпінін тоқтатты.",
-                    "Қазақ әскери өнеріне алғаш рет терең окоптық қорғаныс тактикасы мен білтелі отты қаруды жаппай қолдануды енгізді.",
-                    "Жоңғар шапқыншылығына қарсы Самарқанд әмірі Жалаңтөс батырмен сәтті әскери-стратегиялық одақ құра алды."
-                ]
-            },
-            {
-                id: "fig_010",
-                name: "Әз Тәуке Хан",
-                epoch: "khanate1718",
-                epochLabel: "XVII - XVIII ғ.",
-                roleName: "Ұлы заңгер, Реформатор",
-                chronology: "biлігі: 1680 – 1718 жж.",
-                imageFile: "assets/tauke.jpg",
-                fallbackIcon: "fa-landmark",
-                famousQuote: "«Жеті жарғы — дала халқының әділ төрелігі, заң орындалған жерде ғана тыныштық орнайды.»",
-                threeAccomplishments: [
-                    "Үш жүздің Төле, Қазыбек, Әйтеке сынды бас билерімен бірлесе отырып «Жеті Жарғы» заңдар жинағын құрастырды.",
-                    "Билер кеңесін тұрақты жұмыс істейтін мемлекеттік басқару органы етіп, ішкі барымта мен рулық соғыстарды тыйды.",
-                    "Орталық Азиядағы жоңғар қаупіне қарсы қазақ-қырғыз-қарақалпақ халықтарының әскери коалициясын құрды."
-                ]
-            },
-            {
-                id: "fig_011",
-                name: "Кенесары Қасымұлы",
-                epoch: "colonial",
-                epochLabel: "XIX ғ. ортасы",
-                roleName: "Қазақтың соңғы Хандары",
-                chronology: "1802 – 1847 жж.",
-                imageFile: "assets/kenesary.jpg",
-                fallbackIcon: "fa-shield-halved",
-                famousQuote: "«Менің күресім — патша өкіметінің бекіністеріне қарсылық, Абылай хан заманындағы егемендікті қалпына келтіру.»",
-                threeAccomplishments: [
-                    "1837–1847 жылдары Қазақстанның барлық үш жүзін қамтыған ең ірі әрі ең ұзақ ұлт-азаттық көтерілісті басқарды.",
-                    "Ресей колонизациясына қарсы тұру үшін бірыңғай кәсіби әскер, қатал салық жүйесі мен дипломатиялық аппарат құрды.",
-                    "1841 жылы барлық қазақ рулары өкілдерінің құрылтайында ресми түрде қайтадан жалпықазақ ханы болып сайланды."
-                ]
-            },
-            {
-                id: "fig_012",
-                name: "Абай Құнанбайұлы",
-                epoch: "colonial",
-                epochLabel: "XIX ғ. екінші жартысы",
-                roleName: "Ұлы ақын, Ойшыл",
-                chronology: "1845 – 1904 жж.",
-                imageFile: "assets/abay.jpg",
-                fallbackIcon: "fa-book",
-                famousQuote: "«Aдамның адамшылығы — ақыл, ғылым, жақсы ата, жақсы ана, жақсы құрбы, жақсы ұстаздан болады.»",
-                threeAccomplishments: [
-                    "Қазақ жазба реалистік әдебиеті мен классикалық әдеби тілінің негізін қалап, поэзияны жаңа философиялық деңгейге шығарды.",
-                    "«Қара сөздер» атты терең философиялық-прозалық еңбегімен ұлттық психологияны, ғылым мен адамгершілікті талдады.",
-                    "Шығыс пен Батыс (Лермонтов, Пушкин, Гете) классикалық әдебиетін қазақ тіліне шебер аударып, мәдени көпір орнатты."
-                ]
-            },
-            {
-                id: "fig_013",
-                name: "Қаныш Сәтбаев",
-                epoch: "alash",
-                epochLabel: "XX ғ. ортасы",
-                roleName: "Ұлы геолог, Академик",
-                chronology: "1899 – 1964 жж.",
-                imageFile: "assets/kanysh.jpg",
-                fallbackIcon: "fa-gem",
-                famousQuote: "«Менің халқым өнерлі, ғылымды меңгеруге қабілетті, туған жердің әр тасы оның бақытына қызмет етуі тиіс.»",
-                threeAccomplishments: [
-                    "Қазақ КСР Ғылым академиясының негізін қалап, оның тұңғыш президиум президенті болып сайланды.",
-                    "Жезқазған мыс кен орны мен Орталық Қазақстанның металлогениялық ресурстарын ашып, ірі индустрия ошағын құрды.",
-                    "КСРО-да алғаш рет пайдалы қазбалардың болжамдық картасын жасап, отандық геология мектебінің негізін салды."
-                ]
-            },
-            {
-                id: "fig_014",
-                name: "Бумын Қаған",
-                epoch: "ancient",
-                epochLabel: "VI ғ. кезеңі",
-                roleName: "Түрік қағанатының қалаушысы",
-                chronology: "билігі: 551 – 552 жж.",
-                imageFile: "assets/bumyn.jpg",
-                fallbackIcon: "fa-gavel",
-                famousQuote: "«Төбеде көк аспан, төменде қара жер жаралғанда, ортасында түркі баласы бекіген.»",
-                threeAccomplishments: [
-                    "Ауыр Жужан (авар) қағанатының Ұлы даладағы үстемдігін жойып, Түрік қағанаты атты алып империя құрды.",
-                    "Алтай мен Орталық Азия көшпелі тайпаларын біріктіріп, тарихта тұңғыш рет «Түрік» этнонимін ресми заңдастырды.",
-                    "Ұлы Жібек жолындағы мемлекетаралық транзиттік бақылау мен түркілік әскери-саяси басқару жүйесін бекітті."
-                ]
-            },
-            {
-                id: "fig_015",
-                name: "Күлтегін Батыр",
-                epoch: "ancient",
-                epochLabel: "VIII ғ. басы",
-                roleName: "Даңқты Бас Қолбасшы",
-                chronology: "684 – 731 жж.",
-                imageFile: "assets/kultegin.jpg",
-                fallbackIcon: "fa-shield-halved",
-                famousQuote: "«Түркі халқы үшін түнде ұйықтамадым, күндіз отырмадым, қызыл қанымды төгіп, елімді азат еттім!»",
-                threeAccomplishments: [
-                    "Екінші Шығыс Түрік қағанатын қалпына келтіру жолындағы барлық маңызды соғыстардың бас әскери стратегиялық тұлғасы болды.",
-                    "Қытай (Табғаш) әскерлері мен ішкі сепаратистік тайпалардың қауіпті шабуылдарына соққы беріп, ел тұтастығын сақтады.",
-                    "Оның құрметіне тұрғызылған Орхон-Енисей руникалық тас ескерткіштері — көне түркі мәдениетінің ең құнды жәдігері."
-                ]
-            },
-            {
-                id: "fig_016",
-                name: "Шоқан Уәлиханов",
-                epoch: "colonial",
-                epochLabel: "XIX ғ. ортасы",
-                roleName: "Ғалым, Саяхатшы, Ағартушы",
-                chronology: "1835 – 1865 жж.",
-                imageFile: "assets/chokan.jpg",
-                fallbackIcon: "fa-compass",
-                famousQuote: "«Халықтың мәдениетті елдер қатарына қосылуы үшін ең алдымен білім, ғылым және еркіндік керек.»",
-                threeAccomplishments: [
-                    "Еуропа ғалымдары үшін жабық саналған Қашқария аймағына өмірге қауіпті құпия экспедиция жасап, зерттеу еңбектерін жазды.",
-                    "Қырғыз халқының әлемге әйгілі энциклопедиялық «Манас» эпосын тұңғыш рет қағазға түсіріп, ғылыми талдау жасады.",
-                    "Орыс географиялық қоғамының ресми толық мүшесі атанып, Орталық Азия халықтарының этнографиясын әлемге танытты."
-                ]
+                    "Жоңғар шапқыншылығына қарсы азаттық соғыста бытыраңқы қазақ жүздерінің әскери-саяси басын біріктіріп, біртұтас қолбасшы болды.",
+                    "Ресей империясы мен Цин (Қытай) патшалығы арасында өте икемді, теңгермелі дипломатиялық саясат жүргізді.",
+                    "Қазақ хандығының аумақтық тұтастығын қалпына келтіріп, орталықтандырылған мемлекеттік билікті нығайтты."
+                ],
+                narrationText: "Абылай хан (батыр аты — Әбілмансұр) — Қазақ хандығының ең айбынды хандарының бірі, мемлекет қайраткері, қолбасшы әрі дипломат. Ол ел басына күн туған «Ақтабан шұбырынды» заманында халықты ұлы жеңістерге бастап, мемлекеттің тәуелсіздігін сақтап қалды."
             }
         ];
 
-        const cardsGridContainer = document.getElementById('main-injected-cards-grid-matrix');
-        const searchInputField = document.getElementById('master-search-field');
-        const filterTabButtons = document.querySelectorAll('.epoch-tab-btn');
-        const liveCounterText = document.getElementById('counter-live-feedback-string');
-        const pillCounterDigits = document.getElementById('pill-counter-digits');
-        const emptyStateCardView = document.getElementById('empty-state-card-view');
-        const mainNavBar = document.getElementById('main-nav-bar');
+        const epochFilterConfig = {
+            "all": "Барлығы",
+            "khanate": "Қазақ хандығы",
+            "alash": "Алаш дәуірі"
+        };
 
-        let activeFilterEpoch = 'all';
-        let typedSearchQuery = '';
+        /* ==========================================================================
+           APPLICATION CONTROLLER & STATES
+           ========================================================================== */
+        let currentPlatformMode = 'cards'; 
+        let activeSelectedEpoch = 'all';
+        let speechActiveCardId = null;
+        let visualNoiseTimer = null;
 
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 30) {
-                mainNavBar.classList.add('scrolled');
+        const systemSearchField = document.getElementById('system-search-field');
+        const epochScrollerTabs = document.getElementById('epoch-scroller-tabs');
+        const interactiveCardsContainer = document.getElementById('interactive-cards-container');
+        const multimediaAudioContainer = document.getElementById('multimedia-audio-container');
+        const globalCounterBadge = document.getElementById('counter-value-text');
+        const liveFeedbackCounterText = document.getElementById('live-feedback-counter-text');
+        const ttsKillSwitch = document.getElementById('tts-kill-switch');
+
+        // View Mode Toggle Engine
+        function switchPlatformMode(mode) {
+            currentPlatformMode = mode;
+            stopGlobalSpeech();
+
+            document.getElementById('seg-cards-btn').classList.toggle('active', mode === 'cards');
+            document.getElementById('seg-audio-btn').classList.toggle('active', mode === 'audio');
+
+            document.getElementById('cards-view-section').classList.toggle('active-view', mode === 'cards');
+            document.getElementById('audio-view-section').classList.toggle('active-view', mode === 'audio');
+
+            const badgeContext = document.getElementById('platform-badge-context');
+            const mainHeading = document.getElementById('platform-main-heading');
+            const subHeading = document.getElementById('platform-sub-heading');
+
+            if (mode === 'cards') {
+                badgeContext.innerHTML = '<i class="fa-solid fa-sparkles"></i> 3D Галереялық жүйе';
+                mainHeading.innerHTML = 'Тарихи <em>Тұлғалар</em> Галереясы';
+                subHeading.textContent = 'Қазақ тарихының ұлы белестерін қалыптастырған кемеңгер көшбасшылар мен батырлардың өмір жолы мен басты жетістіктері.';
+                ttsKillSwitch.style.display = 'none';
             } else {
-                mainNavBar.classList.remove('scrolled');
+                badgeContext.innerHTML = '<i class="fa-solid fa-headphones"></i> Инновациялық Аудиогид';
+                mainHeading.innerHTML = 'Академиялық <em>Мультимедиа</em> Орталығы';
+                subHeading.textContent = 'Арнайы дыбысталған тарихи деректер мен тұлғалардың қысқаша биографиялық аудио-баяндары жинақталған интерактивті мұражай.';
+                if (speechActiveCardId) ttsKillSwitch.style.display = 'flex';
             }
-        });
 
-        function renderHistoricalGallery() {
-            const processedItems = historicalFiguresDatabase.filter(figure => {
-                const matchesEpoch = (activeFilterEpoch === 'all' || figure.epoch === activeFilterEpoch);
-                const cleanQuery = typedSearchQuery.toLowerCase().trim();
-                
-                const matchesSearch = figure.name.toLowerCase().includes(cleanQuery) ||
-                                      figure.roleName.toLowerCase().includes(cleanQuery) ||
-                                      figure.chronology.toLowerCase().includes(cleanQuery) ||
-                                      figure.threeAccomplishments.some(ach => ach.toLowerCase().includes(cleanQuery)) ||
-                                      (figure.famousQuote && figure.famousQuote.toLowerCase().includes(cleanQuery));
-                                      
-                return matchesEpoch && matchesSearch;
+            runPrimaryGalleryRender();
+        }
+
+        // Filter Tabs Builder
+        function buildSystemEpochTabs() {
+            epochScrollerTabs.innerHTML = '';
+            Object.entries(epochFilterConfig).forEach(([key, label]) => {
+                const btn = document.createElement('button');
+                btn.className = `epoch-tab-btn ${key === activeSelectedEpoch ? 'active' : ''}`;
+                btn.innerHTML = `<i class="fa-solid ${key === 'all' ? 'fa-globe' : key === 'khanate' ? 'fa-gavel' : 'fa-graduation-cap'}"></i> ${label}`;
+                btn.onclick = () => {
+                    document.querySelectorAll('.epoch-tab-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    activeSelectedEpoch = key;
+                    runPrimaryGalleryRender();
+                };
+                epochScrollerTabs.appendChild(btn);
+            });
+        }
+
+        // Primary Reactive Render Engine
+        function runPrimaryGalleryRender() {
+            const query = systemSearchField.value.trim().toLowerCase();
+            
+            const filteredData = historicalFiguresData.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(query) || item.roleName.toLowerCase().includes(query);
+                const matchesEpoch = (activeSelectedEpoch === 'all') || (item.epoch === activeSelectedEpoch);
+                return matchesSearch && matchesEpoch;
             });
 
-            liveCounterText.innerHTML = `Сүзгі бойынша: <strong>${processedItems.length}</strong> тарихи тұлға тізімделіп тұр`;
-            pillCounterDigits.textContent = `${processedItems.length} Тұлға`;
+            globalCounterBadge.textContent = filteredData.length;
+            liveFeedbackCounterText.innerHTML = `Жүйеде сүзілген мәлімет саны: <strong>${filteredData.length}</strong> дана`;
 
-            if (processedItems.length === 0) {
-                cardsGridContainer.innerHTML = '';
-                emptyStateCardView.style.display = 'block';
-                return;
+            if (currentPlatformMode === 'cards') {
+                renderInteractiveCards(filteredData);
             } else {
-                emptyStateCardView.style.display = 'none';
+                renderMultimediaAudioCards(filteredData);
             }
+        }
 
-            cardsGridContainer.innerHTML = processedItems.map(item => {
-                return `
-                    <div class="historical-figure-card" data-id="${item.id}" onclick="toggleCardFlipState(this)">
-                        <div class="card-inner-rotator">
-                            
-                            <div class="card-facet-front">
-                                <div class="front-image-canvas">
-                                    <div class="floating-badges-rack">
-                                        <span class="epoch-pill-tag"><i class="fa-solid fa-clock-rotate-left"></i> ${item.epochLabel}</span>
-                                        <span class="role-pill-tag" title="${item.roleName}">${item.roleName}</span>
-                                    </div>
-                                    
-                                    <img src="${item.imageFile}" class="portrait-image" style="display: none !important;" alt="${item.name}" onerror="handleImageLoadFailure(this)">
-                                    
-                                    <div class="vector-avatar-placeholder" style="display:flex; background: linear-gradient(135deg, #fffcf6, #ffeccf); height: 100%; flex-direction: column; justify-content: center; align-items: center; color: var(--orange-main); gap: 10px;">
-                                        <i class="fa-solid ${item.fallbackIcon}"></i>
-                                        <span>${item.epochLabel}</span>
-                                    </div>
+        // Module A: Interactive 3D Rotator Render
+        function renderInteractiveCards(dataList) {
+            interactiveCardsContainer.innerHTML = '';
+            document.getElementById('empty-state-cards').style.display = dataList.length === 0 ? 'block' : 'none';
 
-                                    <div class="portrait-bottom-overlay-name">
-                                        <i class="fa-solid fa-circle-check" style="color: var(--orange-main); font-size: 13px;"></i>
-                                        <span>Ресми өмірбаян</span>
-                                    </div>
+            dataList.forEach(item => {
+                const card = document.createElement('article');
+                card.className = 'historical-figure-card';
+                card.id = `3dcard-${item.id}`;
+                card.onclick = () => card.classList.toggle('is-flipped');
+
+                card.innerHTML = `
+                    <div class="card-inner-rotator">
+                        <div class="card-facet-front">
+                            <div class="front-image-canvas">
+                                <img src="${item.imageFile}" alt="${item.name}" onerror="handleImageLoadFailure(this)">
+                                <div class="image-absolute-placeholder">
+                                    <i class="fa-solid ${item.fallbackIcon}"></i>
+                                    <span>Сурет жүктелмеді</span>
                                 </div>
-                                
-                                <div class="front-details-block">
-                                    <div class="figure-title-meta">
-                                        <h3>${item.name}</h3>
-                                        <span class="chronology-years-pill">
-                                            <i class="fa-solid fa-calendar-days"></i> ${item.chronology}
-                                        </span>
-                                    </div>
-                                    
-                                    <div class="action-callout-hint">
-                                        <span>Жетістіктері мен нақыл сөзі</span> 
-                                        <i class="fa-solid fa-arrows-rotate"></i>
-                                    </div>
+                                <div class="floating-badges-rack">
+                                    <span class="epoch-pill-tag">${item.epochLabel}</span>
+                                    <div class="action-flip-hint-icon"><i class="fa-solid fa-rotate"></i></div>
+                                </div>
+                                <div class="front-canvas-caption-title">
+                                    <h3>${item.name}</h3>
                                 </div>
                             </div>
-                            
-                            <div class="card-facet-back">
+                            <div class="card-front-brief-details">
                                 <div>
-                                    <div class="back-facet-header">
-                                        <div class="back-facet-header-icon-box">
-                                            <i class="fa-solid ${item.fallbackIcon}"></i>
-                                        </div>
-                                        <h4 title="${item.name}">${item.name}</h4>
-                                    </div>
-                                    
-                                    ${item.famousQuote ? `
-                                    <div class="philosophic-quote-box">
-                                        "${item.famousQuote}"
-                                    </div>
-                                    ` : ''}
-                                    
-                                    <div class="accomplishments-section-title">
-                                        <i class="fa-solid fa-trophy" style="color: var(--orange-main);"></i> Тарихи 3 бас жетістігі:
-                                    </div>
-                                    
-                                    <ul class="accomplishments-ordered-list">
-                                        <li>
-                                            <span class="accomplishment-numeric-bullet">1</span>
-                                            <span class="accomplishment-text-payload">${item.threeAccomplishments[0]}</span>
-                                        </li>
-                                        <li>
-                                            <span class="accomplishment-numeric-bullet">2</span>
-                                            <span class="accomplishment-text-payload">${item.threeAccomplishments[1]}</span>
-                                        </li>
-                                        <li>
-                                            <span class="accomplishment-numeric-bullet">3</span>
-                                            <span class="accomplishment-text-payload">${item.threeAccomplishments[2]}</span>
-                                        </li>
-                                    </ul>
+                                    <div class="meta-role-label"><i class="fa-solid fa-circle-dot" style="font-size:10px;"></i> ${item.roleName}</div>
+                                    <div class="meta-chronology-span"><i class="fa-regular fa-clock"></i> ${item.chronology}</div>
                                 </div>
-                                
-                                <div class="back-facet-footer-tap-return">
-                                    <i class="fa-solid fa-rotate-left"></i> <span>Алдыңғы бетке қайтару</span>
-                                </div>
+                                <blockquote class="premium-quote-block">${item.famousQuote}</blockquote>
                             </div>
-
+                        </div>
+                        <div class="card-facet-back">
+                            <div class="back-facet-header">
+                                <h3>Басты жетістіктері</h3>
+                                <span class="back-close-pill-hint">Айналдыру</span>
+                            </div>
+                            <div class="back-quote-callout">${item.famousQuote}</div>
+                            <h4 class="accomplishments-section-title"><i class="fa-solid fa-award"></i> Тарихи еңбектері:</h4>
+                            <ul class="accomplishments-ordered-list">
+                                ${item.threeAccomplishments.map((a, idx) => `
+                                    <li>
+                                        <span class="accomplishment-numeric-bullet">${idx + 1}</span>
+                                        <span>${a}</span>
+                                    </li>
+                                `).join('')}
+                            </ul>
                         </div>
                     </div>
                 `;
-            }).join('');
+                interactiveCardsContainer.appendChild(card);
+            });
 
-            registerScrollObserverTriggers();
+            triggerScrollReveal(interactiveCardsContainer);
         }
 
-        function registerScrollObserverTriggers() {
-            const currentCardElements = document.querySelectorAll('.historical-figure-card');
+        // Module B: Audio Guide Grid Render (With Noise Equalizer)
+        function renderMultimediaAudioCards(dataList) {
+            multimediaAudioContainer.innerHTML = '';
+            document.getElementById('empty-state-audio').style.display = dataList.length === 0 ? 'block' : 'none';
+
+            dataList.forEach(item => {
+                const isThisPlaying = (speechActiveCardId === item.id);
+                const card = document.createElement('article');
+                card.className = `audio-museum-card ${isThisPlaying ? 'speaking' : ''}`;
+                card.id = `audiocard-${item.id}`;
+
+                card.innerHTML = `
+                    <div class="card-multimedia-header-canvas">
+                        <img src="${item.imageFile}" alt="${item.name}" onerror="handleImageLoadFailure(this)">
+                        <div class="image-absolute-placeholder">
+                            <i class="fa-solid ${item.fallbackIcon}"></i>
+                            <span>Аудио мұражай</span>
+                        </div>
+                        <span class="multimedia-duration-badge"><i class="fa-solid fa-clock"></i> Баяндама</span>
+                        
+                        <button class="circular-audio-btn" onclick="toggleAudioGuideNarration('${item.id}', \`${item.narrationText.replace(/"/g, '&quot;')}\`)" title="Тыңдау">
+                            <i class="fa-solid fa-play audio-play-icon"></i>
+                            <div class="live-waveform-container" id="equalizer-container-${item.id}">
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                                <div class="wave-bar"></div>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="card-multimedia-body">
+                        <div class="figure-title-meta">
+                            <h3>${item.name}</h3>
+                            <div class="meta-role-label" style="font-size: 13px;">${item.roleName}</div>
+                        </div>
+                        <p class="audio-narration-abstract-text">${item.narrationText}</p>
+                    </div>
+                `;
+                multimediaAudioContainer.appendChild(card);
+            });
+
+            triggerScrollReveal(multimediaAudioContainer);
+        }
+
+        /* ==========================================================================
+           AUDIO GUIDE MANAGEMENT ENGINE (WITH ADVANCED REAL NOISE EMULATION)
+           ========================================================================== */
+        function toggleAudioGuideNarration(figureId, txt) {
+            if (speechActiveCardId === figureId) {
+                stopGlobalSpeech();
+                return;
+            }
+
+            stopGlobalSpeech();
+
+            speechActiveCardId = figureId;
+            const targetCard = document.getElementById(`audiocard-${figureId}`);
+            if (targetCard) targetCard.classList.add('speaking');
             
-            const observerSettings = {
-                root: null,
-                threshold: 0.1,
-                rootMargin: "0px 0px -40px 0px"
+            ttsKillSwitch.style.display = 'flex';
+            ttsKillSwitch.classList.add('playing');
+
+            // Запуск продвинутого скриптового шума (симуляция частотных колебаний и хаотичных столбиков)
+            startAdvancedNoiseEngine(figureId);
+
+            const utterance = new SpeechSynthesisUtterance(txt);
+            utterance.lang = 'kk-KZ'; 
+            
+            utterance.onend = () => {
+                if (speechActiveCardId === figureId) stopGlobalSpeech();
+            };
+            utterance.onerror = () => {
+                if (speechActiveCardId === figureId) stopGlobalSpeech();
             };
 
-            const cardRevealObserver = new IntersectionObserver((entries, observer) => {
+            window.speechSynthesis.speak(utterance);
+        }
+
+        // ФУНКЦИЯ ДЛЯ ГЕНЕРАЦИИ ЖИВОГО ШУМА И СТОЛБЦОВ ЭКВАЛАЙЗЕРА
+        function startAdvancedNoiseEngine(figureId) {
+            if (visualNoiseTimer) clearInterval(visualNoiseTimer);
+            
+            const eqContainer = document.getElementById(`equalizer-container-${figureId}`);
+            if (!eqContainer) return;
+
+            const bars = eqContainer.querySelectorAll('.wave-bar');
+            
+            // Интервал каждые 80 миллисекунд хаотично меняет высоту столбиков, создавая эффект шума микрофона
+            visualNoiseTimer = setInterval(() => {
+                bars.forEach(bar => {
+                    const randomNoiseHeight = Math.floor(Math.random() * 85) + 15; // случайная высота от 15% до 100%
+                    bar.style.height = `${randomNoiseHeight}%`;
+                });
+            }, 80);
+        }
+
+        function stopGlobalSpeech() {
+            window.speechSynthesis.cancel();
+            if (visualNoiseTimer) clearInterval(visualNoiseTimer);
+
+            if (speechActiveCardId) {
+                const oldId = speechActiveCardId;
+                speechActiveCardId = null;
+                
+                const prevCard = document.getElementById(`audiocard-${oldId}`);
+                if (prevCard) {
+                    prevCard.classList.remove('speaking');
+                    const bars = prevCard.querySelectorAll('.wave-bar');
+                    bars.forEach(b => b.style.height = '4px'); // сброс к изначальной высоте столбиков
+                }
+            }
+
+            ttsKillSwitch.classList.remove('playing');
+            ttsKillSwitch.style.display = 'none';
+        }
+
+        /* ==========================================================================
+           UTILITIES, INITIALIZERS & OBSERVERS
+           ========================================================================== */
+        function triggerScrollReveal(containerElement) {
+            const elements = containerElement.querySelectorAll('.historical-figure-card, .audio-museum-card');
+            
+            const revealObserver = new IntersectionObserver((entries, observer) => {
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.classList.add('revealed');
                         observer.unobserve(entry.target);
                     }
                 });
-            }, observerSettings);
+            }, { threshold: 0.05, rootMargin: '0px 0px -20px 0px' });
 
-            currentCardElements.forEach(card => {
-                cardRevealObserver.observe(card);
-            });
-        }
-
-        function toggleCardFlipState(cardElement) {
-            cardElement.classList.toggle('is-flipped');
+            elements.forEach(el => revealObserver.observe(el));
         }
 
         function handleImageLoadFailure(imageObj) {
@@ -1387,23 +1552,23 @@
             }
         }
 
-        searchInputField.addEventListener('input', (e) => {
-            typedSearchQuery = e.target.value;
-            renderHistoricalGallery();
+        // App Operational Listeners
+        systemSearchField.addEventListener('input', () => {
+            runPrimaryGalleryRender();
         });
 
-        filterTabButtons.forEach(button => {
-            button.addEventListener('click', function() {
-                filterTabButtons.forEach(btn => btn.classList.remove('active'));
-                this.classList.add('active');
-                
-                activeFilterEpoch = this.getAttribute('data-epoch-target');
-                renderHistoricalGallery();
-            });
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('main-nav-bar');
+            if (window.scrollY > 20) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
         });
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderHistoricalGallery();
+            buildSystemEpochTabs();
+            runPrimaryGalleryRender();
         });
     </script>
 </body>
