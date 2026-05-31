@@ -1090,3 +1090,171 @@ document.addEventListener('DOMContentLoaded', () => {
         updateFlashcard();
     }
 });
+
+
+function toggleBookmark(questionId, questionText) {
+    let savedQuestions = JSON.parse(localStorage.getItem('zamanat_bookmarks') || '[]');
+    const icon = document.getElementById(`bookmark-icon-${questionId}`);
+    
+    // Проверяем, есть ли уже этот вопрос в закладках
+    const index = savedQuestions.findIndex(q => q.id === questionId);
+    
+    if (index === -1) {
+        // Добавляем
+        savedQuestions.push({ id: questionId, text: questionText });
+        icon.className = 'fa-solid fa-bookmark';
+        icon.classList.add('bookmarked');
+    } else {
+        // Удаляем
+        savedQuestions.splice(index, 1);
+        icon.className = 'fa-regular fa-bookmark';
+        icon.classList.remove('bookmarked');
+    }
+    
+    localStorage.setItem('zamanat_bookmarks', JSON.stringify(savedQuestions));
+}
+
+
+// ==========================================================
+// ИНТЕРАКТИВНЫЙ ТЕСТ HISTORICA С МГНОВЕННОЙ ПОДСВЕТКОЙ ОТВЕТА
+// ==========================================================
+
+const promoQuizQuestions = [
+    { q: "Қазақ хандығының негізі қай жылы қаланды?", o: ["1206 ж", "1465 ж", "1511 ж", "1729 ж"], a: 1 },
+    { q: "Қазақ хандығының алғашқы хандары кімдер?", o: ["Тәуке мен Әбілқайыр", "Қасым мен Хақназар", "Керей мен Жәнібек", "Абылай мен Кенесары"], a: 2 },
+    { q: "Есім ханның заңдар жинағы қалай аталды?", o: ["Қасым ханның қасқа жолы", "Есім ханның ескі жолы", "Жеті жарғы", "Марқа заңы"], a: 1 },
+    { q: "«Жеті жарғы» заңдар жинағын құрастырған хан кім?", o: ["Тәуке хан", "Хақназар хан", "Жәңгір хан", "Әбілқайыр хан"], a: 0 },
+    { q: "Аңырақай шайқасы қай жылы болды?", o: ["1643 ж", "1718 ж", "1729 ж", "1750 ж"], a: 2 },
+    { q: "Үш жүздің басын біріктіріп, ортақ хан болған тарихи тұлға:", o: ["Абылай хан", "Кенесары хан", "Әбілқайыр хан", "Тәуке хан"], a: 0 },
+    { q: "Қазақстан аумағындағы ең алғашқы мемлекеттік бірлестіктер:", o: ["Ғұндар", "Сақтар", "Үйсіндер", "Қаңлылар"], a: 1 },
+    { q: "Алтын адам табылған қорғанды атаңыз:", o: ["Берел", "Шілікті", "Есік", "Бесшатыр"], a: 2 },
+    { q: "Қазақ хандығындағы ең ұзақ билік құрған хандардың бірі, «ханның ханы» атанған билеуші:", o: ["Хақназар хан", "Қасым хан", "Тәуекел хан", "Шығай хан"], a: 0 },
+    { q: "Ресей империясына қарсы ең ірі ұлт-азаттық көтерілістің басшысы (1837-1847 жж.):", o: ["Сырым Датұлы", "Исатай Тайманов", "Кенесары Қасымұлы", "Амангелді Иманов"], a: 2 }
+];
+
+let promoCurrentIndex = 0;
+let promoScore = 0;
+let isAnswered = false; // Блокировка повторных кликов на текущем вопросе
+
+function loadPromoQuestion() {
+    if (localStorage.getItem('zamanat_10_promo_claimed') === 'true') {
+        showFinalPromoBlock();
+        return;
+    }
+
+    const qContainer = document.getElementById('promo-quiz-container');
+    if (!qContainer) return;
+
+    isAnswered = false;
+    const currentQuestion = promoQuizQuestions[promoCurrentIndex];
+    
+    // Обновление верхнего прогресс-бара
+    document.getElementById('quiz-progress-text').innerText = `Сұрақ: ${promoCurrentIndex + 1} / 10`;
+    document.getElementById('quiz-score-text').innerHTML = `<i class="fa-solid fa-circle-check"></i> Дұрыс: ${promoScore}`;
+    document.getElementById('quiz-progress-bar').style.width = `${(promoCurrentIndex + 1) * 10}%`;
+
+    // Вывод вопроса
+    document.getElementById('quiz-question').innerText = currentQuestion.q;
+
+    // Сброс кнопки «Далее» до выбора ответа
+    const nextBtn = document.getElementById('quiz-next-btn');
+    nextBtn.innerText = "Жауапты таңдаңыз";
+    nextBtn.style.opacity = "0.6";
+    nextBtn.style.pointerEvents = "none";
+
+    // Генерация красивых карточек-ответов
+    const optionsContainer = document.getElementById('quiz-options');
+    optionsContainer.innerHTML = '';
+
+    currentQuestion.o.forEach((option, index) => {
+        const label = document.createElement('label');
+        label.className = "option-label";
+        label.setAttribute('data-index', index);
+        
+        // Внутренняя структура с иконками проверки
+        label.innerHTML = `
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <span style="font-weight: 700; color: #d4a359; background: #fff6e6; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 6px; font-size: 13px;">${String.fromCharCode(65 + index)}</span>
+                <span>${option}</span>
+            </div>
+            <input type="radio" name="promo-answer" value="${index}" onclick="selectPromoOption(this, ${index})">
+            <i class="fa-solid fa-circle-check status-icon status-icon-correct"></i>
+            <i class="fa-solid fa-circle-xmark status-icon status-icon-wrong"></i>
+        `;
+        optionsContainer.appendChild(label);
+    });
+}
+
+function selectPromoOption(inputEl, selectedIdx) {
+    if (isAnswered) return; // Не даем кликать дважды
+    isAnswered = true;
+
+    const currentQuestion = promoQuizQuestions[promoCurrentIndex];
+    const correctIdx = currentQuestion.a;
+    const allLabels = document.querySelectorAll('.option-label');
+    
+    // Блокируем наведение на все карточки
+    allLabels.forEach(label => label.classList.add('disabled'));
+
+    const nextBtn = document.getElementById('quiz-next-btn');
+
+    // Проверка правильности
+    if (selectedIdx === correctIdx) {
+        promoScore++;
+        document.querySelector(`.option-label[data-index="${selectedIdx}"]`).classList.add('correct-choice');
+    } else {
+        document.querySelector(`.option-label[data-index="${selectedIdx}"]`).classList.add('wrong-choice');
+        // Подсвечиваем правильный, чтобы пользователь узнал верный ответ
+        document.querySelector(`.option-label[data-index="${correctIdx}"]`).classList.add('correct-choice');
+    }
+
+    // Активируем кнопку продвижения дальше
+    nextBtn.style.opacity = "1";
+    nextBtn.style.pointerEvents = "auto";
+    if (promoCurrentIndex === promoQuizQuestions.length - 1) {
+        nextBtn.innerText = "Нәтижені көру және кодты алу";
+    } else {
+        nextBtn.innerText = "Келесі сұраққа өту →";
+    }
+}
+
+function handleNextQuestion() {
+    if (promoCurrentIndex < promoQuizQuestions.length - 1) {
+        promoCurrentIndex++;
+        loadPromoQuestion();
+    } else {
+        // Финал
+        localStorage.setItem('zamanat_10_promo_claimed', 'true');
+        localStorage.setItem('zamanat_10_promo_score', promoScore);
+        showFinalPromoBlock();
+    }
+}
+
+function showFinalPromoBlock() {
+    const progressWrapper = document.getElementById('quiz-progress-wrapper');
+    const quizContainer = document.getElementById('promo-quiz-container');
+    const resultContainer = document.getElementById('promo-result-container');
+    const successUi = document.getElementById('promo-success-ui');
+    const scoreReport = document.getElementById('final-score-report');
+
+    if (progressWrapper) progressWrapper.style.display = 'none';
+    if (quizContainer) quizContainer.style.display = 'none';
+    
+    if (resultContainer && successUi && scoreReport) {
+        const savedScore = localStorage.getItem('zamanat_10_promo_score') || promoScore;
+        scoreReport.innerHTML = `Керемет! Сіз 10 тарихи сұрақтың <b>${savedScore}</b>-іне дұрыс жауап бердіңіз.`;
+        resultContainer.style.display = 'block';
+        successUi.style.display = 'block';
+    }
+}
+
+// Запуск при безопасной загрузке страницы
+document.addEventListener("DOMContentLoaded", () => {
+    if (document.getElementById('promo-quiz-container')) {
+        if (localStorage.getItem('zamanat_10_promo_claimed') === 'true') {
+            showFinalPromoBlock();
+        } else {
+            loadPromoQuestion();
+        }
+    }
+});

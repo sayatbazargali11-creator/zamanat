@@ -3504,3 +3504,66 @@ body.preloader-active {
 
 
 
+        .quiz-card-wrapper {
+            background: linear-gradient(135deg, #fffcf6 0%, #fff5e6 100%); 
+            border: 2px dashed #d4a359; 
+            padding: 40px; 
+            border-radius: 20px; 
+            text-align: center; 
+            box-shadow: 0 15px 35px rgba(212,163,89,0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        .option-label {
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            gap: 12px; 
+            padding: 14px 20px; 
+            border: 2px solid #eef0f2; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            transition: all 0.25s ease; 
+            font-size: 15px; 
+            color: #444;
+            background: #fff;
+            font-weight: 500;
+        }
+        .option-label:hover:not(.disabled) {
+            border-color: #d4a359;
+            background: #fdfaf4;
+            transform: translateY(-2px);
+        }
+        .option-label input {
+            display: none; /* Скрываем стандартный радиокруг */
+        }
+        /* Состояния ответов */
+        .option-label.correct-choice {
+            border-color: #2cc471 !important;
+            background-color: #ecfdf3 !important;
+            color: #12753a !important;
+        }
+        .option-label.wrong-choice {
+            border-color: #ea5455 !important;
+            background-color: #fdf2f2 !important;
+            color: #ae2d2d !important;
+        }
+        .option-label.disabled {
+            cursor: not-allowed;
+            opacity: 0.8;
+        }
+        .status-icon {
+            font-size: 16px;
+            display: none;
+        }
+        .correct-choice .status-icon-correct { display: inline-block; color: #2cc471; }
+        .wrong-choice .status-icon-wrong { display: inline-block; color: #ea5455; }
+
+        /* Эффект конфетти */
+        @keyframes popIn {
+            0% { transform: scale(0.8); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .animate-pop {
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }

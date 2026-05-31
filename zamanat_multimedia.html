@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAMANAT AUDIO • Мультимедиалық Аудиогид</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           1. PREMIUM APPLE LIGHT DESIGN SYSTEM (ORANGE INTELLIGENCE)
+           ========================================================================== */
+        :root {
+            --bg-base: #f5f5f7; 
+            --bg-card: #ffffff; 
+            --text-main: #1d1d1f; 
+            --text-sub: #6e6e73; 
+            --text-muted: #86868b;
+            --orange-main: #ff9500; 
+            --orange-dark: #e08200;
+            --orange-gradient: linear-gradient(135deg, #ff9500, #ff5e00);
+            --orange-glow: rgba(255, 149, 0, 0.08); 
+            --orange-glow-heavy: rgba(255, 149, 0, 0.25); 
+            --border-light: rgba(0, 0, 0, 0.06);
+            --border-hover: rgba(255, 149, 0, 0.3);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+            --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.12);
+            --ease-ios: cubic-bezier(0.25, 1, 0.5, 1);
+            --ease-3d: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Reset & Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            line-height: 1.5;
+            font-weight: 400;
+            letter-spacing: -0.022em;
+            overflow-x: hidden;
+            padding-bottom: 100px;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #d2d2d7;
+            border-radius: 5px;
+            border: 2px solid var(--bg-base);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a1a1a6;
+        }
+
+        .container {
+            max-width: 1340px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ==========================================================================
+           2. INTERACTIVE VISUAL EFFECTS & BACKGROUND ELEMENTS
+           ========================================================================== */
+        .blur-ambient-orb-1 {
+            position: fixed;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255,149,0,0.06) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .blur-ambient-orb-2 {
+            position: fixed;
+            bottom: -150px;
+            left: -200px;
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(255,94,0,0.04) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        /* ==========================================================================
+           3. APPLE STICKY NAVIGATION BAR
+           ========================================================================== */
+        .app-navbar {
+            background: rgba(255, 255, 255, 0.75);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border-bottom: 1px solid var(--border-light);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            padding: 14px 0;
+            transition: all 0.3s ease;
+        }
+
+        .app-navbar.scrolled {
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: var(--shadow-sm);
+            padding: 10px 0;
+        }
+
+        .navbar-wrapper {
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+        }
+
+        .nav-back-container {
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        .nav-back-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-sub);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            background: rgba(0, 0, 0, 0.04);
+            padding: 10px 18px;
+            border-radius: 14px;
+            transition: all 0.2s var(--ease-ios);
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .nav-back-button:hover {
+            color: var(--text-main);
+            background: rgba(0, 0, 0, 0.07);
+            transform: translateX(-2px);
+        }
+
+        .nav-brand {
+            text-align: center;
+        }
+
+        .nav-brand h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--text-main);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-brand h1 span {
+            color: var(--orange-main);
+            position: relative;
+        }
+
+        .nav-actions {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .audio-master-kill-switch {
+            background: var(--orange-glow);
+            border: 1px solid rgba(255, 149, 0, 0.18);
+            color: var(--orange-dark);
+            font-size: 13px;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .audio-master-kill-switch:hover, .audio-master-kill-switch.playing {
+            background: var(--orange-gradient);
+            color: #ffffff;
+            border-color: transparent;
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.2);
+        }
+
+        /* ==========================================================================
+           4. HERO MULTIMEDIA AUDIO PRESENTATION SECTION
+           ========================================================================== */
+        .hero-showcase {
+            text-align: center;
+            padding: 55px 0 35px 0;
+            position: relative;
+        }
+
+        .luxury-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--orange-gradient);
+            color: #ffffff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 14px;
+            border-radius: 30px;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            box-shadow: 0 4px 12px rgba(255, 94, 0, 0.2);
+        }
+
+        .hero-showcase h2 {
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -0.04em;
+            color: var(--text-main);
+            margin-bottom: 12px;
+            line-height: 1.15;
+        }
+
+        .hero-showcase h2 em {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-weight: 700;
+            color: var(--orange-dark);
+        }
+
+        .hero-showcase p {
+            font-size: 17px;
+            color: var(--text-sub);
+            max-width: 680px;
+            margin: 0 auto;
+            font-weight: 400;
+        }
+
+        /* ==========================================================================
+           5. PREMIUM FILTERS AND CONTROL ENGINE
+           ========================================================================== */
+        .control-dashboard {
+            background: var(--bg-card);
+            border-radius: 28px;
+            padding: 28px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+            margin-bottom: 35px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .search-engine-container {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .search-icon-inside {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 20px;
+            transition: color 0.3s ease;
+        }
+
+        .premium-search-input {
+            width: 100%;
+            padding: 18px 20px 18px 56px;
+            font-size: 16px;
+            font-family: inherit;
+            border: 1px solid var(--border-light);
+            background-color: #f5f5f7;
+            border-radius: 18px;
+            color: var(--text-main);
+            outline: none;
+            transition: all 0.25s var(--ease-ios);
+            font-weight: 500;
+        }
+
+        .premium-search-input:focus {
+            background-color: var(--bg-card);
+            border-color: var(--orange-main);
+            box-shadow: 0 0 0 4px rgba(255, 149, 0, 0.14);
+        }
+
+        .premium-search-input:focus + .search-icon-inside {
+            color: var(--orange-main);
+        }
+
+        .filter-header-title {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-left: 2px;
+        }
+
+        .horizontal-epoch-scroller {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 6px;
+            scrollbar-width: none;
+        }
+
+        .horizontal-epoch-scroller::-webkit-scrollbar {
+            display: none;
+        }
+
+        .epoch-tab-btn {
+            background: #f5f5f7;
+            border: 1px solid transparent;
+            color: var(--text-sub);
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 16px;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.25s var(--ease-ios);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .epoch-tab-btn:hover {
+            background: var(--orange-glow);
+            color: var(--orange-dark);
+            border-color: var(--border-hover);
+            transform: translateY(-1px);
+        }
+
+        .epoch-tab-btn.active {
+            background: var(--orange-gradient);
+            color: #ffffff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(255, 149, 0, 0.3);
+            border-color: transparent;
+        }
+
+        /* Status & Guidance Bar */
+        .gallery-metrics-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+            color: var(--text-sub);
+            margin-bottom: 25px;
+            padding: 0 6px;
+        }
+
+        .gallery-metrics-bar strong {
+            color: var(--text-main);
+        }
+
+        /* ==========================================================================
+           6. EXQUISITE AUDIO CARD MATRIX WITH SCROLL TRIGGERS
+           ========================================================================== */
+        .cards-matrix-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 30px;
+            position: relative;
+        }
+
+        .audio-museum-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-light);
+            border-radius: 24px;
+            overflow: hidden;
+            height: 480px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--shadow-sm);
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.6s ease, transform 0.6s var(--ease-ios), border-color 0.3s ease;
+        }
+
+        .audio-museum-card.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .audio-museum-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-multimedia-header {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(135deg, #fffcf6, #ffeccf);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .floating-badges-rack {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            right: 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 3;
+        }
+
+        .epoch-pill-tag {
+            background: rgba(29, 29, 31, 0.75);
+            color: #ffffff;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            font-size: 11px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .ai-status-pulse {
+            background: var(--bg-card);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid rgba(0,0,0,0.04);
+        }
+
+        .ai-status-pulse::before {
+            content: '';
+            width: 7px; height: 7px;
+            background: #26af43;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .audio-museum-card.speaking .ai-status-pulse {
+            color: #26af43;
+            background: rgba(38, 175, 67, 0.08);
+            border-color: rgba(38, 175, 67, 0.2);
+        }
+
+        .audio-museum-card.speaking .ai-status-pulse::before {
+            animation: neuralBlink 0.8s infinite alternate;
+        }
+
+        @keyframes neuralBlink {
+            from { opacity: 0.4; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        .ai-avatar-icon-mesh {
+            font-size: 56px;
+            color: var(--orange-main);
+            filter: drop-shadow(0 4px 8px rgba(224,130,0,0.2));
+            transition: transform 0.5s var(--ease-3d);
+        }
+
+        .audio-museum-card:hover .ai-avatar-icon-mesh {
+            transform: scale(1.08);
+        }
+
+        /* Live Animated Waveform Overlay */
+        .live-waveform-container {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 35px;
+            background: linear-gradient(to top, rgba(255,255,255,0.95), transparent);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 3px;
+            padding-bottom: 8px;
+            z-index: 3;
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+        }
+
+        .audio-museum-card.speaking .live-waveform-container {
+            opacity: 1;
+        }
+
+        .wave-bar {
+            width: 3px;
+            height: 4px;
+            background: var(--orange-gradient);
+            border-radius: 2px;
+            transition: height 0.12s ease;
+        }
+
+        /* Core Card Content Body */
+        .card-multimedia-body {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            background: #ffffff;
+        }
+
+        .figure-title-meta h3 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-main);
+            letter-spacing: -0.03em;
+            margin-bottom: 4px;
+        }
+
+        .sub-role-label {
+            font-size: 13px;
+            color: var(--orange-dark);
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .philosophic-quote-box {
+            background: #f5f5f7;
+            border-left: 4px solid var(--orange-main);
+            padding: 12px 14px;
+            border-radius: 0 16px 16px 0;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-style: italic;
+            font-size: 13.5px;
+            color: var(--text-sub);
+            line-height: 1.5;
+            margin-bottom: 15px;
+        }
+
+        /* Dynamic Player Control Dock */
+        .audio-action-trigger-panel {
+            border-top: 1px solid #f5f5f7;
+            padding-top: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .time-badge {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: #f5f5f7;
+            padding: 5px 12px;
+            border-radius: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .circular-audio-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: #f5f5f7;
+            border: 1px solid var(--border-light);
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-ios);
+            font-size: 14px;
+        }
+
+        .audio-museum-card:hover .circular-audio-btn {
+            background: var(--orange-gradient);
+            box-shadow: 0 4px 12px rgba(255,149,0,0.3);
+            color: #ffffff;
+            border-color: transparent;
+        }
+
+        .audio-museum-card.speaking .circular-audio-btn {
+            background: #ff3b30 !important;
+            color: #ffffff !important;
+            border-color: transparent !important;
+            box-shadow: 0 4px 12px rgba(255,59,48,0.3) !important;
+        }
+
+        /* Blank State Notifier */
+        .empty-grid-fallback-view {
+            display: none;
+            text-align: center;
+            padding: 80px 30px;
+            background: var(--bg-card);
+            border-radius: 28px;
+            border: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            max-width: 500px;
+            margin: 40px auto 0 auto;
+        }
+
+        .empty-grid-fallback-view i {
+            font-size: 54px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            background: #f5f5f7;
+            width: 90px;
+            height: 90px;
+            line-height: 90px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .empty-grid-fallback-view h4 {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: var(--text-main);
+        }
+
+        .empty-grid-fallback-view p {
+            color: var(--text-sub);
+            font-size: 14.5px;
+        }
+/* ==========================================================================
+           8. RESPONSIVE MEDIA QUERIES FOR COMPACT VIEWPORTS (TULGA.HTML PATTERN)
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .hero-showcase h2 { font-size: 36px; }
+            .cards-matrix-grid { grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-bottom: 60px; }
+            .container { padding: 0 16px; }
+            .hero-showcase h2 { font-size: 28px; }
+            .hero-showcase p { font-size: 15px; }
+            .control-dashboard { padding: 18px; border-radius: 20px; }
+            .premium-search-input { padding: 15px 15px 15px 48px; font-size: 15px; }
+            .search-icon-inside { left: 16px; font-size: 18px; }
+            
+            /* Специфичные стили для мультимедиа-карточек на планшетах */
+            .cards-matrix-grid { grid-template-columns: 1fr; }
+            .audio-museum-card { height: auto; min-height: 440px; }
+            
+            .nav-brand h1 { font-size: 18px; }
+            .desktop-spacer-block { display: none; }
+        }
+
+        /* ==========================================================================
+           MOBILE OPTIMIZED NAVBAR OVERRIDES
+           ========================================================================== */
+        @media (max-width: 576px) {
+            .app-navbar {
+                padding: 8px 0; 
+            }
+            
+            .navbar-wrapper {
+                display: grid;
+                grid-template-columns: auto 1fr auto; 
+                align-items: center;
+                gap: 8px;
+            }
+
+            .nav-back-button {
+                padding: 10px 12px;
+                border-radius: 50%;
+                justify-content: center;
+                background: rgba(0, 0, 0, 0.05);
+            }
+            
+            .nav-back-text {
+                display: none; 
+            }
+
+            .nav-brand {
+                text-align: center;
+                overflow: hidden;
+            }
+
+            /* Адаптация основного заголовка под стиль .nav-title из tulga.html */
+            .nav-brand h1 {
+                font-size: 15px !important; 
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-brand h1 span {
+                font-weight: 500;
+                opacity: 0.8;
+            }
+            
+            .nav-brand h1 span::after {
+                height: 1px; 
+            }
+
+            /* Трансформация кнопки сброса звука в компактную круглую кнопку-иконку (аналог счетчика) */
+            .audio-master-kill-switch {
+                padding: 6px 10px;
+                font-size: 11px;
+                border-radius: 12px;
+                white-space: nowrap;
+                width: auto;
+                height: auto;
+            }
+            
+            .audio-master-kill-switch i {
+                font-size: 11px;
+            }
+
+            .audio-control-text {
+                display: none; /* Полностью скрываем текст, оставляя только иконку */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="blur-ambient-orb-1"></div>
+    <div class="blur-ambient-orb-2"></div>
+
+    <nav class="app-navbar" id="main-nav-bar">
+        <div class="container navbar-wrapper">
+            <div class="nav-back-container">
+                <a href="tulga.html" class="nav-back-button">
+                    <i class="fa-solid fa-arrow-left"></i> <span class="nav-back-text">Артқа оралу</span>
+                </a>
+            </div>
+            
+            <div class="nav-brand">
+                <h1>ZAMANAT <span>AUDIO</span></h1>
+            </div>
+            
+            <div class="nav-actions">
+                <button class="audio-master-kill-switch" id="tts-kill-switch" onclick="stopGlobalSpeech()">
+                    <i class="fa-solid fa-volume-xmark"></i>
+                    <span class="audio-control-text">Дыбысты өшіру</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container">
+        
+        <header class="hero-showcase">
+            <div class="luxury-badge">
+                <i class="fa-solid fa-microphone-lines"></i> Мультимедиалық Аудиогид Жүйесі
+            </div>
+            <h2>Ұлы Дала Тарихы <em>Жанды Дауыста</em></h2>
+            <p>Тарихи тұлғалардың басты жетістіктері мен қалдырған нақыл сөздерін тікелей интеллектуалды аудио-баяндама арқылы тыңдаңыз.</p>
+        </header>
+
+        <section class="control-dashboard">
+            <div class="search-engine-container">
+                <i class="fa-solid fa-magnifying-glass search-icon-inside"></i>
+                <input type="text" id="multimedia-search-field" class="premium-search-input" placeholder="Дыбыстық базадан тұлғаны немесе заңдарды іздеңіз..." oninput="filterAudioGallery()">
+            </div>
+
+            <div class="filter-header-title">
+                <i class="fa-solid fa-sliders"></i> Тарихи кезеңдерді сүзгілеу тақтасы
+            </div>
+            <div class="horizontal-epoch-scroller">
+                <button class="epoch-tab-btn active" onclick="filterAudioEpoch(this, 'all')"><i class="fa-solid fa-globe"></i> Барлығы</button>
+                <button class="epoch-tab-btn" onclick="filterAudioEpoch(this, 'ancient')"><i class="fa-solid fa-shield"></i> Ежелгі дәуір</button>
+                <button class="epoch-tab-btn" onclick="filterAudioEpoch(this, 'khanate')"><i class="fa-solid fa-crown"></i> Қазақ хандығы</button>
+                <button class="epoch-tab-btn" onclick="filterAudioEpoch(this, 'colonial')"><i class="fa-solid fa-flag"></i> Ұлт-азаттық кезең</button>
+                <button class="epoch-tab-btn" onclick="filterAudioEpoch(this, 'alash')"><i class="fa-solid fa-building-columns"></i> Алаш дәуірі</button>
+            </div>
+        </section>
+
+        <div class="gallery-metrics-bar">
+            <div id="counter-live-feedback">Мәлімет базасында: <strong>8</strong> аудио-бандама тізімделіп тұр</div>
+        </div>
+
+        <div class="empty-grid-fallback-view" id="empty-state-audio-view">
+            <i class="fa-solid fa-microphone-slash"></i>
+            <h4>Аудио-файлдар табылмады</h4>
+            <p>Енгізілген кілт сөзге сәйкес аудио-мәлімет базада жоқ. Басқа сөздерді жазып көріңіз.</p>
+        </div>
+
+        <section class="cards-matrix-grid" id="audio-cards-injection-grid">
+        </section>
+
+    </main>
+
+    <script>
+        const audioMultimediaDatabase = [
+            {
+                id: "aud_001",
+                name: "Әлихан Бөкейханов",
+                epoch: "alash",
+                epochLabel: "XX ғ. басы",
+                role: "Алашорда Төрағасы",
+                timeFrame: "1866 – 1937 жж.",
+                icon: "fa-building-columns",
+                quote: "«Тірі болсам, хан баласында қазақтың хақысы бар еді, қазаққа қызмет қылмай қоймаймын!»",
+                duration: "1 мин 15 сек",
+                narration: "Әлихан Бөкейханов — ХХ ғасырдың басындағы қазақ ұлт-азаттық қозғалысының жетекшісі, мемлекетшіл саясаткер, ғұлама ғалым. Ол тұңғыш ұлттық Алаш партиясын құрып, Алаш Автономиясының үкімет төрағасы болып сайланды. Оның басты 3 тарихи жетістігі: Бірінші — ұлттық автономиялық мемлекет құрылымын заңдастырды. Екінші — Ресей империясының мемлекеттік думасында қазақ жерлерін қорғау мәселесін көтерді. Үшінші — Қазақстанның қазіргі шекарасын ғылыми тұрғыдан дәлелдеп, бекітілуіне өлшеусіз үлес қосты."
+            },
+            {
+                id: "aud_002",
+                name: "Томирис Патшайым",
+                epoch: "ancient",
+                epochLabel: "б.з.б. VI ғ.",
+                role: "Сақ-Массагет Билеушісі",
+                timeFrame: "б.з.б. 570 - 520 жж.",
+                icon: "fa-shield",
+                quote: "«Қанға тоймап ең, Кир патша, енді мен сенің қаныңды өз басыңа ішкізейін!»",
+                duration: "1 мин 05 сек",
+                narration: "Томирис Патшайым — ежелгі сақ-массагет тайпаларының даңқты билеушісі, батыр қолбасшы. Ол әлемдік тарихта еркіндік пен отанды қорғаудың символына айналды. Оның басты 3 тарихи жетістігі: Бірінші — парсы патшасы Кирдің жеңілмейтін әскерін толық талқандады. Екінші — сақ тайпаларының тәуелсіздігін сақтап қалды. Үшінші — әскери өнер тарихына терең қорғаныстан шабуылға көшу стратегиясының үздік үлгісін енгізді."
+            },
+            {
+                id: "aud_003",
+                name: "Абылай Хан",
+                epoch: "khanate",
+                epochLabel: "XVIII ғ.",
+                role: "Жалпықазақ Ұлы Ханы",
+                timeFrame: "1711 – 1781 жж.",
+                icon: "fa-feather",
+                quote: "«Біз екі алып империя — Ресей мен Қытайдың арасындамыз, дипломатиямыз қырағы болуы тиіс.»",
+                duration: "1 мин 25 сек",
+                narration: "Абылай хан — қазақ мемлекетінің тұтастығын қайта қалпына келтірген ұлы хан, бірегей геосаясаткер. Ол үш жүздің басын біріктіріп, елді сыртқы жаулардан қорғады. Оның басты 3 тарихи жетістігі: Бірінші — Жоңғар мемлекетінің қаупін біржолата жойды. Екенші — Ресей мен Қытай империялары арасында теңгермелі дипломатия жүргізді. Үшінші — Түркістанда үш жүздің ортақ ханы ретінде таққа отырып, мемлекеттілікті күшейтті."
+            },
+            {
+                id: "aud_004",
+                name: "Ахмет Байтұрсынұлы",
+                epoch: "alash",
+                epochLabel: "XX ғ. кезеңі",
+                role: "Ұлт Ұстазы, Реформатор",
+                timeFrame: "1872 – 1937 жж.",
+                icon: "fa-pen-clip",
+                quote: "«Сөзі жоғалған халықтың өзі де жоғалады. Тілімізді сақтау — ұлтты сақтау.»",
+                duration: "1 мин 20 сек",
+                narration: "Ахмет Байтұрсынұлы — ұлт ұстазы, қазақ тіл білімінің негізін салушы, қоғам қайраткері. Ол қазақ балаларының ана тілінде сауат ашуы үшін бар ғұмырын арнаған. Оның басты 3 тарихи жетістігі: Бірінші — қазақ тілінің тұңғыш ғылыми оқулықтарын жазды. Екінші — араб графикасы негізінде Төте жазу әліпбиін жасады. Үшінші — Қазақ газетін шығарып, халықтың саяси санасын ояту орталығына айналдырды."
+            },
+            {
+                id: "aud_005",
+                name: "Қасым Хан",
+                epoch: "khanate",
+                epochLabel: "XVI ғ. басы",
+                role: "Ұлы Заңгер, Хан",
+                timeFrame: "1511 – 1521 жж.",
+                icon: "fa-scale-balanced",
+                quote: "«Бірлігі бекем елді жау алмайды, біздің заңымыз — даланың әділ жолы.»",
+                duration: "1 мин 18 сек",
+                narration: "Қасым хан — Қазақ хандығының қуатын арттырып, шекарасын кеңейткен айбынды билеуші. Оның тұсында қазақ мемлекеті халықаралық деңгейде танымал болды. Оның басты 3 тарихи жетістігі: Бірінші — Қасым ханның қасқа жолы атты тұңғыш далалық заңдар кодексін қабылдады. Екінші — хандық халқының сануюір миллионға жеткізді. Үшінші — қазақ жерінің шекарасын Батыста Жайыққа, Шығыста Ертіске дейін жеткізді."
+            },
+            {
+                id: "aud_006",
+                name: "Әз Тәуке Хан",
+                epoch: "khanate",
+                epochLabel: "XVII - XVIII ғ.",
+                role: "Реформатор Билеуші",
+                timeFrame: "1680 – 1718 жж.",
+                icon: "fa-landmark",
+                quote: "«Жеті жарғы — дала халқының әділ төрелігі, заң бар жерде ғана тыныштық бар.»",
+                duration: "1 мин 10 сек",
+                narration: "Әз Тәуке хан — ішкі алауыздықтарды тоқтатып, ел бірлігін заң жүзінде бекіткен ұлы мемлекет қайраткері. Ол билер сотын мемлекеттің басты тірегіне айналдырды. Оның басты 3 тарихи жетістігі: Бірінші — Төле, Қазыбек, Әйтеке билермен бірлесіп Жеті Жарғы заңдар жинағын құрастырды. Екінші — Билер кеңесін тұрақты басқару органы етті. Үшінші — Жоңғар қаупіне қарсы көршілес халықтармен әскери одақ құрды."
+            },
+            {
+                id: "aud_007",
+                name: "Кенесары Қасымұлы",
+                epoch: "colonial",
+                epochLabel: "XIX ғ. ортасы",
+                role: "Қазақтың Соңғы Ханы",
+                timeFrame: "1802 – 1847 жж.",
+                icon: "fa-shield-halved",
+                quote: "«Менің күресім — Отанның тәуелсіздігі мен Абылай хан заманындағы шекараны қалпына келтіру.»",
+                duration: "1 мин 30 сек",
+                narration: "Кенесары Қасымұлы — Ресей империясының отаршылдық саясатына қарсы ең ірі ұлт-азаттық қозғалыстың бас қолбасшысы, мемлекет қайраткері. Ол бүкіл қазақ руларын ортақ мақсатқа біріктіре алды. Оның басты 3 тарихи жетістігі: Бірінші — 10 жылға созылған жалпыұлттық көтерілісті басқарды. Екінші — бірыңғай кәсіби әскер және мемлекеттік басқару аппаратын құрды. Үшінші — 1841 жылы ресми түрде жалпықазақ ханы болып сайланды."
+            },
+            {
+                id: "aud_008",
+                name: "Абай Құнанбайұлы",
+                epoch: "colonial",
+                epochLabel: "XIX ғ. екінші жартысы",
+                role: "Ұлы Ойшыл, Ақын",
+                timeFrame: "1845 – 1904 жж.",
+                icon: "fa-book",
+                quote: "«Адамның адамшылығы — ақыл, ғылым, жақсы ұстаздан болады.»",
+                duration: "1 мин 22 сек",
+                narration: "Абай Құнанбайұлы — қазақ жазба әдебиетінің негезін салушы, философ, ағартушы, ұлы ақын. Оның шығармалары ұлттық болмыстың айнасы болып табылады. Оның басты 3 тарихи жетістігі: Бірінші — қазақ әдеби тілін жаңа классикалық деңгейге көтерді. Екінші — Қара сөздер атты терең философиялық мұра қалдырды. Үшінші — батыс пен шығыс мәдениетінің озық үлгілерін қазақ топырағына сәтті аударды."
+            }
+        ];
+
+        let speechIsActiveOnCardId = null;
+        let activeEpochFilterValue = "all";
+        let currentActiveVoiceUtterance = null;
+        let activeWaveIntervalTimer = null;
+
+        const mainNavBar = document.getElementById('main-nav-bar');
+        const gridContainer = document.getElementById('audio-cards-injection-grid');
+        const emptyStateView = document.getElementById('empty-state-audio-view');
+        const liveCounterText = document.getElementById('counter-live-feedback');
+
+        // Sticky Nav Smooth Blur Trigger
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                mainNavBar.classList.add('scrolled');
+            } else {
+                mainNavBar.classList.remove('scrolled');
+            }
+        });
+
+        // Dynamic Native Grid Generation System
+        function renderMultimediaGrid() {
+            const searchVal = document.getElementById('multimedia-search-field').value.toLowerCase().trim();
+
+            const itemsToShow = audioMultimediaDatabase.filter(item => {
+                const matchesSearch = item.name.toLowerCase().includes(searchVal) || 
+                                      item.role.toLowerCase().includes(searchVal) || 
+                                      item.narration.toLowerCase().includes(searchVal);
+                const matchesEpoch = (activeEpochFilterValue === 'all' || item.epoch === activeEpochFilterValue);
+                return matchesSearch && matchesEpoch;
+            });
+
+            liveCounterText.innerHTML = `Сүзгі бойынша: <strong>${itemsToShow.length}</strong> аудио-баяндама тізімделіп тұр`;
+
+            if (itemsToShow.length === 0) {
+                gridContainer.innerHTML = '';
+                emptyStateView.style.display = 'block';
+                return;
+            } else {
+                emptyStateView.style.display = 'none';
+            }
+
+            gridContainer.innerHTML = itemsToShow.map(item => {
+                const isSpeaking = (speechIsActiveOnCardId === item.id);
+                return `
+                    <div class="audio-museum-card ${isSpeaking ? 'speaking' : ''}" id="card-${item.id}">
+                        <div class="card-multimedia-header">
+                            <div class="floating-badges-rack">
+                                <span class="epoch-pill-tag"><i class="fa-solid fa-clock-rotate-left"></i> ${item.epochLabel}</span>
+                                <div class="ai-status-pulse">${isSpeaking ? 'Сөйлеп тұр' : 'Дайын'}</div>
+                            </div>
+                            
+                            <i class="fa-solid ${item.icon} ai-avatar-icon-mesh"></i>
+                            
+                            <div class="live-waveform-container" id="wave-${item.id}">
+                                ${Array.from({length: 22}).map(() => `<div class="wave-bar"></div>`).join('')}
+                            </div>
+                        </div>
+
+                        <div class="card-multimedia-body">
+                            <div>
+                                <h3>${item.name}</h3>
+                                <span class="sub-role-label">${item.role} (${item.timeFrame})</span>
+                                <div class="philosophic-quote-box">
+                                    "${item.quote}"
+                                </div>
+                            </div>
+
+                            <div class="audio-action-trigger-panel">
+                                <span class="time-badge"><i class="fa-solid fa-clock"></i> ${item.duration}</span>
+                                <button class="circular-audio-btn" onclick="triggerAudioNarrationEngine('${item.id}')">
+                                    <i class="fa-solid ${isSpeaking ? 'fa-square' : 'fa-play'}"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+
+            registerScrollTriggers();
+            
+            if (speechIsActiveOnCardId) {
+                startWaveformAnimation(speechIsActiveOnCardId);
+            }
+        }
+
+        // Intersection Observer for 3D Scrolling Effects
+        function registerScrollTriggers() {
+            const currentCardElements = document.querySelectorAll('.audio-museum-card');
+            const observerSettings = {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px 0px -40px 0px"
+            };
+
+            const cardRevealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('revealed');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerSettings);
+
+            currentCardElements.forEach(card => cardRevealObserver.observe(card));
+        }
+
+        function filterAudioGallery() {
+            renderMultimediaGrid();
+        }
+
+        function filterAudioEpoch(btnElement, epochValue) {
+            document.querySelectorAll('.epoch-tab-btn').forEach(chip => chip.classList.remove('active'));
+            btnElement.classList.add('active');
+            activeEpochFilterValue = epochValue;
+            renderMultimediaGrid();
+        }
+
+        // Web Speech Synthesis Core Audio Management
+        function triggerAudioNarrationEngine(figureId) {
+            if (speechIsActiveOnCardId === figureId) {
+                stopGlobalSpeech();
+                return;
+            }
+
+            stopGlobalSpeech();
+
+            const itemData = audioMultimediaDatabase.find(i => i.id === figureId);
+            if (!itemData) return;
+
+            speechIsActiveOnCardId = figureId;
+            const targetCard = document.getElementById(`card-${figureId}`);
+            if (targetCard) targetCard.classList.add('speaking');
+            
+            const playIcon = targetCard.querySelector('.circular-audio-btn i');
+            if (playIcon) {
+                playIcon.classList.remove('fa-play');
+                playIcon.classList.add('fa-square');
+            }
+
+            startWaveformAnimation(figureId);
+
+            currentActiveVoiceUtterance = new SpeechSynthesisUtterance(itemData.narration);
+            currentActiveVoiceUtterance.lang = 'kk-KZ'; 
+            currentActiveVoiceUtterance.rate = 1.0; 
+
+            currentActiveVoiceUtterance.onend = () => { cleanSpeechState(figureId); };
+            currentActiveVoiceUtterance.onerror = () => { cleanSpeechState(figureId); };
+
+            window.speechSynthesis.speak(currentActiveVoiceUtterance);
+            document.getElementById('tts-kill-switch').classList.add('playing');
+        }
+
+        function startWaveformAnimation(figureId) {
+            if (activeWaveIntervalTimer) clearInterval(activeWaveIntervalTimer);
+            
+            activeWaveIntervalTimer = setInterval(() => {
+                const container = document.getElementById(`wave-${figureId}`);
+                if (!container) return;
+                const bars = container.querySelectorAll('.wave-bar');
+                bars.forEach(bar => {
+                    const randomHeight = Math.floor(Math.random() * 24) + 4; 
+                    bar.style.height = `${randomHeight}px`;
+                });
+            }, 125);
+        }
+
+        function cleanSpeechState(figureId) {
+            const targetCard = document.getElementById(`card-${figureId}`);
+            if (targetCard) {
+                targetCard.classList.remove('speaking');
+                const playIcon = targetCard.querySelector('.circular-audio-btn i');
+                if (playIcon) {
+                    playIcon.classList.remove('fa-square');
+                    playIcon.classList.add('fa-play');
+                }
+                const container = document.getElementById(`wave-${figureId}`);
+                if (container) {
+                    container.querySelectorAll('.wave-bar').forEach(b => b.style.height = '4px');
+                }
+            }
+            if (speechIsActiveOnCardId === figureId) speechIsActiveOnCardId = null;
+            if (!speechIsActiveOnCardId) document.getElementById('tts-kill-switch').classList.remove('playing');
+        }
+
+        function stopGlobalSpeech() {
+            window.speechSynthesis.cancel();
+            if (activeWaveIntervalTimer) clearInterval(activeWaveIntervalTimer);
+            if (speechIsActiveOnCardId) {
+                const oldId = speechIsActiveOnCardId;
+                speechIsActiveOnCardId = null;
+                cleanSpeechState(oldId);
+            }
+            document.getElementById('tts-kill-switch').classList.remove('playing');
+        }
+
+        // Initialize App Gallery
+        document.addEventListener('DOMContentLoaded', () => {
+            renderMultimediaGrid();
+        });
+    </script>
+</body>
+</html>

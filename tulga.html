@@ -83,6 +83,41 @@
         }
 
         /* ==========================================================================
+           NEW: MULTIMEDIA NAVIGATION TOGGLE (AUDIO / CARDS)
+           ========================================================================== */
+        .multimedia-toggle-container {
+            display: inline-flex;
+            background: rgba(0, 0, 0, 0.04);
+            padding: 4px;
+            border-radius: 16px;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-light);
+        }
+
+        .toggle-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-sub);
+            text-decoration: none;
+            border-radius: 12px;
+            transition: all 0.25s var(--ease-ios);
+        }
+
+        .toggle-nav-link:hover {
+            color: var(--text-main);
+        }
+
+        .toggle-nav-link.active {
+            background: var(--bg-card);
+            color: var(--orange-dark);
+            box-shadow: var(--shadow-sm);
+        }
+
+        /* ==========================================================================
            2. INTERACTIVE VISUAL EFFECTS & BACKGROUND ELEMENTS
            ========================================================================== */
         .blur-ambient-orb-1 {
@@ -786,6 +821,64 @@
             .nav-brand h1 { font-size: 18px; }
             .desktop-spacer-block { display: none; }
         }
+
+        /* ==========================================================================
+           MOBILE OPTIMIZED NAVBAR OVERRIDES
+           ========================================================================== */
+        @media (max-width: 576px) {
+            .app-navbar {
+                padding: 8px 0; 
+            }
+            
+            .navbar-wrapper {
+                display: grid;
+                grid-template-columns: auto 1fr auto; 
+                align-items: center;
+                gap: 8px;
+            }
+
+            .nav-back-button {
+                padding: 10px 12px;
+                border-radius: 50%;
+                justify-content: center;
+                background: rgba(0, 0, 0, 0.05);
+            }
+            
+            .nav-back-text {
+                display: none; 
+            }
+
+            .nav-brand {
+                text-align: center;
+                overflow: hidden;
+            }
+
+            .nav-title {
+                font-size: 15px !important; 
+                justify-content: center;
+                white-space: nowrap;
+            }
+
+            .nav-title-sub {
+                font-weight: 500;
+                opacity: 0.8;
+            }
+            
+            .nav-brand h1 span::after {
+                height: 1px; 
+            }
+
+            .interactive-counter-pill {
+                padding: 6px 10px;
+                font-size: 11px;
+                border-radius: 12px;
+                white-space: nowrap;
+            }
+            
+            .interactive-counter-pill i {
+                font-size: 11px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -795,12 +888,13 @@
 
     <nav class="app-navbar" id="main-nav-bar">
         <div class="container navbar-wrapper">
-            <a href="index.html" class="nav-back-button">
-                <i class="fa-solid fa-arrow-left"></i> <span>Басты бет</span>
+            <a href="index.html" class="nav-back-button" aria-label="Назад">
+                <i class="fa-solid fa-arrow-left"></i> <span class="nav-back-text">Басты бет</span>
             </a>
             <div class="nav-brand">
-                <h1>ZAMANAT • <span>Тұлғалар</span></h1>
+                <h1 class="nav-title">ZAMANAT <span class="nav-title-sub">• Тұлғалар</span></h1>
             </div>
+            
             <div class="nav-actions">
                 <div class="interactive-counter-pill">
                     <i class="fa-solid fa-graduation-cap"></i>
@@ -813,6 +907,15 @@
     <main class="container">
         
         <header class="hero-showcase">
+            <div class="multimedia-toggle-container">
+                <a href="zamanat_multimedia.html" class="toggle-nav-link">
+                    <i class="fa-solid fa-headphones"></i> Аудиогид
+                </a>
+                <a href="tulga.html" class="toggle-nav-link active">
+                    <i class="fa-solid fa-address-card"></i> Карточкалар
+                </a>
+            </div>
+            <br>
             <div class="luxury-badge">
                 <i class="fa-solid fa-star"></i> Ұлы Дала Енциклопедиясы
             </div>
@@ -853,7 +956,7 @@
         </div>
 
         <section class="cards-matrix-grid" id="main-injected-cards-grid-matrix">
-            </section>
+        </section>
 
     </main>
 
@@ -872,7 +975,7 @@
                 threeAccomplishments: [
                     "Тұңғыш ұлттық «Алаш» саяси партиясы мен Алаш Автономиялы үкіметінің жалпыұлттық Саяси Төрағасы болып сайланды.",
                     "Ресей империялық Мемлекеттік Думасына депутат ретінде қазақ жерлерінің colonisation-тық тартып алынуына қарсы заңдық күрес ашты.",
-                    "Қазақстанның бүгінгі ресми мемлекеттік территориялық-географиялық шекарасын ғылыми әрі заңгерлік тұрғыда негіздеп, бекітті."
+                    "Қазақстанның бүгінгі ресми мемлекеттік территориялық-географиялық шекарасын ғылыми әрі заңгерлік тұрғыда негедеп, бекітті."
                 ]
             },
             {
@@ -916,7 +1019,7 @@
                 chronology: "1872 – 1937 жж.",
                 imageFile: "assets/akhmet.jpg",
                 fallbackIcon: "fa-pen-clip",
-                famousQuote: "«Сөзі жоғалған халықтың өзі端 де жоғалады. Өз тілімен сөйлескен, өз тілімен жазған жұрттың ұлттығы еш уақытта құрымайды.»",
+                famousQuote: "«Сөзі жоғалған халықтың өзі де жоғалады. Өз тілімен сөйлескен, өз тілімен жазған жұрттың ұлттығы еш уақытта құрымайды.»",
                 threeAccomplishments: [
                     "Қазақ тіл білімі мен әдебиеттану ғылымдарының теориялық іргетасын қалап, тұңғыш төл ана тілі оқулықтарын шығарды.",
                     "Араб графикасы негізінде қазақ дыбыстарына бейімделген «Төте жазу» әліпбиін жасап, жаппай сауаттандыру реформасын жасады.",
@@ -935,7 +1038,7 @@
                 famousQuote: "«Біздің мақсат — халықтың еркіндігі, өз алдына дербес ел болып, ата-баба дәстүрін сақтау.»",
                 threeAccomplishments: [
                     "Жәнібек ханмен бірге Әбілқайырдың көшпелі өзбек мемлекетінен бөлініп, дербес Қазақ хандығының іргесін бекітті.",
-                    "Батыс Жетісу өңіріне (Шу мен Талас алқабына) тарихи ұлы көшті бастап келіп, жаңа этносаяси орталық құрды.",
+                    "Base-ыс Жетісу өңіріне (Шу мен Талас алқабына) тарихи ұлы көшті бастап келіп, жаңа этносаяси орталық құрды.",
                     "Далалық еркін демократиялық басқару форматы мен «Қазақ» атауының ресми мемлекеттік деңгейге шығуына жол ашты."
                 ]
             },
@@ -984,7 +1087,7 @@
                 threeAccomplishments: [
                     "Қасым ханнан кейін ішкі рулық алауыздық салдарынан ыдырай бастаған Қазақ хандығының тұтастығын қайта қалпына келтірді.",
                     "Ноғай Ордасының ыдыраған бөліктері мен Сібір хандығының оңтүстік аймақтарын қазақ мемлекетінің құрамына қосты.",
-                    "Бұхара хандығымен «достық әрі әскери көмек» келісімін жасап, оңтүстік шекаралардың қауіпсіздігін нығайтты."
+                    "Бұхара хандығымен «достық әрі әскери көмек» келісімін жасап, оңтүстік шекаралардың қауіпсіддігін нығайтты."
                 ]
             },
             {
@@ -1009,7 +1112,7 @@
                 epoch: "khanate1718",
                 epochLabel: "XVII - XVIII ғ.",
                 roleName: "Ұлы заңгер, Реформатор",
-                chronology: "билігі: 1680 – 1718 жж.",
+                chronology: "biлігі: 1680 – 1718 жж.",
                 imageFile: "assets/tauke.jpg",
                 fallbackIcon: "fa-landmark",
                 famousQuote: "«Жеті жарғы — дала халқының әділ төрелігі, заң орындалған жерде ғана тыныштық орнайды.»",
