@@ -2,32 +2,30 @@
 <html lang="kk">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ZAMANAT • BATTLEFIELD MAP | Мобильді Карта</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ZAMANAT • BATTLEFIELD CHRONICLES | Қазақстанның Интерактивті Шайқастар Картасы</title>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     
     <style>
         /* ==========================================================================
-           1. PREMIUM MINIMALISTIC MOBILE DESIGN SYSTEM
+           1. PREMIUM MINIMALISTIC DESIGN SYSTEM
            ========================================================================== */
         :root {
-            --z-bg: #f8f9fa;
+            --z-bg: #f4f5f7;
             --z-card: #ffffff;
             --z-text-main: #111113;
             --z-text-sub: #64646f;
             --z-text-muted: #90909a;
             --z-accent: #ff7300;
-            --z-accent-light: #ff9500;
             --z-accent-glow: rgba(255, 115, 0, 0.08);
             --z-border: rgba(0, 0, 0, 0.06);
-            --z-card-shadow: 0 8px 32px rgba(0, 0, 0, 0.04);
-            --z-modal-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
-            --ease-apple: cubic-bezier(0.16, 1, 0.3, 1);
+            --z-card-shadow: 0 12px 40px rgba(0, 0, 0, 0.03);
+            --ease-apple: cubic-bezier(0.1, 0.9, 0.2, 1);
             --transition-smooth: all 0.4s var(--ease-apple);
             
             --z-kazakh-blue: #00afec;
@@ -39,7 +37,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
+            outline: none;
         }
 
         body {
@@ -47,269 +45,282 @@
             background-color: var(--z-bg);
             color: var(--z-text-main);
             overflow: hidden;
-            position: fixed;
-            width: 100%;
-            height: 100%;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* App Layout Main Matrix Container */
-        .mobile-app-container {
+        .leaflet-container {
+            font-family: inherit;
+            background: #eef0f3 !important;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        /* ==========================================================================
+           2. APP SHELL LAYOUT
+           ========================================================================== */
+        .app-shell-matrix {
             display: flex;
             flex-direction: column;
-            width: 100%;
-            height: 100%;
+            width: 100vw;
+            height: 100vh;
             position: relative;
         }
 
-        /* Native-feeling Compact Top Bar */
-        .mobile-premium-navbar {
-            height: 60px;
+        /* PREMIUM APP HEADER */
+        .premium-top-navigation-bar {
+            height: 68px;
             background: var(--z-card);
             border-bottom: 1px solid var(--z-border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 16px;
-            z-index: 100;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.01);
+            padding: 0 24px;
+            position: relative;
+            z-index: 1010;
         }
 
-        .nav-back-button {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            border: 1px solid var(--z-border);
-            background: #ffffff;
+        .header-branding-group {
             display: flex;
             align-items: center;
-            justify-content: center;
+            gap: 24px;
+        }
+
+        .back-dashboard-anchor {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             color: var(--z-text-sub);
             text-decoration: none;
-            font-size: 14px;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 10px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--z-border);
+            background: #ffffff;
+            transition: var(--transition-smooth);
         }
 
-        .nav-center-branding h1 {
-            font-size: 15px;
+        .back-dashboard-anchor:hover {
+            color: var(--z-text-main);
+            border-color: var(--z-text-main);
+        }
+
+        .branding-meta-titles h1 {
+            font-size: 16px;
             font-weight: 800;
-            letter-spacing: -0.3px;
-            text-align: center;
+            color: var(--z-text-main);
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .nav-center-branding h1 span {
+        .branding-meta-titles h1 span {
             color: var(--z-accent);
+            font-weight: 600;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: var(--z-accent-glow);
+            padding: 2px 8px;
+            border-radius: 6px;
         }
 
-        .nav-center-branding p {
-            font-size: 10px;
+        .branding-meta-titles p {
+            font-size: 11px;
             color: var(--z-text-muted);
-            text-align: center;
+            margin-top: 1px;
             font-weight: 500;
         }
 
-        .nav-info-trigger {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            border: 1px solid var(--z-border);
-            background: #ffffff;
+        .header-controls-group {
             display: flex;
             align-items: center;
-            justify-content: center;
-            color: var(--z-text-sub);
-            font-size: 14px;
         }
 
-        /* Map Workspace Engine */
-        .map-mobile-viewport-wrapper {
+        .academic-reference-pill {
+            background: #ffffff;
+            border: 1px solid var(--z-border);
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--z-text-sub);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition-smooth);
+        }
+
+        .academic-reference-pill:hover {
+            border-color: var(--z-text-sub);
+            color: var(--z-text-main);
+        }
+
+        /* WORKSPACE MATRIX */
+        .geographic-workspace-matrix {
+            display: flex;
             flex: 1;
             width: 100%;
+            height: calc(100vh - 68px);
             position: relative;
-            background: #f1f2f5;
+            overflow: hidden;
         }
 
-        #js-mobile-leaflet-map {
+        .map-viewport-wrapper {
+            flex: 1;
+            height: 100%;
+            position: relative;
+            transition: var(--transition-smooth);
+        }
+
+        #js-leaflet-battle-map {
             width: 100%;
             height: 100%;
             z-index: 10;
         }
 
-        /* Top Horizontal Epoch Slider for Mobile */
-        .mobile-timeline-scroll-strip {
-            position: absolute;
-            top: 12px;
-            left: 0;
-            width: 100%;
-            overflow-x: auto;
-            white-space: nowrap;
-            padding: 0 14px;
-            z-index: 50;
-            scrollbar-width: none;
-        }
-        .mobile-timeline-scroll-strip::-webkit-scrollbar {
-            display: none;
-        }
-
-        .mobile-epoch-pill {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--z-border);
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 11.5px;
-            font-weight: 700;
-            color: var(--z-text-sub);
-            margin-right: 8px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
-            transition: var(--transition-smooth);
-        }
-
-        .mobile-epoch-pill.active-pill {
-            background: var(--z-accent);
-            color: #ffffff;
-            border-color: var(--z-accent);
-            box-shadow: 0 4px 12px rgba(255, 115, 0, 0.25);
-        }
-
-        /* HUD Compact Zoom Overlay Elements */
-        .mobile-hud-zoom-controls {
-            position: absolute;
-            right: 12px;
-            top: 70px;
-            z-index: 50;
+        /* SIDEBAR ARCHITECTURE */
+        .sidebar-extended-sheet {
+            width: 440px;
+            height: 100%;
+            background: var(--z-card);
+            border-left: 1px solid var(--z-border);
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            position: relative;
+            z-index: 1000;
+            transition: var(--transition-smooth);
+            box-shadow: -10px 0 30px rgba(0, 0, 0, 0.01);
+            overflow-y: auto;
         }
 
-        .mobile-hud-btn {
-            width: 40px;
-            height: 40px;
-            background: rgba(255, 255, 255, 0.94);
-            backdrop-filter: blur(10px);
-            border: 1px solid var(--z-border);
-            border-radius: 12px;
-            display: flex;
+        .sidebar-collapsed .sidebar-extended-sheet {
+            margin-right: -440px;
+        }
+
+        /* Mobile Close Handle */
+        .mobile-panel-close-trigger {
+            display: none;
+            position: absolute;
+            top: 16px;
+            right: 16px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f1f2f5;
+            border: none;
             align-items: center;
             justify-content: center;
             font-size: 14px;
             color: var(--z-text-main);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+            cursor: pointer;
+            z-index: 1020;
+            transition: var(--transition-smooth);
         }
 
-        /* ==========================================================================
-           2. ULTRA-COMFORTABLE NATIVE MOBILE BOTTOM SHEET COMPONENT
-           ========================================================================== */
-        .mobile-bottom-sheet-modal {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--z-card);
-            border-top-left-radius: 24px;
-            border-top-right-radius: 24px;
-            box-shadow: var(--z-modal-shadow);
-            z-index: 500;
-            transform: translateY(calc(100% - 90px)); /* Peak hint layout state */
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        /* Placeholder state */
+        .sheet-placeholder-viewport {
+            padding: 60px 32px;
+            text-align: center;
+            margin: auto;
             display: flex;
             flex-direction: column;
-            max-height: 85vh;
-        }
-
-        .mobile-bottom-sheet-modal.sheet-fully-expanded {
-            transform: translateY(0) !important;
-        }
-
-        .mobile-bottom-sheet-modal.sheet-hidden-state {
-            transform: translateY(100%);
-        }
-
-        /* Sheet Drag Handle Header Indicator */
-        .sheet-drag-gesture-bar {
-            width: 100%;
-            height: 28px;
-            display: flex;
-            justify-content: center;
             align-items: center;
-            cursor: pointer;
-            flex-shrink: 0;
+            max-width: 340px;
         }
 
-        .gesture-pill-indicator {
-            width: 36px;
-            height: 5px;
-            background: rgba(0, 0, 0, 0.15);
-            border-radius: 10px;
+        .placeholder-icon-frame {
+            width: 72px;
+            height: 72px;
+            border-radius: 20px;
+            background: var(--z-bg);
+            border: 1px solid var(--z-border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--z-accent);
+            margin-bottom: 20px;
         }
 
-        /* Inner Sheet Scroll View Matrix */
-        .sheet-scrollable-body-viewport {
-            overflow-y: auto;
-            flex: 1;
-            padding: 0 16px 40px 16px;
+        .sheet-placeholder-viewport h2 {
+            font-size: 17px;
+            font-weight: 700;
+            color: var(--z-text-main);
+            margin-bottom: 8px;
         }
 
-        /* Empty Default Hint Box styling */
-        .sheet-mobile-empty-hint {
-            text-align: center;
-            padding: 10px 20px 30px 20px;
-        }
-        .sheet-mobile-empty-hint p {
+        .sheet-placeholder-viewport p {
             font-size: 13px;
             color: var(--z-text-sub);
             line-height: 1.5;
         }
 
-        /* Real Active Content layout blocks */
-        .sheet-mobile-real-payload {
+        /* Active Battle State */
+        .sheet-active-battle-panel {
             display: none;
+            width: 100%;
         }
 
-        .mobile-hero-meta-block {
-            margin-bottom: 20px;
+        .battle-premium-hero-card {
+            padding: 32px 24px;
+            background: linear-gradient(180deg, rgba(255, 115, 0, 0.03) 0%, rgba(255, 255, 255, 0) 100%);
+            border-bottom: 1px solid var(--z-border);
         }
 
-        .mobile-epoch-badge {
+        .battle-epoch-tag {
             display: inline-block;
-            background: #111113;
+            background: var(--z-text-main);
             color: #ffffff;
             font-size: 9px;
             font-weight: 700;
             padding: 4px 10px;
-            border-radius: 20px;
+            border-radius: 6px;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+
+        .battle-primary-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--z-text-main);
+            line-height: 1.3;
             margin-bottom: 8px;
         }
 
-        .mobile-battle-title {
-            font-size: 20px;
-            font-weight: 800;
-            letter-spacing: -0.4px;
-            color: var(--z-text-main);
-            margin-bottom: 6px;
-        }
-
-        .mobile-battle-geo-line {
-            font-size: 12px;
+        .battle-geographic-location {
+            font-size: 13px;
             color: var(--z-text-sub);
+            font-weight: 500;
             display: flex;
             align-items: center;
             gap: 6px;
         }
-        .mobile-battle-geo-line i { color: var(--z-accent); }
 
-        /* Generic Mobile Segment Card containers */
-        .mobile-segment-card {
-            background: var(--z-bg);
-            border: 1px solid var(--z-border);
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 20px;
+        .battle-geographic-location i {
+            color: var(--z-accent);
         }
 
-        .mobile-card-title-label {
+        .battle-analysis-scrollable-body {
+            padding: 24px;
+        }
+
+        .analytical-block-container {
+            margin-bottom: 28px;
+        }
+
+        .block-section-title-label {
             font-size: 11px;
             font-weight: 700;
             color: var(--z-text-muted);
@@ -320,672 +331,1163 @@
             align-items: center;
             gap: 6px;
         }
-        .mobile-card-title-label i { color: var(--z-accent); }
 
-        /* Podcast Player layout for Touch Mobile */
-        .mobile-podcast-ui-row {
+        /* Audio Module UI */
+        .luxury-audio-podcast-module {
+            background: #ffffff;
+            border: 1px solid var(--z-border);
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--z-card-shadow);
+        }
+
+        .podcast-meta-info-row {
             display: flex;
             align-items: center;
             gap: 12px;
+            margin-bottom: 12px;
         }
 
-        .mobile-podcast-play-btn {
-            width: 46px;
-            height: 46px;
-            border-radius: 50%;
-            background: var(--z-text-main);
-            color: #ffffff;
-            border: none;
+        .podcast-speaker-avatar {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--z-accent-glow);
+            color: var(--z-accent);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 14px;
         }
 
-        .mobile-podcast-track-details {
-            flex: 1;
-        }
-
-        .mobile-podcast-track-details h4 {
-            font-size: 12.5px;
+        .podcast-labels-block h4 {
+            font-size: 13px;
             font-weight: 700;
-            margin-bottom: 6px;
+            color: var(--z-text-main);
         }
 
-        .mobile-track-progress-bar-housing {
-            height: 5px;
-            background: rgba(0,0,0,0.06);
-            border-radius: 10px;
-            position: relative;
+        .podcast-labels-block p {
+            font-size: 11px;
+            color: var(--z-text-sub);
         }
-        .mobile-track-progress-fill {
+
+        .podcast-hardware-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .podcast-play-toggle-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            background: var(--z-text-main);
+            color: #ffffff;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            transition: var(--transition-smooth);
+        }
+
+        .podcast-play-toggle-btn:hover {
+            background: var(--z-accent);
+        }
+
+        .podcast-timeline-track {
+            flex: 1;
+            height: 4px;
+            background: #f1f2f5;
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .podcast-timeline-progress-filled {
             position: absolute;
             left: 0;
             top: 0;
             height: 100%;
             width: 0%;
             background: var(--z-accent);
-            border-radius: 10px;
+            border-radius: 4px;
         }
 
-        .mobile-transcript-text-panel {
-            background: rgba(0,0,0,0.03);
-            border-left: 3px solid var(--z-accent);
-            padding: 10px;
-            border-radius: 8px;
+        .podcast-clock-readout {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--z-text-sub);
+            min-width: 35px;
+            text-align: right;
+        }
+
+        .podcast-text-transcript-panel {
+            background: var(--z-bg);
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 12px;
             font-size: 12px;
             color: var(--z-text-sub);
             line-height: 1.5;
-            margin-top: 12px;
+            border-left: 3px solid var(--z-accent);
             display: none;
         }
 
-        /* Forces Troop Balance Bars style */
-        .mobile-troop-faction-row {
-            margin-bottom: 12px;
+        .transcript-toggle-link {
+            font-size: 12px;
+            color: var(--z-accent);
+            font-weight: 600;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            margin-top: 10px;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
         }
-        .mobile-troop-faction-row:last-child { margin-bottom: 0; }
 
-        .mobile-troop-labels {
+        /* Forces Bars */
+        .military-forces-balance-card {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .force-meta-labels {
             display: flex;
             justify-content: space-between;
             font-size: 12px;
             font-weight: 600;
             margin-bottom: 4px;
         }
-        .mobile-troop-labels .kz { color: var(--z-kazakh-blue); }
-        .mobile-troop-labels .opp { color: var(--z-enemy-red); }
 
-        .mobile-troop-bar-track {
+        .force-faction-title { display: flex; align-items: center; gap: 4px; }
+        .force-faction-title.kazakh { color: var(--z-kazakh-blue); }
+        .force-faction-title.enemy { color: var(--z-enemy-red); }
+
+        .force-bar-track-housing {
             height: 8px;
-            background: rgba(0,0,0,0.05);
+            background: #f1f2f5;
             border-radius: 10px;
             overflow: hidden;
         }
-        .mobile-troop-bar-fill {
+
+        .force-bar-fill-indicator {
             height: 100%;
             width: 0%;
             border-radius: 10px;
             transition: width 1s var(--ease-apple);
         }
-        .mobile-troop-bar-fill.kz-fill { background: var(--z-kazakh-blue); }
-        .mobile-troop-bar-fill.opp-fill { background: var(--z-enemy-red); }
 
-        /* Tactical Mini-Sandbox Grid */
-        .mobile-tactical-sandbox-frame {
+        .force-bar-fill-indicator.blue-side { background: var(--z-kazakh-blue); }
+        .force-bar-fill-indicator.red-side { background: var(--z-enemy-red); }
+
+        /* Tactical Canvas Sandbox */
+        .tactical-maneuvers-sandbox {
             width: 100%;
-            height: 150px;
+            height: 180px;
             background: #151518;
-            border-radius: 12px;
+            border-radius: 16px;
             position: relative;
             overflow: hidden;
         }
-        .mobile-sandbox-grid-overlay {
+
+        .sandbox-grid-matrix-layer {
             position: absolute;
-            width: 100%;height: 100%;opacity: 0.1;
-            background-image: linear-gradient(#fff 1px, transparent 1px), linear-gradient(90deg, #fff 1px, transparent 1px);
-            background-size: 15px 15px;
-        }
-        .mobile-tactical-token {
-            position: absolute;
-            padding: 4px 8px;
-            border-radius: 6px;
-            font-size: 9.5px;
-            font-weight: 800;
-            text-transform: uppercase;
-            transform: translate(-50%, -50%);
-            white-space: nowrap;
-        }
-        .mobile-tactical-token.kz-reg { background: rgba(0,175,236,0.2); border: 1px solid var(--z-kazakh-blue); color: #9be2ff; }
-        .mobile-tactical-token.opp-reg { background: rgba(235,77,75,0.2); border: 1px solid var(--z-enemy-red); color: #ffadab; }
-        
-        .mobile-tactical-svg-layer {
-            position: absolute; width:100%; height:100%; top:0; left:0; pointer-events:none;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px);
+            background-size: 16px 16px;
         }
 
-        .mobile-narrative-caption {
+        .tactical-squad-token {
+            position: absolute;
+            padding: 6px 10px;
+            border-radius: 8px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+        }
+
+        .tactical-squad-token.kazakh-regiment {
+            background: rgba(0, 175, 236, 0.15);
+            border: 1px solid var(--z-kazakh-blue);
+            color: #8edeff;
+        }
+
+        .tactical-squad-token.enemy-regiment {
+            background: rgba(235, 77, 75, 0.15);
+            border: 1px solid var(--z-enemy-red);
+            color: #ff9e9c;
+        }
+
+        .tactical-vector-arrow-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .animated-tactical-path {
+            stroke-dasharray: 6, 4;
+            animation: tacticalPathFlowEffect 1.5s linear infinite;
+        }
+
+        @keyframes tacticalPathFlowEffect { to { stroke-dashoffset: -20; } }
+
+        .tactical-narrative-card-caption {
+            background: var(--z-bg);
+            border-radius: 12px;
+            padding: 12px;
             font-size: 12px;
             color: var(--z-text-sub);
             line-height: 1.5;
             margin-top: 10px;
         }
 
-        /* Quiz UI Layout elements */
-        .mobile-quiz-option-row {
-            width: 100%;
-            background: var(--z-card);
+        /* Quiz UI */
+        .academic-quiz-training-engine {
+            background: #ffffff;
             border: 1px solid var(--z-border);
-            padding: 12px;
+            border-radius: 16px;
+            padding: 16px;
+            box-shadow: var(--z-card-shadow);
+        }
+
+        .quiz-prompt-question-text {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--z-text-main);
+            margin-bottom: 12px;
+        }
+
+        .quiz-option-interactive-row {
+            width: 100%;
+            background: var(--z-bg);
+            border: 1px solid var(--z-border);
+            padding: 10px 14px;
             border-radius: 10px;
             font-size: 12px;
             font-weight: 600;
-            color: var(--z-text-main);
             text-align: left;
+            cursor: pointer;
+            transition: var(--transition-smooth);
             margin-bottom: 8px;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .mobile-quiz-feedback-panel {
+
+        .quiz-option-interactive-row:hover {
+            background: #ffffff;
+            border-color: var(--z-text-main);
+        }
+
+        .quiz-response-evaluation-toast {
+            margin-top: 12px;
             padding: 10px;
             border-radius: 10px;
             font-size: 11.5px;
             font-weight: 600;
-            margin-top: 10px;
             display: none;
-            line-height: 1.4;
         }
-        .mobile-quiz-feedback-panel.success { background: #eefbf3; color: var(--z-success-green); border: 1px solid rgba(44,196,113,0.2); }
-        .mobile-quiz-feedback-panel.error { background: #fdf2f2; color: var(--z-enemy-red); border: 1px solid rgba(235,77,75,0.2); }
 
-        /* Custom Mobile Toast Alert Notification block */
-        .mobile-premium-toast-alert {
-            position: fixed;
-            top: 72px;
-            left: 16px;
-            right: 16px;
-            background: #111113;
-            color: #ffffff;
-            padding: 12px 16px;
-            border-radius: 12px;
-            font-size: 12px;
-            font-weight: 600;
-            z-index: 2000;
-            box-shadow: var(--z-modal-shadow);
-            opacity: 0;
-            transform: translateY(-20px);
-            pointer-events: none;
-            transition: var(--transition-smooth);
+        .quiz-response-evaluation-toast.success { background: #eefbf3; color: var(--z-success-green); }
+        .quiz-response-evaluation-toast.error { background: #fdf2f2; color: var(--z-enemy-red); }
+
+        /* HUD CONTROLS */
+        .floating-chronology-hud-timeline {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid var(--z-border);
+            padding: 10px 20px;
+            border-radius: 16px;
+            box-shadow: var(--z-card-shadow);
             display: flex;
-            align-items: center;
+            justify-content: space-between;
+            z-index: 500;
+        }
+
+        .chronology-axis-node {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--z-text-sub);
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 10px;
+            transition: var(--transition-smooth);
+        }
+
+        .chronology-axis-node.active-node {
+            color: #ffffff;
+            background: var(--z-accent);
+        }
+
+        .map-hud-utility-cluster {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            z-index: 500;
+            display: flex;
+            flex-direction: column;
             gap: 8px;
         }
-        .mobile-premium-toast-alert.toast-visible {
+
+        .hud-action-circular-trigger {
+            width: 40px;
+            height: 40px;
+            background: #ffffff;
+            border: 1px solid var(--z-border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: var(--z-text-main);
+            cursor: pointer;
+            box-shadow: var(--z-card-shadow);
+            transition: var(--transition-smooth);
+        }
+
+        .sidebar-state-toggle-handle {
+            position: absolute;
+            top: 50%;
+            left: -12px;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 48px;
+            background: var(--z-card);
+            border: 1px solid var(--z-border);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 1005;
+            color: var(--z-text-sub);
+        }
+
+        .sidebar-collapsed .sidebar-state-toggle-handle i {
+            transform: rotate(180deg);
+        }
+
+        /* ACADEMIC MODAL DIALOG ARCHITECTURE */
+        .academic-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(17, 17, 19, 0.4);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 3000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: var(--transition-smooth);
+        }
+
+        .academic-modal-overlay.modal-active {
             opacity: 1;
+            pointer-events: auto;
+        }
+
+        .academic-modal-window {
+            width: 100%;
+            max-width: 680px;
+            max-height: 85vh;
+            background: var(--z-card);
+            border-radius: 24px;
+            box-shadow: 0 30px 70px rgba(0,0,0,0.15);
+            border: 1px solid var(--z-border);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: var(--transition-smooth);
+        }
+
+        .academic-modal-overlay.modal-active .academic-modal-window {
             transform: translateY(0);
         }
 
-        /* Customized Leaflet Battle Pin icon styling targets */
-        .mobile-leaflet-pulsing-icon {
+        .academic-modal-header {
+            padding: 24px 32px;
+            border-bottom: 1px solid var(--z-border);
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
+            background: linear-gradient(180deg, rgba(0, 175, 236, 0.02) 0%, rgba(255, 255, 255, 0) 100%);
         }
-        .mobile-marker-halo {
-            position: absolute;
+
+        .academic-modal-header h3 {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--z-text-main);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .academic-modal-header h3 i {
+            color: var(--z-kazakh-blue);
+        }
+
+        .modal-close-trigger-btn {
+            background: var(--z-bg);
+            border: none;
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: rgba(255,115,0,0.3);
-            animation: mobilePulse 2s infinite ease-out;
-        }
-        .mobile-marker-core {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #ffffff;
-            border: 3px solid var(--z-accent);
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            color: var(--z-text-sub);
+            cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 8px;
-        }
-        .leaflet-marker-icon.active-mobile-marker .mobile-marker-core {
-            background: var(--z-accent);
-            color: #ffffff;
-            border-color: #ffffff;
-            transform: scale(1.15);
+            transition: var(--transition-smooth);
         }
 
-        @keyframes mobilePulse {
-            0% { transform: scale(0.7); opacity: 1; }
-            100% { transform: scale(1.8); opacity: 0; }
+        .modal-close-trigger-btn:hover {
+            background: var(--z-text-main);
+            color: #ffffff;
+        }
+
+        .academic-modal-body-scrollable {
+            padding: 32px;
+            overflow-y: auto;
+            font-size: 14px;
+            line-height: 1.6;
+            color: var(--z-text-sub);
+        }
+
+        .academic-source-card-node {
+            background: var(--z-bg);
+            border: 1px solid var(--z-border);
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .academic-source-card-node h4 {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--z-text-main);
+            margin-bottom: 6px;
+        }
+
+        .academic-source-list-group {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .academic-source-list-group li {
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        /* Markers Animations */
+        .leaflet-battle-pulsing-marker-icon { display: flex; align-items: center; justify-content: center; }
+        .battle-marker-pulsating-halo {
+            position: absolute; width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255, 115, 0, 0.2); animation: pulse 2s infinite ease-out;
+        }
+        .battle-marker-inner-core {
+            width: 20px; height: 20px; border-radius: 50%; background: #ffffff;
+            border: 3px solid var(--z-accent); box-shadow: 0 2px 10px rgba(0,0,0,0.15);
+            display: flex; align-items: center; justify-content: center; font-size: 9px;
+        }
+        .leaflet-marker-icon.active-marker .battle-marker-inner-core {
+            background: var(--z-accent); color: #ffffff; border-color: #ffffff; scale: 1.1;
+        }
+        @keyframes pulse { 0% { scale: 0.5; opacity: 1; } 100% { scale: 1.6; opacity: 0; } }
+
+        .premium-toast-alert-notification {
+            position: fixed; bottom: 90px; left: 50%; transform: translateX(-50%) translateY(20px);
+            background: #111113; color: #ffffff; padding: 10px 20px; border-radius: 10px;
+            font-size: 12px; font-weight: 600; z-index: 2000; opacity: 0; pointer-events: none;
+            transition: var(--transition-smooth); display: flex; align-items: center; gap: 8px;
+        }
+        .premium-toast-alert-notification.toast-visible { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+        /* ==========================================================================
+           3. PERFECT MOBILE RESPONSIVE
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            /* ТЕК ХИДЕР ЭЛЕМЕНТТЕРІ ӨЗГЕРТІЛДІ (ҮЛКЕЙТІЛДІ) */
+            .premium-top-navigation-bar {
+                height: 64px; /* Биіктігі 56px-тен 64px-ке үлкейтілді */
+                padding: 0 16px;
+            }
+
+            .header-branding-group {
+                gap: 14px;
+            }
+
+            .back-dashboard-anchor {
+                padding: 10px 14px; /* Басуға ыңғайлы болу үшін ішкі бос орындары үлкейтілді */
+                font-size: 13px;
+                border-radius: 10px;
+            }
+
+            .branding-meta-titles h1 {
+                font-size: 15px; /* Бас тақырып қаріпі үлкейтілді */
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .branding-meta-titles h1 span {
+                font-size: 10px; /* "Hronika" таңбасы үлкейтілді */
+                padding: 2px 6px;
+                border-radius: 6px;
+            }
+
+            .branding-meta-titles p {
+                display: none;
+            }
+
+            .academic-reference-pill {
+                padding: 10px 14px; /* Батырманың өлшемі қолға қолайлы етіп үлкейтілді */
+                border-radius: 10px;
+                font-size: 12px; /* Мәтін толық өшпей, ықшам оқылатын күйде қалды */
+                gap: 6px;
+                height: 38px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+            .academic-reference-pill i {
+                font-size: 14px;
+                margin: 0;
+            }
+
+            .geographic-workspace-matrix {
+                flex-direction: column;
+                height: calc(100vh - 64px); /* Жаңа хидер биіктігіне сәйкес (-64px) етіп реттелді */
+            }
+
+            /* Экран өлшемі өте кішкентай телефондар үшін (мысалы, 380px-тен төмен) */
+            @media (max-width: 380px) {
+                .academic-reference-pill {
+                    width: 38px;
+                    padding: 0;
+                    font-size: 0; /* Мәтін симай кетпеуі үшін тек белгіше (иконка) қалады */
+                }
+                .branding-meta-titles h1 {
+                    font-size: 13px;
+                }
+            }
+
+
+            /* БҰЛ ЭЛЕМЕНТТЕРГЕ ТИІСПЕДІМ (БАСТАПҚЫ ҚАЛПЫНДА САҚТАЛДЫ) */
+            .map-viewport-wrapper {
+                height: 100%;
+                width: 100%;
+            }
+
+            .sidebar-extended-sheet {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                z-index: 2000;
+                border-left: none;
+                transform: translateY(100%);
+                opacity: 0;
+                pointer-events: none;
+                transition: transform 0.5s var(--ease-apple), opacity 0.4s ease;
+            }
+
+            .sidebar-active-mobile .sidebar-extended-sheet {
+                transform: translateY(0);
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            .mobile-panel-close-trigger {
+                display: flex;
+            }
+
+            .sidebar-collapsed .sidebar-extended-sheet {
+                margin-right: 0;
+            }
+
+            .sidebar-state-toggle-handle {
+                display: none;
+            }
+
+            .floating-chronology-hud-timeline {
+                bottom: 12px;
+                left: 10px;
+                right: 10px;
+                padding: 6px;
+                overflow-x: auto;
+                justify-content: flex-start;
+                gap: 4px;
+            }
+
+            .chronology-axis-node {
+                font-size: 10px;
+                padding: 6px 10px;
+                white-space: nowrap;
+            }
         }
     </style>
 </head>
 <body>
 
-    <div class="mobile-app-container">
+    <div class="app-shell-matrix sidebar-collapsed" id="js-workspace-node">
         
-        <!-- COMPACT MOBILE HEADER BRANDING BAR -->
-        <header class="mobile-premium-navbar">
-            <a href="index.html" class="nav-back-button">
-                <i class="fa-solid fa-chevron-left"></i>
-            </a>
-            <div class="nav-center-branding">
-                <h1>ZAMANAT • <span>ШАЙҚАСТАР</span></h1>
-                <p>Тарихи шайқастардың мобильді интерактивті картасы</p>
+        <header class="premium-top-navigation-bar">
+            <div class="header-branding-group">
+                <a href="index.html" class="back-dashboard-anchor">
+                    <i class="fa-solid fa-arrow-left"></i>
+                </a>
+                <div class="branding-meta-titles">
+                    <h1>ZAMANAT • MAPS <span>Hronika</span></h1>
+                    <p>Ұлттық тарихтың тағдыршешті қақтығыстары мен әскери-стратегиялық талдауы</p>
+                </div>
             </div>
-            <button class="nav-info-trigger" id="js-mobile-academic-btn">
-                <i class="fa-solid fa-graduation-cap"></i>
-            </button>
-        </header>
-
-        <!-- GEOGRAPHIC VIEWPORT SPACE -->
-        <div class="map-mobile-viewport-wrapper">
-            
-            <!-- Horizontal Epoch Slider for quick finger tap filtering -->
-            <div class="mobile-timeline-scroll-strip">
-                <div class="mobile-epoch-pill active-pill" onclick="filterMobileEpoch('all', this)">Барлығы</div>
-                <div class="mobile-epoch-pill" onclick="filterMobileEpoch('ancient', this)">Ежелгі (V-VIII ғғ.)</div>
-                <div class="mobile-epoch-pill" onclick="filterMobileEpoch('middle', this)">Орта ғасыр (XIV-XVI ғғ.)</div>
-                <div class="mobile-epoch-pill" onclick="filterMobileEpoch('kazakh-jungar', this)">Қазақ-жоңғар соғысы</div>
-            </div>
-
-            <!-- Map HUD Layer Reset Controls -->
-            <div class="mobile-hud-zoom-controls">
-                <button class="mobile-hud-btn" id="js-mobile-reset-view" title="Орталыққа қайтару">
-                    <i class="fa-solid fa-location-crosshairs"></i>
+            <div class="header-controls-group">
+                <button class="academic-reference-pill" id="js-info-academic" onclick="openAcademicModal()">
+                    <i class="fa-solid fa-graduation-cap"></i> Академиялық дереккөз
                 </button>
             </div>
+        </header>
 
-            <!-- Leaflet Container -->
-            <div id="js-mobile-leaflet-map"></div>
-
-        </div>
-
-        <!-- ==========================================================================
-           3. NATIVE MOBILE BOTTOM SHEET CONTROLLER HOUSING LAYER
-           ========================================================================== */ -->
-        <div class="mobile-bottom-sheet-modal" id="js-mobile-bottom-sheet">
+        <div class="geographic-workspace-matrix">
             
-            <!-- Drag gesture bar layer -->
-            <div class="sheet-drag-gesture-bar" onclick="toggleMobileSheetState()">
-                <div class="gesture-pill-indicator"></div>
-            </div>
-
-            <!-- Scroll view wrapper panel -->
-            <div class="sheet-scrollable-body-viewport">
+            <div class="map-viewport-wrapper">
                 
-                <!-- UNSELECTED STATE -->
-                <div class="sheet-mobile-empty-hint" id="js-m-empty-state">
-                    <p><i class="fa-solid fa-circle-info" style="color:var(--z-accent); margin-bottom:6px; font-size:16px;"></i><br><b>Шайқасты таңдаңыз</b><br>Толық ақпаратты, аудиогидті және ҰБТ тесттерін ашу үшін картадағы маркерлердің бірін түртіңіз.</p>
+                <div class="map-hud-utility-cluster">
+                    <div class="hud-action-circular-trigger" id="js-reset-map-view" title="Қалпына келтіру">
+                        <i class="fa-solid fa-compass"></i>
+                    </div>
+                    <div class="hud-action-circular-trigger" id="js-sidebar-trigger" onclick="toggleSidebarManually()" title="Панельді басқару">
+                        <i class="fa-solid fa-bars"></i>
+                    </div>
                 </div>
 
-                <!-- ACTIVE PAYLOAD LAYER INJECTED VIA JS ENGINE -->
-                <div class="sheet-mobile-real-payload" id="js-m-active-payload">
+                <div id="js-leaflet-battle-map"></div>
+
+                <nav class="floating-chronology-hud-timeline">
+                    <div class="chronology-axis-node active-node" onclick="filterBattlesByEpoch('all', this)">Барлық дәуірлер</div>
+                    <div class="chronology-axis-node" onclick="filterBattlesByEpoch('ancient', this)">Ежелгі заман</div>
+                    <div class="chronology-axis-node" onclick="filterBattlesByEpoch('middle', this)">Орта ғасырлар</div>
+                    <div class="chronology-axis-node" onclick="filterBattlesByEpoch('kazakh-jungar', this)">Қазақ-жоңғар соғыстары</div>
+                </nav>
+
+            </div>
+
+            <aside class="sidebar-extended-sheet">
+                
+                <button class="mobile-panel-close-trigger" onclick="closeSidebarMobileMode()">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+                <div class="sidebar-state-toggle-handle" onclick="toggleSidebarManually()">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </div>
+
+                <div class="sheet-placeholder-viewport" id="js-sidebar-empty-state">
+                    <div class="placeholder-icon-frame">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h2>Шайқас таңдалмады</h2>
+                    <p>Шайқастың толық тактикалық схемасын, аудио-экскурсиясын және арнайы ҰБТ тестін жүктеу үшін картадағы маркерді басыңыз.</p>
+                </div>
+
+                <div class="sheet-active-battle-panel" id="js-sidebar-active-content">
                     
-                    <!-- Identity Block -->
-                    <div class="mobile-hero-meta-block">
-                        <span class="mobile-epoch-badge" id="js-m-badge-date">1729 ЖЫЛ</span>
-                        <h2 class="mobile-battle-title" id="js-m-title">Аңырақай шайқасы</h2>
-                        <div class="mobile-battle-geo-line">
-                            <i class="fa-solid fa-location-dot"></i> <span id="js-m-location">Балқаш маңы</span>
+                    <div class="battle-premium-hero-card">
+                        <span class="battle-epoch-tag" id="js-b-epoch-tag">Жүктелуде...</span>
+                        <h2 class="battle-primary-title" id="js-b-title">Шайқас атауы</h2>
+                        <div class="battle-geographic-location">
+                            <i class="fa-solid fa-location-dot"></i> <span id="js-b-location">Орналасқан жері</span>
+                            <span style="margin-left:auto; font-weight:700;" id="js-b-date">0000 жыл</span>
                         </div>
                     </div>
 
-                    <!-- Audio Podcast Player Component -->
-                    <div class="mobile-segment-card">
-                        <div class="mobile-card-title-label">
-                            <i class="fa-solid fa-circle-play"></i> Тарихи Аудио-подкаст
+                    <div class="battle-analysis-scrollable-body">
+                        
+                        <div class="analytical-block-container">
+                            <div class="block-section-title-label">
+                                <i class="fa-solid fa-volume-high"></i> Академиялық аудио-экскурсия
+                            </div>
+                            <div class="luxury-audio-podcast-module">
+                                <div class="podcast-meta-info-row">
+                                    <div class="podcast-speaker-avatar">
+                                        <i class="fa-solid fa-microphone-lines"></i>
+                                    </div>
+                                    <div class="podcast-labels-block">
+                                        <h4 id="js-b-podcast-title">Аудио контент</h4>
+                                        <p>ZAMANAT ғылыми сарапшыларының баяндауы</p>
+                                    </div>
+                                </div>
+                                <div class="podcast-hardware-controls">
+                                    <button class="podcast-play-toggle-btn" id="js-podcast-play-trigger" onclick="handlePodcastPlayPauseEngine()">
+                                        <i class="fa-solid fa-play" id="js-podcast-icon-symbol"></i>
+                                    </button>
+                                    <div class="podcast-timeline-track" onclick="seekPodcastTimelinePosition(event)">
+                                        <div class="podcast-timeline-progress-filled" id="js-podcast-progress-bar"></div>
+                                    </div>
+                                    <div class="podcast-clock-readout" id="js-podcast-timer-label">0:00</div>
+                                </div>
+                                <button class="transcript-toggle-link" onclick="toggleAudioTranscriptVisibility()">
+                                    <i class="fa-solid fa-align-left"></i> Мәтіндік нұсқасын оқу
+                                </button>
+                                <div class="podcast-text-transcript-panel" id="js-podcast-transcript-box"></div>
+                            </div>
                         </div>
-                        <div class="mobile-podcast-ui-row">
-                            <button class="mobile-podcast-play-btn" onclick="handleMobilePodcastEngine()">
-                                <i class="fa-solid fa-play" id="js-m-podcast-icon"></i>
-                            </button>
-                            <div class="mobile-podcast-track-details">
-                                <h4 id="js-m-podcast-title">Аңырақай дастаны</h4>
-                                <div class="mobile-track-progress-bar-housing" onclick="seekMobilePodcastTrack(event)">
-                                    <div class="mobile-track-progress-fill" id="js-m-podcast-bar"></div>
+
+                        <div class="analytical-block-container">
+                            <div class="block-section-title-label">
+                                <i class="fa-solid fa-chart-simple"></i> Әскерлердің арасалмағы
+                            </div>
+                            <div class="military-forces-balance-card">
+                                <div class="force-faction-row">
+                                    <div class="force-meta-labels">
+                                        <span class="force-faction-title kazakh"><i class="fa-solid fa-flag"></i> <span id="js-b-force-my-title">Қазақ жасақтары</span></span>
+                                        <span class="force-numeric-strength" id="js-b-force-my-count">0</span>
+                                    </div>
+                                    <div class="force-bar-track-housing">
+                                        <div class="force-bar-fill-indicator blue-side" id="js-b-bar-my"></div>
+                                    </div>
+                                </div>
+                                <div class="force-faction-row">
+                                    <div class="force-meta-labels">
+                                        <span class="force-faction-title enemy"><i class="fa-solid fa-skull-crossbones"></i> <span id="js-b-force-opp-title">Қарсыластар</span></span>
+                                        <span class="force-numeric-strength" id="js-b-force-opp-count">0</span>
+                                    </div>
+                                    <div class="force-bar-track-housing">
+                                        <div class="force-bar-fill-indicator red-side" id="js-b-bar-opp"></div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <button style="background:transparent; border:none; color:var(--z-accent); font-size:11px; font-weight:700; margin-top:12px; display:block;" onclick="toggleMobileTranscript()">
-                            Мәтіндік нұсқасын оқу <i class="fa-solid fa-chevron-down"></i>
-                        </button>
-                        <div class="mobile-transcript-text-panel" id="js-m-transcript-box">
-                            Жүктелуде...
-                        </div>
-                    </div>
 
-                    <!-- Forces balance layout -->
-                    <div class="mobile-segment-card">
-                        <div class="mobile-card-title-label">
-                            <i class="fa-solid fa-chart-bar"></i> Әскерлердің арасалмағы
+                        <div class="analytical-block-container">
+                            <div class="block-section-title-label">
+                                <i class="fa-solid fa-diagram-project"></i> Тактикалық қақтығыстардың карта-схемасы
+                            </div>
+                            <div class="tactical-maneuvers-sandbox" id="js-tactical-sandbox-viewport">
+                                <div class="sandbox-grid-matrix-layer"></div>
+                            </div>
+                            <div class="tactical-narrative-card-caption" id="js-b-tactical-description"></div>
                         </div>
-                        <div class="mobile-troop-faction-row">
-                            <div class="mobile-troop-labels">
-                                <span class="kz" id="js-m-kz-title">Қазақ жасақтары</span>
-                                <span id="js-m-kz-count">35 000</span>
+
+                        <div class="analytical-block-container" style="margin-bottom: 0;">
+                            <div class="block-section-title-label">
+                                <i class="fa-solid fa-graduation-cap"></i> ҰБТ дайындық деңгейін тексеру
                             </div>
-                            <div class="mobile-troop-bar-track">
-                                <div class="mobile-troop-bar-fill kz-fill" id="js-m-kz-bar-fill"></div>
-                            </div>
-                        </div>
-                        <div class="mobile-troop-faction-row">
-                            <div class="mobile-troop-labels">
-                                <span class="opp" id="js-m-opp-title">Жоңғарлар</span>
-                                <span id="js-m-opp-count">50 000</span>
-                            </div>
-                            <div class="mobile-troop-bar-track">
-                                <div class="mobile-troop-bar-fill opp-fill" id="js-m-opp-bar-fill"></div>
+                            <div class="academic-quiz-training-engine">
+                                <p class="quiz-prompt-question-text" id="js-b-quiz-question">Сұрақ жүктелуде...</p>
+                                <div id="js-b-quiz-options-wrapper"></div>
+                                <div class="quiz-response-evaluation-toast" id="js-b-quiz-feedback-box"></div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Tactical Sandbox Block -->
-                    <div class="mobile-segment-card">
-                        <div class="mobile-card-title-label">
-                            <i class="fa-solid fa-network-wired"></i> Стратегиялық тактика схемасы
-                        </div>
-                        <div class="mobile-tactical-sandbox-frame" id="js-m-sandbox-viewport">
-                            <div class="mobile-sandbox-grid-overlay"></div>
-                        </div>
-                        <p class="mobile-narrative-caption" id="js-m-tactical-desc">Тактика сипаттамасы...</p>
                     </div>
-
-                    <!-- ENT Mini Evaluation Exam Quiz Block -->
-                    <div class="mobile-segment-card">
-                        <div class="mobile-card-title-label">
-                            <i class="fa-solid fa-graduation-cap"></i> ҰБТ Блиц-тест тапсырмасы
-                        </div>
-                        <div style="font-size:12.5px; font-weight:700; color:var(--z-text-main); margin-bottom:12px; line-height:1.4;" id="js-m-quiz-question">
-                            Сұрақ мазмұны...
-                        </div>
-                        <div id="js-m-quiz-options-box"></div>
-                        <div class="mobile-quiz-feedback-panel" id="js-m-quiz-feedback"></div>
-                    </div>
-
                 </div>
 
-            </div>
+            </aside>
 
+        </div>
+
+        <div class="premium-toast-alert-notification" id="js-premium-toast-alert">
+            <i class="fa-solid fa-circle-info" style="color:var(--z-accent);"></i>
+            <span id="js-toast-alert-text-payload">Хабарлама</span>
         </div>
 
     </div>
 
-    <!-- NOTIFICATION HUD TOAST -->
-    <div class="mobile-premium-toast-alert" id="js-m-toast-hud">
-        <i class="fa-solid fa-circle-info" style="color:var(--z-accent);"></i>
-        <span id="js-m-toast-text">Хабарлама</span>
+    <div class="academic-modal-overlay" id="js-academic-modal" onclick="closeAcademicModalViaOverlay(event)">
+        <div class="academic-modal-window">
+            <div class="academic-modal-header">
+                <h3><i class="fa-solid fa-book-bookmark"></i> Тарихи-академиялық дереккөздер верификациясы</h3>
+                <button class="modal-close-trigger-btn" onclick="closeAcademicModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="academic-modal-body-scrollable">
+                <p style="margin-bottom: 20px; font-weight: 500; color: var(--z-text-main);">ZAMANAT платформасындағы барлық картографиялық және тактикалық деректер Қазақстан Республикасы Ғылым және жоғары білім министрлігі Тарих және этнология институты мақұлдаған академиялық басылымдар негізінде жасалған.</p>
+                
+                <div class="academic-source-card-node">
+                    <h4>1. Іргелі ғылыми еңбектер мен монографиялар:</h4>
+                    <ul class="academic-source-list-group">
+                        <li>«Қазақстан тарихы көне заманнан бүгінге дейін» (Бес томдық. Алматы, «Атамұра», 2010 ж.)</li>
+                        <li>Сулейменов Б. С., Басин В. Я. «Казахстан в составе России в XVIII — начале XIX века» (Алма-Ата, 1981)</li>
+                        <li>Левшин А. И. «Описание киргиз-казачьих, или киргиз-кайсацких, орд и степей» (Алматы, «Санат», 1996)</li>
+                    </ul>
+                </div>
+
+                <div class="academic-source-card-node">
+                    <h4>2. Әскери-тактикалық және мұрағаттық құжаттар:</h4>
+                    <ul class="academic-source-list-group">
+                        <li>Шоқан Уәлихановтың әскери-географиялық очерктері мен далалық зерттеу карталары.</li>
+                        <li>Орынбор және Сібір шекара комиссияларының әскери рапорттары мен Ресей империясының Бас штаб құжаттары (РГВИА мұрағат қорлары).</li>
+                        <li>Жоңғар қонтайшылығы мен Қазақ хандығы арасындағы елшілік хаттар мен қытайлық «Цинь патшалығының шынайы шежіресі» (Минши) деректері.</li>
+                    </ul>
+                </div>
+
+                <div class="academic-source-card-node">
+                    <h4>3. ҰБТ (ЕНТ) Сәйкестік кепілдігі:</h4>
+                    <p style="font-size: 13px;">Тест тапсырмалары мен хронологиялық даталар Ұлттық тестілеу орталығының (ҰТО) ресми оқулықтар базасына толық сәйкестендірілген. Мұндағы мәліметтер апелляциялық процестерде ресми негіздеме ретінде қолданыла алады.</p>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- CARTOGRAPHY INJECTION ENGINE SCRIPTS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // MASTER SHARED PRODUCTION GEOGRAPHIC COMPREHENSIVE DATA DICTIONARY
-        const MOBILE_BATTLES_DB = {
+        // GRAPH COMPONENT DATA REGISTER
+        const MASTER_BATTLES_DATABASE = {
             "anyrakai": {
-                id: "anyrakai", epoch: "kazakh-jungar", title: "Аңырақай шайқасы", date: "1729 жыл", location: "Итішпес Алакөл даласы",
-                latlng: [45.1256, 74.3412], podcastTitle: "Аңырақай — Халық Тұтастығының Жеңісі",
-                transcript: "Аңырақай шайқасы 1729 жылы Балқаш көлінің оңтүстік-батысында өтті. Кіші жүз ханы Әбілқайырдың жалпы қолбасшылығымен үш жүздің жасақтары жоңғар басқыншыларына қарсы азаттық күресін жүргізіп, толық жеңіске жетті. Бұл жеңіс қазақ елінің мемлекеттік бірігуін бекемдеді.",
-                myTitle: "Әбілқайыр хан жасағы", myCount: "35 000 қол", myPercent: "45%",
+                id: "anyrakai", epoch: "kazakh-jungar", title: "Aңырақай шайқасы", date: "1729 жыл",
+                location: "Алматы облысы, Аңырақай тауы", latlng: [44.5500, 75.3200],
+                podcastTitle: "Аңырақай — Бірігу рухының жеңісі",
+                duration: 105, // Длительность в секундах (1:45)
+                transcript: "Аңырақай шайқасы — қазақ-жоңғар соғысындағы ең тағдыршешті бетбұрыс кезең. Бұл соғыста Әбілқайыр ханның басшылығымен үш жүздің біріккен қазақ әскері жоңғарларға күйрете соққы берді. Қазақ сарбаздары жер жағдайын, тау шатқалдарының ерекшеліктерін шебер пайдаланып, қалмақтарды Итішпес Алакөл маңында қоршауға алды.",
+                myTitle: "Үш жүздің біріккен әскері", myCount: "35 000 сарбаз", myPercent: "45%",
                 oppTitle: "Жоңғар қонтайшылығы", oppCount: "50 000 әскер", oppPercent: "55%",
-                tacticalDesc: "Қазақ жасақтары толғама (шегіну) әдісімен жауды шатқалға кіргізіп, Бөгенбай мен Қабанбай батырлардың флангалық шабуылымен тылын талқандады.",
+                tacticalDesc: "Қазақ жасақтары толғама (жасанды шегіну) әдісін қолданып, жаудың негізгі күшін тау шатқалына тартып әкелді. Екі қанаттан Бөгенбай мен Қабанбай батырлардың атты әскері соққы берді.",
                 tokens: [
-                    { name: "Әбілқайыр", type: "kz-reg", top: "70%", left: "30%" },
-                    { name: "Қабанбай", type: "kz-reg", top: "25%", left: "75%" },
-                    { name: "Шұно Дабо", type: "opp-reg", top: "50%", left: "55%" }
+                    { name: "Әбілқайыр", type: "kazakh-regiment", top: "75%", left: "25%" },
+                    { name: "Қабанбай", type: "kazakh-regiment", top: "25%", left: "75%" },
+                    { name: "Жоңғарлар", type: "enemy-regiment", top: "50%", left: "50%" }
                 ],
-                arrows: [
-                    { fromX: 30, fromY: 70, toX: 50, toY: 55, color: "#00afec" },
-                    { fromX: 75, fromY: 25, toX: 58, toY: 50, color: "#00afec" }
-                ],
-                quizQuestion: "1729 жылы Аңырақай шайқасында үш жүздің біріккен әскерінің бас қолбасшысы кім болды?",
+                arrows: [{ fromX: 25, fromY: 75, toX: 45, toY: 55, color: "#00afec" }, { fromX: 75, fromY: 25, toX: 55, toY: 48, color: "#00afec" }],
+                quizQuestion: "1729 жылғы Аңырақай шайқасында үш жүздің біріккен жасақтарының бас қолбасшысы кім болды?",
                 quizOptions: [
                     { text: "Абылай хан", isCorrect: false },
                     { text: "Әбілқайыр хан", isCorrect: true },
                     { text: "Қабанбай батыр", isCorrect: false }
                 ],
-                feedbackText: "Дұрыс! Ордабасы құрылтайының шешімімен Кіші жүз ханы Әбілқайыр бас қолбасшы болып сайланған болатын."
+                academicFeedback: "Дұрыс! Ордабасы құрылтайында Әбілқайыр хан біріккен әскердің бас қолбасшысы болып бекітілген болатын."
             },
             "orbulak": {
-                id: "orbulak", epoch: "kazakh-jungar", title: "Орбұлақ шайқасы", date: "1643 жыл", location: "Жоңғар Алатауы аңғары",
-                latlng: [44.5321, 79.2134], podcastTitle: "Орбұлақ — Дала Стратегиясының Шедеврі",
-                transcript: "1643 жылы Жәңгір хан 600 сарбазбен жоңғар қонтайшысы Ердені Батурдың 50 мыңдық армиясын Орбұлақ өзенінің тар шатқалында бөгеді. Окоп қазып, білтелі мылтық қолданды. Шешуші сәтінде Самарқан билеушісі Жалаңтөс Баһадүр 20 мыңдық көмекпен келіп, жаудың бетін қайтарды.",
-                myTitle: "Жәңгір хан (600 сарбаз)", myCount: "600 (+20 000 көмек)", myPercent: "30%",
-                oppTitle: "Ердені Батур қолы", oppCount: "50 000 әскер", oppPercent: "95%",
-                tacticalDesc: "300 сарбаз ор ішінде бекініс ұстап, қалған бөлігі таудан тас жаудырды. Тылдан келген Жалаңтөс батыр әскері жоңғарларды шегінуге мәжбүр етті.",
+                id: "orbulak", epoch: "kazakh-jungar", title: "Орбұлақ шайқасы", date: "1643 жыл",
+                location: "Жоңғар Алатауы, Орбұлақ өзені", latlng: [44.8944, 79.9122],
+                podcastTitle: "Орбұлақ — Тактика мен батылдық феномені",
+                duration: 90, // Длительность в секундах (1:30)
+                transcript: "Орбұлақ шайқасы — әскери өнер тарихындағы теңдессіз ерлік мысалы. Жәңгір хан 600 сарбазымен Батур қонтайшының 50 мыңдық қарулы армиясына қарсы тұрды. Қазақтар тау тар қысаңында окоптар қазып, отты қаруды шебер пайдаланды.",
+                myTitle: "Жәңгір хан жасағы", myCount: "20 600 сарбаз", myPercent: "30%",
+                oppTitle: "Батур қонтайшы әскері", oppCount: "50 000 әскер", oppPercent: "70%",
+                tacticalDesc: "Жәңгір хан әскердің жартысын тау жыраларындағы орларға бекітіп, қорғаныс ұйымдастырды. Жау шепке кіргенде мылтықтан оқ жаудырып, Самарқаннан келген көмекпен бірге соққы берді.",
                 tokens: [
-                    { name: "Жәңгір хан", type: "kz-reg", top: "50%", left: "20%" },
-                    { name: "Жалаңтөс", type: "kz-reg", top: "20%", left: "75%" },
-                    { name: "Батур қонтайшы", type: "opp-reg", top: "55%", left: "45%" }
+                    { name: "Жәңгір хан", type: "kazakh-regiment", top: "50%", left: "20%" },
+                    { name: "Батур армиясы", type: "enemy-regiment", top: "55%", left: "65%" }
                 ],
-                arrows: [
-                    { fromX: 20, fromY: 50, toX: 40, toY: 52, color: "#00afec" },
-                    { fromX: 75, fromY: 20, toX: 50, toY: 50, color: "#00afec" }
-                ],
-                quizQuestion: "1643 жылғы Орбұлақ шайқасында Жәңгір ханға Самарқаннан көмекке келген қолбасшы әмірші кім?",
+                arrows: [{ fromX: 20, fromY: 50, toX: 55, toY: 54, color: "#00afec" }],
+                quizQuestion: "1643 жылы Орбұлақ шайқасында Жәңгір ханға Самарқаннан 20 мың әскермен көмекке келген кім?",
                 quizOptions: [
                     { text: "Жалаңтөс Баһадүр", isCorrect: true },
                     { text: "Әйтеке би", isCorrect: false },
-                    { text: "Бөгенбай батыр", isCorrect: false }
+                    { text: "Есім хан", isCorrect: false }
                 ],
-                feedbackText: "Керемет жауап! Самарқан әмірі Алшын Жалаңтөс Баһадүр 20 мыңдық таңдаулы жасақпен уақытылы келіп, жоңғарларды талқандауға көмектесті."
-            },
-            "atlakh": {
-                id: "atlakh", epoch: "ancient", title: "Атлах шайқасы (Талас)",
-                date: "751 жыл", location: "Тараз шаһары маңы", latlng: [42.9011, 71.3622],
-                podcastTitle: "Атлах соғысы — Тағдыршешті Белес",
-                transcript: "751 жылы Тараз қаласына жақын Атлах жерінде Аббасид халифаты мен Қытайдың Таң империясы армиясы қақтығысты. Шайқастың бесінші күні түркілік Қарлұқ тайпалары кенеттен арабтар жағына шығып, Қытай әскерін тылынан қиратты. Бұл Орталық Азияның исламдануына жол ашты.",
-                myTitle: "Арабтар + Қарлұқ тайпалары", myCount: "45 000 қол", myPercent: "45%",
-                oppTitle: "Таң Империясы (Қытай)", oppCount: "60 000 әскер", oppPercent: "55%",
-                tacticalDesc: "Қарлұқтар соғыс алаңында тұтқиылдан маневр жасап, Таң генералы Гао Сяньчжи әскерінің ту сыртынан соққы беріп, шепті бұзды.",
-                tokens: [
-                    { name: "Зияд (Араб)", type: "kz-reg", top: "70%", left: "25%" },
-                    { name: "Қарлұқ жасағы", type: "kz-reg", top: "25%", left: "50%" },
-                    { name: "Гао Сяньчжи", type: "opp-reg", top: "60%", left: "65%" }
-                ],
-                arrows: [
-                    { fromX: 25, fromY: 70, toX: 55, toY: 62, color: "#00afec" },
-                    { fromX: 50, fromY: 25, toX: 62, toY: 55, color: "#00afec" }
-                ],
-                quizQuestion: "751 жылы Атлах шайқасында Қытай әскерінің тылынан соққы беріп, ислам мәдениетінің орнығуына әсер еткен тайпа одағы:",
-                quizOptions: [
-                    { text: "Оғыздар", isCorrect: false },
-                    { text: "Қарлұқтар", isCorrect: true },
-                    { text: "Қыпшақтар", isCorrect: false }
-                ],
-                feedbackText: "Дұрыс! Қарлұқтардың бұл стратегиялық қадамы Қытайдың Орталық Азияға ықпалын біржола тоқтатты."
+                academicFeedback: "Тамаша! Самарқан билеушісі Жалаңтөс Баһадүр дер кезде көмекке келіп, зор жеңіске үлес қосты."
             }
         };
 
-        let mobileMap = null;
-        let mobileMarkers = [];
-        let mobilePodcastTimer = null;
-        let mobilePodcastPercent = 0;
-        let mobilePodcastActive = false;
+        let map = null;
+        let activeMarkersList = [];
+        let activePodcastInterval = null;
+        let currentAudioTimeSeconds = 0;
+        let totalAudioDurationSeconds = 0;
+        let isPodcastRunningState = false;
 
-        const centerLat = 46.5000, centerLng = 69.0000, defaultZoom = 4.5;
+        const initialLat = 46.5000, initialLng = 69.0000, initialZoom = 5;
 
-        // ENTRY LIFECYCLE
         document.addEventListener("DOMContentLoaded", () => {
-            initMobileCartography();
-            injectMobilePins(MOBILE_BATTLES_DB);
-
-            document.getElementById('js-mobile-reset-view').addEventListener('click', () => {
-                mobileMap.flyTo([centerLat, centerLng], defaultZoom, { animate: true, duration: 1.0 });
-            });
-
-            document.getElementById('js-mobile-academic-btn').addEventListener('click', () => {
-                showMobileToast("Академиялық оқулықтар мен ҰБТ спецификациясы негізінде верификацияланған.");
+            initializeMapEngine();
+            injectBattleMarkers(MASTER_BATTLES_DATABASE);
+            
+            document.getElementById("js-reset-map-view").addEventListener("click", () => {
+                map.flyTo([initialLat, initialLng], initialZoom, { animate: true, duration: 1 });
+                showPremiumAlert("Карта бастапқы күйіне қайтарылды.");
             });
         });
 
-        function initMobileCartography() {
-            mobileMap = L.map('js-mobile-leaflet-map', {
-                zoomControl: false, attributionControl: false, minZoom: 4, maxZoom: 8
-            }).setView([centerLat, centerLng], defaultZoom);
-
-            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-                subdomains: 'abcd'
-            }).addTo(mobileMap);
+        function initializeMapEngine() {
+            map = L.map('js-leaflet-battle-map', { zoomControl: false, attributionControl: false }).setView([initialLat, initialLng], initialZoom);
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
         }
 
-        function injectMobilePins(db) {
-            mobileMarkers.forEach(m => mobileMap.removeLayer(m));
-            mobileMarkers = [];
+        function injectBattleMarkers(database) {
+            activeMarkersList.forEach(m => map.removeLayer(m));
+            activeMarkersList = [];
 
-            Object.values(db).forEach(b => {
-                const icon = L.divIcon({
-                    className: 'mobile-leaflet-pulsing-icon',
-                    html: `<div class="mobile-marker-halo"></div><div class="mobile-marker-core">⚔️</div>`,
-                    iconSize: [24, 24]
+            Object.values(database).forEach(battle => {
+                const pulsingIcon = L.divIcon({
+                    className: 'leaflet-battle-pulsing-marker-icon',
+                    html: `<div class="battle-marker-pulsating-halo"></div><div class="battle-marker-inner-core">⚔️</div>`,
+                    iconSize: [30, 30], iconAnchor: [15, 15]
                 });
 
-                const m = L.marker(b.latlng, { icon: icon }).addTo(mobileMap);
-                
-                m.on('click', () => {
-                    document.querySelectorAll('.leaflet-marker-icon').forEach(n => n.classList.remove('active-mobile-marker'));
-                    m._icon.classList.add('active-mobile-marker');
+                const marker = L.marker(battle.latlng, { icon: pulsingIcon }).addTo(map);
+                marker.bindTooltip(`<b>${battle.title}</b>`, { className: 'premium-tooltip' });
+
+                marker.on('click', () => {
+                    document.querySelectorAll('.leaflet-marker-icon').forEach(node => node.classList.remove('active-marker'));
+                    marker._icon.classList.add('active-marker');
                     
-                    mobileMap.flyTo(b.latlng, 5.5, { animate: true, duration: 0.6 });
-                    openMobileBottomSheetAnalysis(b);
+                    // ИСПРАВЛЕНО: Крупный, детальный масштаб (обычный вид как положено)
+                    map.flyTo(battle.latlng, 14, { animate: true, duration: 0.8 });
+                    openDetailedBattleAnalysis(battle);
                 });
 
-                mobileMarkers.push(m);
+                activeMarkersList.push(marker);
             });
         }
 
-        // CONTROL SHEET STATE OPEN
-        function openMobileBottomSheetAnalysis(battle) {
-            resetMobileAudioPodcast();
+        function openDetailedBattleAnalysis(battle) {
+            resetAudioPodcastEngine();
             
-            document.getElementById("js-m-empty-state").style.display = "none";
-            document.getElementById("js-m-active-payload").style.display = "block";
+            totalAudioDurationSeconds = battle.duration || 60;
+            updatePodcastTimerDisplay(0);
 
-            // Open sheet slightly or fully for better phone feedback look
-            const sheet = document.getElementById("js-mobile-bottom-sheet");
-            sheet.classList.add("sheet-fully-expanded");
+            document.getElementById("js-sidebar-empty-state").style.display = "none";
+            document.getElementById("js-sidebar-active-content").style.display = "block";
 
-            // Direct data string templates interpolation injection
-            document.getElementById("js-m-title").innerText = battle.title;
-            document.getElementById("js-m-badge-date").innerText = battle.date;
-            document.getElementById("js-m-location").innerText = battle.location;
-            document.getElementById("js-m-podcast-title").innerText = battle.podcastTitle;
-            document.getElementById("js-m-transcript-box").innerText = battle.transcript;
-            document.getElementById("js-m-tactical-desc").innerText = battle.tacticalDesc;
+            document.getElementById('js-workspace-node').classList.remove('sidebar-collapsed');
+            if (window.innerWidth <= 1024) {
+                document.getElementById('js-workspace-node').classList.add('sidebar-active-mobile');
+            }
 
-            document.getElementById("js-m-kz-title").innerText = battle.myTitle;
-            document.getElementById("js-m-kz-count").innerText = battle.myCount;
-            document.getElementById("js-m-opp-title").innerText = battle.oppTitle;
-            document.getElementById("js-m-opp-count").innerText = battle.oppCount;
+            setTimeout(() => map.invalidateSize(), 200);
+
+            document.getElementById("js-b-title").innerText = battle.title;
+            document.getElementById("js-b-date").innerText = battle.date;
+            document.getElementById("js-b-location").innerText = battle.location;
+            document.getElementById("js-b-podcast-title").innerText = battle.podcastTitle;
+            document.getElementById("js-podcast-transcript-box").innerText = battle.transcript;
+            document.getElementById("js-b-tactical-description").innerText = battle.tacticalDesc;
+
+            const epochLabels = { 'ancient': 'Ежелгі заман', 'middle': 'Орта ғасырлар', 'kazakh-jungar': 'Қазақ-жоңғар соғыстары' };
+            document.getElementById("js-b-epoch-tag").innerText = epochLabels[battle.epoch] || 'Шайқас';
+
+            document.getElementById("js-b-force-my-title").innerText = battle.myTitle;
+            document.getElementById("js-b-force-my-count").innerText = battle.myCount;
+            document.getElementById("js-b-force-opp-title").innerText = battle.oppTitle;
+            document.getElementById("js-b-force-opp-count").innerText = battle.oppCount;
 
             setTimeout(() => {
-                document.getElementById("js-m-kz-bar-fill").style.width = battle.myPercent;
-                document.getElementById("js-m-opp-bar-fill").style.width = battle.oppPercent;
+                document.getElementById("js-b-bar-my").style.width = battle.myPercent;
+                document.getElementById("js-b-bar-opp").style.width = battle.oppPercent;
             }, 100);
 
-            // Vector map rendering loops
-            renderMobileTacticalSchema(battle);
-            renderMobileQuiz(battle);
+            renderTacticalSandbox(battle);
+            renderQuizModule(battle);
         }
 
-        function renderMobileTacticalSchema(battle) {
-            const vp = document.getElementById("js-m-sandbox-viewport");
-            vp.innerHTML = '<div class="mobile-sandbox-grid-overlay"></div>';
+        function closeSidebarMobileMode() {
+            document.getElementById('js-workspace-node').classList.remove('sidebar-active-mobile');
+            resetAudioPodcastEngine();
+            setTimeout(() => map.invalidateSize(), 200);
+        }
 
-            let svg = `<svg class="mobile-tactical-svg-layer">
-                <defs>
-                    <marker id="marr-k" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#00afec"/></marker>
-                    <marker id="marr-e" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#eb4d4b"/></marker>
-                </defs>`;
-            battle.arrows.forEach(a => {
-                svg += `<line x1="${a.fromX}%" y1="${a.fromY}%" x2="${a.toX}%" y2="${a.toY}%" stroke="${a.color}" stroke-width="2.5" stroke-dasharray="4" marker-end="url(${a.color === '#00afec' ? '#marr-k' : '#marr-e'})" />`;
-            });
-            svg += `</svg>`;
-            vp.innerHTML += svg;
+        // ИСПРАВЛЕНО: Генерация тактических стрелок (SVG)
+        function renderTacticalSandbox(battle) {
+            const viewport = document.getElementById("js-tactical-sandbox-viewport");
+            viewport.innerHTML = '<div class="sandbox-grid-matrix-layer"></div>';
 
+            const svgNS = "http://www.w3.org/2000/svg";
+            const svg = document.createElementNS(svgNS, "svg");
+            svg.setAttribute("class", "tactical-vector-arrow-svg");
+            
+            // Генерируем стрелки на основе координат из базы данных
+            if(battle.arrows) {
+                battle.arrows.forEach(arr => {
+                    const path = document.createElementNS(svgNS, "path");
+                    
+                    // Рассчитываем позиции в пикселях на основе процентного соотношения контейнера
+                    const startX = (arr.fromX * 400) / 100;
+                    const startY = (arr.fromY * 180) / 100;
+                    const endX = (arr.toX * 400) / 100;
+                    const endY = (arr.toY * 180) / 100;
+
+                    // Создаем слегка изогнутую дугу атаки
+                    const controlX = (startX + endX) / 2;
+                    const controlY = Math.min(startY, endY) - 20;
+
+                    path.setAttribute("d", `M ${startX} ${startY} Q ${controlX} ${controlY} ${endX} ${endY}`);
+                    path.setAttribute("stroke", arr.color || "var(--z-accent)");
+                    path.setAttribute("stroke-width", "3");
+                    path.setAttribute("fill", "none");
+                    path.setAttribute("class", "animated-tactical-path");
+                    
+                    // Добавляем маркер стрелки в конец пути
+                    const markerId = "arrowhead-" + Math.floor(Math.random() * 1000);
+                    const defs = document.createElementNS(svgNS, "defs");
+                    const marker = document.createElementNS(svgNS, "marker");
+                    marker.setAttribute("id", markerId);
+                    marker.setAttribute("viewBox", "0 0 10 10");
+                    marker.setAttribute("refX", "6");
+                    marker.setAttribute("refY", "5");
+                    marker.setAttribute("markerWidth", "6");
+                    marker.setAttribute("markerHeight", "6");
+                    marker.setAttribute("orient", "auto-start-reverse");
+                    
+                    const markerPath = document.createElementNS(svgNS, "path");
+                    markerPath.setAttribute("d", "M 0 0 L 10 5 L 0 10 z");
+                    markerPath.setAttribute("fill", arr.color || "var(--z-accent)");
+                    
+                    marker.appendChild(markerPath);
+                    defs.appendChild(marker);
+                    svg.appendChild(defs);
+                    path.setAttribute("marker-end", `url(#${markerId})`);
+                    
+                    svg.appendChild(path);
+                });
+            }
+            viewport.appendChild(svg);
+
+            // Рендерим плашки отрядов
             battle.tokens.forEach(t => {
-                const el = document.createElement("div");
-                el.className = `mobile-tactical-token ${t.type}`;
-                el.style.top = t.top; el.style.left = t.left;
-                el.innerText = t.name;
-                vp.appendChild(el);
+                const token = document.createElement("div");
+                token.className = `tactical-squad-token ${t.type}`;
+                token.style.top = t.top; token.style.left = t.left;
+                token.innerText = t.name; 
+                viewport.appendChild(token);
             });
         }
 
-        function renderMobileQuiz(battle) {
-            document.getElementById("js-m-quiz-question").innerText = battle.quizQuestion;
-            const box = document.getElementById("js-m-quiz-options-box");
-            const fb = document.getElementById("js-m-quiz-feedback");
-            box.innerHTML = ""; fb.style.display = "none";
+        function renderQuizModule(battle) {
+            document.getElementById("js-b-quiz-question").innerText = battle.quizQuestion;
+            const wrapper = document.getElementById("js-b-quiz-options-wrapper");
+            const feedback = document.getElementById("js-b-quiz-feedback-box");
+            wrapper.innerHTML = ""; feedback.style.display = "none";
 
-            battle.quizOptions.forEach(o => {
+            battle.quizOptions.forEach(opt => {
                 const btn = document.createElement("button");
-                btn.className = "mobile-quiz-option-row";
-                btn.innerHTML = `<span>${o.text}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.className = "quiz-option-interactive-row";
+                btn.innerHTML = `<span>${opt.text}</span> <i class="fa-regular fa-circle"></i>`;
                 
                 btn.onclick = () => {
-                    box.querySelectorAll(".mobile-quiz-option-row").forEach(r => {
-                        r.style.background = "var(--z-card)"; r.style.borderColor = "var(--z-border)";
-                        r.querySelector("i").className = "fa-regular fa-circle";
-                    });
-
-                    if (o.isCorrect) {
+                    if (opt.isCorrect) {
                         btn.style.background = "#eefbf3"; btn.style.borderColor = "var(--z-success-green)";
-                        btn.querySelector("i").className = "fa-solid fa-circle-check"; btn.querySelector("i").style.color = "var(--z-success-green)";
-                        fb.className = "mobile-quiz-feedback-panel success"; fb.innerText = battle.feedbackText;
+                        feedback.className = "quiz-response-evaluation-toast success";
+                        feedback.innerText = battle.academicFeedback; feedback.style.display = "block";
                     } else {
                         btn.style.background = "#fdf2f2"; btn.style.borderColor = "var(--z-enemy-red)";
-                        btn.querySelector("i").className = "fa-solid fa-circle-xmark"; btn.querySelector("i").style.color = "var(--z-enemy-red)";
-                        fb.className = "mobile-quiz-feedback-panel error"; fb.innerText = "Қате жауап! Деректерді қайта қарап шығыңыз.";
+                        feedback.className = "quiz-response-evaluation-toast error";
+                        feedback.innerText = "Қате жауап! Қайтадан көріңіз."; feedback.style.display = "block";
                     }
-                    fb.style.display = "block";
                 };
-                box.appendChild(btn);
+                wrapper.appendChild(btn);
             });
         }
 
-        // TOUCH COMPACT PODCAST SIMULATOR
-        function handleMobilePodcastEngine() {
-            const ico = document.getElementById("js-m-podcast-icon");
-            if (mobilePodcastActive) {
-                mobilePodcastActive = false; ico.className = "fa-solid fa-play";
-                clearInterval(mobilePodcastTimer);
+        // ИСПРАВЛЕНО: Полноценный, рабочий движок звукового плеера и таймера
+        function handlePodcastPlayPauseEngine() {
+            const sym = document.getElementById("js-podcast-icon-symbol");
+            if (isPodcastRunningState) {
+                clearInterval(activePodcastInterval);
+                sym.className = "fa-solid fa-play"; isPodcastRunningState = false;
             } else {
-                mobilePodcastActive = true; ico.className = "fa-solid fa-pause";
-                mobilePodcastTimer = setInterval(() => {
-                    mobilePodcastPercent += 3.0;
-                    if (mobilePodcastPercent >= 100) {
-                        mobilePodcastPercent = 100; resetMobileAudioPodcast();
+                sym.className = "fa-solid fa-pause"; isPodcastRunningState = true;
+                activePodcastInterval = setInterval(() => {
+                    currentAudioTimeSeconds += 1;
+                    if (currentAudioTimeSeconds >= totalAudioDurationSeconds) {
+                        clearInterval(activePodcastInterval);
+                        currentAudioTimeSeconds = totalAudioDurationSeconds;
+                        sym.className = "fa-solid fa-play"; isPodcastRunningState = false;
                     }
-                    document.getElementById("js-m-podcast-bar").style.width = mobilePodcastPercent + "%";
-                }, 1000);
+                    
+                    const progressPercent = (currentAudioTimeSeconds / totalAudioDurationSeconds) * 100;
+                    document.getElementById("js-podcast-progress-bar").style.width = `${progressPercent}%`;
+                    updatePodcastTimerDisplay(currentAudioTimeSeconds);
+                }, 1000); // Секундный шаг для симуляции реального времени
             }
         }
 
-        function seekMobilePodcastTrack(e) {
-            const track = e.currentTarget; const rect = track.getBoundingClientRect();
-            mobilePodcastPercent = ((e.clientX - rect.left) / rect.width) * 100;
-            document.getElementById("js-m-podcast-bar").style.width = mobilePodcastPercent + "%";
+        function seekPodcastTimelinePosition(event) {
+            const track = event.currentTarget;
+            const clickX = event.clientX - track.getBoundingClientRect().left;
+            const progressPercent = (clickX / track.clientWidth) * 100;
+            
+            currentAudioTimeSeconds = Math.floor((progressPercent / 100) * totalAudioDurationSeconds);
+            document.getElementById("js-podcast-progress-bar").style.width = `${progressPercent}%`;
+            updatePodcastTimerDisplay(currentAudioTimeSeconds);
         }
 
-        function resetMobileAudioPodcast() {
-            mobilePodcastActive = false; mobilePodcastPercent = 0; clearInterval(mobilePodcastTimer);
-            const ico = document.getElementById("js-m-podcast-icon"); if (ico) ico.className = "fa-solid fa-play";
-            const bar = document.getElementById("js-m-podcast-bar"); if (bar) bar.style.width = "0%";
+        function updatePodcastTimerDisplay(secs) {
+            const minutes = Math.floor(secs / 60);
+            const seconds = secs % 60;
+            document.getElementById("js-podcast-timer-label").innerText = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
         }
 
-        function toggleMobileTranscript() {
-            const panel = document.getElementById("js-m-transcript-box");
-            panel.style.display = (panel.style.display === "block") ? "none" : "block";
+        function resetAudioPodcastEngine() {
+            clearInterval(activePodcastInterval);
+            currentAudioTimeSeconds = 0; isPodcastRunningState = false;
+            document.getElementById("js-podcast-icon-symbol").className = "fa-solid fa-play";
+            document.getElementById("js-podcast-progress-bar").style.width = "0%";
+            document.getElementById("js-podcast-timer-label").innerText = "0:00";
+            document.getElementById("js-podcast-transcript-box").style.display = "none";
         }
 
-        function toggleMobileSheetState() {
-            const sheet = document.getElementById("js-mobile-bottom-sheet");
-            sheet.classList.toggle("sheet-fully-expanded");
+        function toggleAudioTranscriptVisibility() {
+            const box = document.getElementById("js-podcast-transcript-box");
+            box.style.display = (box.style.display === "block") ? "none" : "block";
         }
 
-        function filterMobileEpoch(epoch, el) {
-            document.querySelectorAll(".mobile-epoch-pill").forEach(p => p.classList.remove("active-pill"));
-            el.classList.add("active-pill");
+        function filterBattlesByEpoch(epochKey, elementNode) {
+            document.querySelectorAll(".chronology-axis-node").forEach(n => n.classList.remove("active-node"));
+            elementNode.classList.add("active-node");
 
-            if (epoch === "all") { injectMobilePins(MOBILE_BATTLES_DB); return; }
+            if (epochKey === "all") {
+                injectBattleMarkers(MASTER_BATTLES_DATABASE);
+                return;
+            }
             const filtered = {};
-            Object.keys(MOBILE_BATTLES_DB).forEach(k => {
-                if (MOBILE_BATTLES_DB[k].epoch === epoch) filtered[k] = MOBILE_BATTLES_DB[k];
+            Object.keys(MASTER_BATTLES_DATABASE).forEach(k => {
+                if (MASTER_BATTLES_DATABASE[k].epoch === epochKey) filtered[k] = MASTER_BATTLES_DATABASE[k];
             });
-            injectMobilePins(filtered);
-            showMobileToast("Дәуір сүзгісі қолданылды.");
+            injectBattleMarkers(filtered);
         }
 
-        function showMobileToast(msg) {
-            const toast = document.getElementById("js-m-toast-hud");
-            document.getElementById("js-m-toast-text").innerText = msg;
-            toast.classList.add("toast-visible");
-            setTimeout(() => toast.classList.remove("toast-visible"), 3000);
+        function toggleSidebarManually() {
+            document.getElementById('js-workspace-node').classList.remove('sidebar-active-mobile');
+            document.getElementById('js-workspace-node').classList.toggle('sidebar-collapsed');
+            setTimeout(() => map.invalidateSize(), 200);
+        }
+
+        function showPremiumAlert(message) {
+            const alertBox = document.getElementById("js-premium-toast-alert");
+            document.getElementById("js-toast-alert-text-payload").innerText = message;
+            alertBox.classList.add("toast-visible");
+            setTimeout(() => alertBox.classList.remove("toast-visible"), 3000);
+        }
+
+        // ИСПРАВЛЕНО: Функционал модального окна Академических источников
+        function openAcademicModal() {
+            document.getElementById("js-academic-modal").classList.add("modal-active");
+        }
+
+        function closeAcademicModal() {
+            document.getElementById("js-academic-modal").classList.remove("modal-active");
+        }
+
+        function closeAcademicModalViaOverlay(event) {
+            if (event.target === document.getElementById("js-academic-modal")) {
+                closeAcademicModal();
+            }
         }
     </script>
 </body>
