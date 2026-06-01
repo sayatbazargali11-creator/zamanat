@@ -1,1 +1,1092 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ZAMANAT — Дуэль Тарихшылар (PVP Арена)</title>
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    
+    <style>
+        /* ==========================================================================
+           1. ПРЕМИАЛЬНЫЙ БЕЛЫЙ ИНТЕРЬЕР (LUXURY LIGHT BRANDING)
+           ========================================================================== */
+        :root {
+            --bg-main: #fcfcfd;
+            --bg-card: #ffffff;
+            --primary: #d4a359;
+            --primary-dark: #b88742;
+            --primary-light: #fbf7ee;
+            --text-dark: #111113;
+            --text-muted: #666670;
+            --border-color: #ebdcb9;
+            --border-light: #f3e9d2;
+            --success: #2cc471;
+            --success-light: #eefbf3;
+            --error: #eb4d4b;
+            --error-light: #fdf2f2;
+            --shadow-sm: 0 4px 12px rgba(212, 163, 89, 0.05);
+            --shadow-md: 0 12px 30px rgba(212, 163, 89, 0.08);
+            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.04);
+            --transition: all 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-dark);
+            overflow-x: hidden;
+            padding-bottom: 40px;
+            line-height: 1.5;
+        }
+
+        /* Кастомизация скроллбара */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-main);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #e4d7b9;
+            border-radius: 4px;
+        }
+
+        /* ==========================================================================
+           2. ВЕРХНЯЯ НАВИГАЦИОННАЯ ПАНЕЛЬ (HEADER)
+           ========================================================================== */
+        header {
+            background: var(--bg-card);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-light);
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .back-btn {
+            color: var(--text-dark);
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+            border: 1px solid #e5e5ea;
+            padding: 10px 20px;
+            border-radius: 50px;
+            background: var(--bg-card);
+        }
+
+        .back-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        .logo-title h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: var(--text-dark);
+            text-align: center;
+        }
+        .logo-title h1 span { 
+            color: var(--primary); 
+        }
+        .logo-title p {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        .header-stats {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .stat-badge-main {
+            background: var(--primary-light);
+            border: 1px solid var(--border-light);
+            color: var(--primary-dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* ==========================================================================
+           3. ОСНОВНОЙ КОНТЕНТНЫЙ КОНТЕЙНЕР
+           ========================================================================== */
+        .duel-main-wrapper {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 20px;
+        }
+
+        .premium-card-light {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            transition: var(--transition);
+        }
+
+        .mode-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary-light);
+            color: var(--primary-dark);
+            padding: 6px 16px;
+            border-radius: 50px;
+            font-size: 11px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            border: 1px solid var(--border-light);
+            text-transform: uppercase;
+        }
+
+        h2.section-heading {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        p.section-subheading {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Кнопки */
+        .btn-luxury {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            border: none;
+            color: #ffffff;
+            padding: 16px 32px;
+            border-radius: 14px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: 0 6px 16px rgba(212, 163, 89, 0.2);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .btn-luxury:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 163, 89, 0.3);
+        }
+
+        .btn-outline-luxury {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary-dark);
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
+
+        .btn-outline-luxury:hover {
+            background: var(--primary-light);
+        }
+
+        /* ==========================================================================
+           4. СОТОВЫЙ РЕЖИМ ДЛЯ ДВУХ УСТРОЙСТВ (ПРИГЛАШЕНИЕ И ВВОД КОДА)
+           ========================================================================== */
+        .multiplayer-zone {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 30px;
+            border-top: 1px solid #f0f0f5;
+            padding-top: 30px;
+        }
+
+        .invite-box-half {
+            background: #fafafa;
+            border: 1px solid #eeeef5;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 16px;
+        }
+
+        .invite-box-half h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .invite-box-half p {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .generated-code-wrapper {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .code-display-field {
+            background: #ffffff;
+            border: 2px dashed var(--border-color);
+            border-radius: 10px;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: var(--primary-dark);
+            text-align: center;
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 46px;
+        }
+
+        .copy-code-btn {
+            background: var(--primary-light);
+            border: 1px solid var(--border-light);
+            color: var(--primary-dark);
+            width: 46px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .copy-code-btn:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .invite-input-container {
+            display: flex;
+            gap: 8px;
+        }
+
+        .invite-code-input {
+            background: #ffffff;
+            border: 1px solid #d1d1d6;
+            border-radius: 10px;
+            padding: 0 12px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dark);
+            flex-grow: 1;
+            height: 46px;
+            outline: none;
+            transition: var(--transition);
+            text-align: center;
+        }
+
+        .invite-code-input:focus {
+            border-color: var(--primary);
+        }
+
+        .connect-submit-btn {
+            background: var(--text-dark);
+            color: #ffffff;
+            border: none;
+            padding: 0 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 13px;
+            cursor: pointer;
+            transition: var(--transition);
+            height: 46px;
+        }
+
+        .connect-submit-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        .network-connection-status {
+            margin-top: 10px;
+            font-size: 11px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-muted);
+        }
+
+        .network-status-pulse {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #d1d1d6;
+        }
+        .network-status-pulse.active {
+            background: var(--success);
+            animation: netPulse 1.5s infinite;
+        }
+
+        /* ==========================================================================
+           5. ЭКРАН ПОДБОРА ИГРОКОВ (MATCHMAKING)
+           ========================================================================== */
+        .search-loader-container {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .search-spinner-ring {
+            width: 50px;
+            height: 50px;
+            border: 4px solid var(--primary-light);
+            border-top: 4px solid var(--primary);
+            border-radius: 50%;
+            margin: 0 auto 20px;
+            animation: loopRotation 1s linear infinite;
+        }
+
+        .matchmaking-details {
+            background: var(--primary-light);
+            border: 1px solid var(--border-light);
+            padding: 8px 20px;
+            border-radius: 10px;
+            display: inline-block;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-top: 15px;
+        }
+
+        /* ==========================================================================
+           6. ИГРОВАЯ АРЕНА (BATTLE ARENA INTERFACE)
+           ========================================================================== */
+        .battle-arena-layout {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: var(--shadow-md);
+        }
+
+        .versus-hud-panel {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fafafa;
+            padding: 15px 25px;
+            border-radius: 16px;
+            margin-bottom: 30px;
+            border: 1px solid #eeeef5;
+        }
+
+        .hud-player-block {
+            text-align: center;
+            width: 42%;
+        }
+
+        .hud-player-name {
+            font-weight: 800;
+            font-size: 15px;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .hud-player-block.opponent-side .hud-player-name {
+            color: var(--primary-dark);
+        }
+
+        .hud-player-points {
+            font-size: 12px;
+            color: var(--text-muted);
+            font-weight: 600;
+            background: #ffffff;
+            padding: 4px 10px;
+            border-radius: 50px;
+            display: inline-block;
+            border: 1px solid #e5e5ea;
+        }
+
+        .hud-vs-badge {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: #ffffff;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 12px;
+            box-shadow: 0 4px 10px rgba(212, 163, 89, 0.2);
+            flex-shrink: 0;
+        }
+
+        .hud-dots-matrix {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .matrix-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #e5e5ea;
+            transition: var(--transition);
+        }
+        .matrix-dot.correct { 
+            background: var(--success); 
+        }
+        .matrix-dot.wrong { 
+            background: var(--error); 
+        }
+
+        .arena-interactive-zone {
+            text-align: center;
+        }
+
+        .hud-round-timer {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 20px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--primary-light);
+            padding: 6px 16px;
+            border-radius: 50px;
+            border: 1px solid var(--border-light);
+        }
+
+        .arena-question-text {
+            font-size: 20px;
+            font-weight: 700;
+            line-height: 1.4;
+            margin-bottom: 25px;
+            color: var(--text-dark);
+            min-height: 60px;
+        }
+
+        .arena-answers-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .arena-answer-button {
+            background: #ffffff;
+            border: 1px solid #e5e5ea;
+            padding: 16px 20px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            transition: var(--transition);
+            text-align: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            outline: none;
+            width: 100%;
+        }
+
+        .arena-answer-button:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        /* ==========================================================================
+           7. ЭКРАН ИТОГОВ (RESULTS DASHBOARD)
+           ========================================================================== */
+        .result-dashboard-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .scoreboard-comparison {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            background: #fafafa;
+            padding: 16px;
+            border-radius: 16px;
+            border: 1px solid #eeeef5;
+        }
+
+        .scoreboard-item {
+            text-align: center;
+        }
+
+        .scoreboard-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .scoreboard-value {
+            font-size: 22px;
+            font-weight: 800;
+        }
+
+        /* ==========================================================================
+           8. АДАПТИВНЫЙ МОБИЛЬНЫЙ РЕЖИМ (СОТОВЫЙ ДИЗАЙН)
+           ========================================================================== */
+        @media (max-width: 600px) {
+            header {
+                padding: 14px 16px;
+                flex-direction: column;
+                gap: 12px;
+            }
+            .back-btn {
+                width: 100%;
+                justify-content: center;
+                order: 3;
+            }
+            .header-stats {
+                width: 100%;
+                justify-content: center;
+                order: 2;
+            }
+            .logo-title h1 {
+                font-size: 22px;
+            }
+            .duel-main-wrapper {
+                margin: 15px auto;
+                padding: 0 12px;
+            }
+            .premium-card-light, .battle-arena-layout {
+                padding: 24px 16px;
+                border-radius: 16px;
+            }
+            h2.section-heading {
+                font-size: 22px;
+            }
+            .multiplayer-zone {
+                grid-template-columns: 1fr;
+                gap: 16px;
+                padding-top: 20px;
+                margin-top: 20px;
+            }
+            .versus-hud-panel {
+                padding: 12px;
+                margin-bottom: 20px;
+            }
+            .hud-player-name {
+                font-size: 13px;
+            }
+            .arena-question-text {
+                font-size: 17px;
+                margin-bottom: 20px;
+            }
+            .arena-answers-grid {
+                grid-template-columns: 1fr;
+                gap: 10px;
+            }
+            .arena-answer-button {
+                padding: 14px 16px;
+                font-size: 13px;
+                border-radius: 12px;
+            }
+            .matrix-dot {
+                width: 8px;
+                height: 8px;
+            }
+        }
+
+        /* Анимации */
+        @keyframes loopRotation {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        @keyframes netPulse {
+            0% { box-shadow: 0 0 0 0 rgba(44, 196, 113, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(44, 196, 113, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(44, 196, 113, 0); }
+        }
+
+        .text-success { color: var(--success) !important; }
+        .text-error { color: var(--error) !important; }
+        .text-primary { color: var(--primary-dark) !important; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="back-btn">
+            <i class="fa-solid fa-arrow-left"></i> Платформаға қайту
+        </a>
+        <div class="logo-title">
+            <h1>ZAMANAT <span>DUEL</span></h1>
+            <p>Интеллектуалды тарихшылар аренасы</p>
+        </div>
+        <div class="header-stats">
+            <div class="stat-badge-main">
+                <i class="fa-solid fa-trophy"></i> Рейтинг: <span id="user-global-rating">1200</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="duel-main-wrapper">
+        
+        <div class="premium-card-light" id="screen-welcome">
+            <div class="mode-badge">
+                <i class="fa-solid fa-bolt"></i> Онлайн PVP Режим
+            </div>
+            <h2 class="section-heading">Дуэль Тарихшылар</h2>
+            <p class="section-subheading">
+                Қазақстан тарихы пәні бойынша біліміңізді сынға салыңыз. Басқа оқушымен немесе өз досыңызбен 5 сұрақтан тұратын жылдамдық шайқасына қатысыңыз!
+            </p>
+            
+            <div style="margin-bottom: 10px;">
+                <button class="btn-luxury" onclick="triggerMatchmaking('random')">
+                    <i class="fa-solid fa-earth-asia"></i> Кездейсоқ қарсылас іздеу
+                </button>
+            </div>
+
+            <div class="multiplayer-zone">
+                <div class="invite-box-half">
+                    <div>
+                        <h4><i class="fa-solid fa-user-plus text-primary"></i> Досты шақыру</h4>
+                        <p>Бірегей шақыру кодын генерациялаңыз және оны екінші құрылғыдағы досыңызға жіберіңіз.</p>
+                    </div>
+                    <div>
+                        <div class="generated-code-wrapper">
+                            <div class="code-display-field" id="invite-code-output">------</div>
+                            <button class="copy-code-btn" onclick="copyInvitationCode()" title="Көшіру">
+                                <i class="fa-regular fa-copy"></i>
+                            </button>
+                        </div>
+                        <button class="btn-outline-luxury" onclick="generateMultiplayerCode()">
+                            <i class="fa-solid fa-wand-magic-sparkles"></i> Кодты алу
+                        </button>
+                    </div>
+                </div>
+
+                <div class="invite-box-half">
+                    <div>
+                        <h4><i class="fa-solid fa-key text-primary"></i> Код арқылы кіру</h4>
+                        <p>Егер досыңыз сізге код жіберген болса, оны төмендегі өріске енгізіп, оның бөлмесіне қосылыңыз.</p>
+                    </div>
+                    <div>
+                        <div class="invite-input-container">
+                            <input type="text" class="invite-code-input" id="invite-code-input-field" placeholder="X49B2" maxlength="6">
+                            <button class="connect-submit-btn" onclick="connectToFriendRoom()">
+                                Қосылу
+                            </button>
+                        </div>
+                        <div class="network-connection-status">
+                            <div class="network-status-pulse" id="net-pulse"></div>
+                            <span id="network-status-text">Желі күйі: Күту режимі</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="premium-card-light" id="screen-matchmaking" style="display: none;">
+            <div class="search-loader-container">
+                <div class="search-spinner-ring"></div>
+                <h2 class="section-heading" id="matchmaking-title">Қарсылас ізделуде...</h2>
+                <p class="section-subheading" id="matchmaking-desc">ҰБТ дайындық платформасының белсенді пайдаланушылары тексерілуде.</p>
+                <div class="matchmaking-details" id="matchmaking-timer-badge">
+                    Уақыт: <span id="matchmaking-seconds">0</span> сек
+                </div>
+                <div style="margin-top: 30px;">
+                    <button class="btn-outline-luxury" onclick="cancelMatchmaking()">
+                        <i class="fa-solid fa-xmark"></i> Іздеуді тоқтату
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="battle-arena-layout" id="screen-arena" style="display: none;">
+            <div class="versus-hud-panel">
+                <div class="hud-player-block my-side">
+                    <div class="hud-player-name">СІЗ</div>
+                    <div class="hud-player-points" id="arena-my-score">0 ұпай</div>
+                    <div class="hud-dots-matrix" id="my-matrix-dots"></div>
+                </div>
+                
+                <div class="hud-vs-badge">VS</div>
+                
+                <div class="hud-player-block opponent-side">
+                    <div class="hud-player-name" id="arena-opp-name">Қарсылас</div>
+                    <div class="hud-player-points" id="arena-opp-score">0 ұпай</div>
+                    <div class="hud-dots-matrix" id="opp-matrix-dots"></div>
+                </div>
+            </div>
+
+            <div class="arena-interactive-zone">
+                <div class="hud-round-timer">
+                    <i class="fa-regular fa-clock"></i> <span id="arena-timer-value">15</span> сек
+                </div>
+                <h3 class="arena-question-text" id="arena-current-question">
+                    Сұрақ мәтіні жүктелуде...
+                </h3>
+                <div class="arena-answers-grid" id="arena-answers-container"></div>
+            </div>
+        </div>
+
+        <div class="premium-card-light" id="screen-results" style="display: none; text-align: center;">
+            <div class="result-dashboard-icon" id="result-emoji">🏆</div>
+            <h2 class="section-heading" id="result-status-title">Сіз жеңдіңіз!</h2>
+            <p class="section-subheading" id="result-status-desc">Тамаша нәтиже, біліміңіз жоғары деңгейде!</p>
+            
+            <div class="scoreboard-comparison">
+                <div class="scoreboard-item">
+                    <div class="scoreboard-label">Сіздің ұпай</div>
+                    <div class="scoreboard-value text-success" id="result-my-score">0</div>
+                </div>
+                <div class="scoreboard-item">
+                    <div class="scoreboard-label">Қарсылас ұпайы</div>
+                    <div class="scoreboard-value text-error" id="result-opp-score">0</div>
+                </div>
+            </div>
+
+            <button class="btn-luxury" onclick="returnToMainMenu()">
+                <i class="fa-solid fa-house"></i> Басты мәзірге оралу
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        // АДРЕС ВАШЕГО БЭКЕНД-СЕРВЕРА (Замените на URL от Render/Railway после деплоя)
+        const SERVER_URL = "http://localhost:3000"; 
+        let socket;
+
+        let currentRoomCode = "";
+        let myRole = "host"; // 'host' или 'guest'
+        let activeMatchQuestions = [];
+        let currentRoundIndex = 0;
+        let myAccumulatedPoints = 0;
+        let opponentAccumulatedPoints = 0;
+        let roundCountdownInterval = null;
+        let isCurrentRoundAnswered = false;
+        let matchmakingSecondsCount = 0;
+        let globalMatchmakingTimer = null;
+
+        // Попытка инициализации веб-сокета
+        try {
+            socket = io(SERVER_URL, { autoConnect: true });
+
+            // Сетевой ответ: Матч найден и синхронизирован
+            socket.on('match_found', (data) => {
+                if (globalMatchmakingTimer) clearInterval(globalMatchmakingTimer);
+                
+                currentRoomCode = data.roomCode;
+                activeMatchQuestions = data.questions;
+                
+                // Определяем кто мы на основе ID сокета от сервера
+                if (data.hostId === socket.id) {
+                    myRole = "host";
+                    document.getElementById("arena-opp-name").innerText = data.opponentName || data.guestName || "Қарсылас";
+                } else {
+                    myRole = "guest";
+                    document.getElementById("arena-opp-name").innerText = data.opponentName || data.hostName || "Қарсылас";
+                }
+
+                // Переключаем экраны на арену боевых действий
+                document.getElementById("screen-welcome").style.display = "none";
+                document.getElementById("screen-matchmaking").style.display = "none";
+                document.getElementById("screen-arena").style.display = "block";
+
+                initArenaHUD();
+            });
+
+            // Обновление лампочек ответов соперника по сети в реальном времени
+            socket.on('player_status_update', (status) => {
+                myAccumulatedPoints = (myRole === "host") ? status.hostScore : status.guestScore;
+                opponentAccumulatedPoints = (myRole === "host") ? status.guestScore : status.hostScore;
+
+                document.getElementById("arena-my-score").innerText = `${myAccumulatedPoints} ұпай`;
+                document.getElementById("arena-opp-score").innerText = `${opponentAccumulatedPoints} ұпай`;
+
+                const oppDots = document.getElementById("opp-matrix-dots").children;
+                if (status.senderSide !== myRole) {
+                    if (oppDots[status.currentRoundIndex]) {
+                        oppDots[status.currentRoundIndex].className = status.senderCorrect ? "matrix-dot correct" : "matrix-dot wrong";
+                    }
+                }
+            });
+
+            // Команда от сервера на переход к следующему раунду
+            socket.on('next_round', (nextRoundIndex) => {
+                currentRoundIndex = nextRoundIndex;
+                executeArenaRound();
+            });
+
+            // Команда от сервера: Игра завершена, вывод финальной аналитики
+            socket.on('match_finished', (finalData) => {
+                clearInterval(roundCountdownInterval);
+                document.getElementById("screen-arena").style.display = "none";
+                document.getElementById("screen-results").style.display = "block";
+
+                const finalMy = (myRole === "host") ? finalData.finalHostScore : finalData.finalGuestScore;
+                const finalOpp = (myRole === "host") ? finalData.finalGuestScore : finalData.finalHostScore;
+
+                document.getElementById("result-my-score").innerText = finalMy;
+                document.getElementById("result-opp-score").innerText = finalOpp;
+
+                const titleEl = document.getElementById("result-status-title");
+                const emojiEl = document.getElementById("result-emoji");
+                const descEl = document.getElementById("result-status-desc");
+                let currentRating = parseInt(document.getElementById("user-global-rating").innerText);
+
+                if (finalMy > finalOpp) {
+                    emojiEl.innerText = "🏆";
+                    titleEl.innerText = "Жеңіс! Сіз ұттыңыз!";
+                    titleEl.className = "section-heading text-success";
+                    descEl.innerText = "Тамаша интеллект! Рейтингіңізге +25 ұпай қосылды.";
+                    document.getElementById("user-global-rating").innerText = currentRating + 25;
+                } else if (finalMy < finalOpp) {
+                    emojiEl.innerText = "💥";
+                    titleEl.innerText = "Қарсылас жеңіске жетті";
+                    titleEl.className = "section-heading text-error";
+                    descEl.innerText = "Бұл жолы сәттілік қарсыласта болды. Рейтинг: -15.";
+                    document.getElementById("user-global-rating").innerText = Math.max(1000, currentRating - 15);
+                } else {
+                    emojiEl.innerText = "🤝";
+                    titleEl.innerText = "Тең ойын!";
+                    titleEl.className = "section-heading text-primary";
+                    descEl.innerText = "Екі тарап та мықты біліктілік танытты.";
+                }
+            });
+
+            // Аварийное отключение оппонента (Вылет из сети, разрядка батареи)
+            socket.on('opponent_disconnected', (msg) => {
+                clearInterval(roundCountdownInterval);
+                alert(msg);
+                returnToMainMenu();
+            });
+
+            socket.on('error_message', (msg) => {
+                alert(msg);
+                returnToMainMenu();
+            });
+
+        } catch (err) {
+            console.error("Сетевой движок Socket.io недоступен:", err);
+        }
+
+        // КНОПКА: Сгенерировать случайный код и открыть комнату для друга
+        function generateMultiplayerCode() {
+            const characters = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let generatedCode = "";
+            for (let i = 0; i < 5; i++) {
+                generatedCode += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            
+            currentRoomCode = generatedCode;
+            document.getElementById("invite-code-output").innerText = generatedCode;
+            
+            // Отправляем сигнал создания комнаты бэкенду
+            if (socket) socket.emit('create_room', generatedCode);
+
+            document.getElementById("net-pulse").className = "network-status-pulse active";
+            document.getElementById("network-status-text").innerText = "Желі күйі: Бөлме ашылды. Досыңызды күтуде...";
+        }
+
+        // КНОПКА: Подключиться ко второму устройству друга по коду
+        function connectToFriendRoom() {
+            const enteredCode = document.getElementById("invite-code-input-field").value.trim().toUpperCase();
+            if (enteredCode.length < 5) {
+                alert("Кодты дұрыс енгізіңіз (5 таңба)!");
+                return;
+            }
+            if (socket) socket.emit('join_room', enteredCode);
+        }
+
+        // КНОПКА: Быстрый запуск случайного автоматического поиска
+        function triggerMatchmaking(mode) {
+            document.getElementById("screen-welcome").style.display = "none";
+            document.getElementById("screen-matchmaking").style.display = "block";
+            
+            matchmakingSecondsCount = 0;
+            document.getElementById("matchmaking-seconds").innerText = matchmakingSecondsCount;
+            
+            if (socket) socket.emit('start_matchmaking');
+
+            globalMatchmakingTimer = setInterval(() => {
+                matchmakingSecondsCount++;
+                document.getElementById("matchmaking-seconds").innerText = matchmakingSecondsCount;
+            }, 1000);
+        }
+
+        function cancelMatchmaking() {
+            if (globalMatchmakingTimer) clearInterval(globalMatchmakingTimer);
+            if (socket) socket.emit('cancel_matchmaking');
+            returnToMainMenu();
+        }
+
+        // Инициализация игровой графики раундов (Dots Matrix)
+        function initArenaHUD() {
+            myAccumulatedPoints = 0;
+            opponentAccumulatedPoints = 0;
+            currentRoundIndex = 0;
+
+            document.getElementById("arena-my-score").innerText = "0 ұпай";
+            document.getElementById("arena-opp-score").innerText = "0 ұпай";
+            document.getElementById("my-matrix-dots").innerHTML = '<div class="matrix-dot"></div>'.repeat(5);
+            document.getElementById("opp-matrix-dots").innerHTML = '<div class="matrix-dot"></div>'.repeat(5);
+
+            executeArenaRound();
+        }
+
+        function executeArenaRound() {
+            isCurrentRoundAnswered = false;
+            const questionData = activeMatchQuestions[currentRoundIndex];
+
+            document.getElementById("arena-current-question").innerText = `${currentRoundIndex + 1}. ${questionData.q}`;
+            
+            const answersContainer = document.getElementById("arena-answers-container");
+            answersContainer.innerHTML = "";
+
+            questionData.o.forEach(optionText => {
+                let btn = document.createElement("button");
+                btn.className = "arena-answer-button";
+                btn.innerHTML = `<span>${optionText}</span> <i class="fa-regular fa-circle"></i>`;
+                btn.onclick = () => processUserAnswerSelection(optionText, btn);
+                answersContainer.appendChild(btn);
+            });
+
+            let roundTimeRemaining = 15;
+            document.getElementById("arena-timer-value").innerText = roundTimeRemaining;
+            if (roundCountdownInterval) clearInterval(roundCountdownInterval);
+
+            roundCountdownInterval = setInterval(() => {
+                roundTimeRemaining--;
+                document.getElementById("arena-timer-value").innerText = roundTimeRemaining;
+
+                if (roundTimeRemaining <= 0) {
+                    clearInterval(roundCountdownInterval);
+                    if (!isCurrentRoundAnswered) {
+                        processUserAnswerSelection("", null);
+                    }
+                }
+            }, 1000);
+        }
+
+        function processUserAnswerSelection(selectedText, clickedButtonElement) {
+            if (isCurrentRoundAnswered) return;
+            isCurrentRoundAnswered = true;
+            clearInterval(roundCountdownInterval);
+
+            const questionData = activeMatchQuestions[currentRoundIndex];
+            const isCorrect = (selectedText === questionData.c);
+            const myDots = document.getElementById("my-matrix-dots").children;
+
+            if (clickedButtonElement) {
+                if (isCorrect) {
+                    clickedButtonElement.style.background = "var(--success-light)";
+                    clickedButtonElement.style.borderColor = "var(--success)";
+                    clickedButtonElement.querySelector("i").className = "fa-solid fa-circle-check text-success";
+                    if (myDots[currentRoundIndex]) myDots[currentRoundIndex].className = "matrix-dot correct";
+                } else {
+                    clickedButtonElement.style.background = "var(--error-light)";
+                    clickedButtonElement.style.borderColor = "var(--error)";
+                    clickedButtonElement.querySelector("i").className = "fa-solid fa-circle-xmark text-error";
+                    if (myDots[currentRoundIndex]) myDots[currentRoundIndex].className = "matrix-dot wrong";
+                    highlightCorrectAnswer(questionData.c);
+                }
+            } else {
+                if (myDots[currentRoundIndex]) myDots[currentRoundIndex].className = "matrix-dot wrong";
+                highlightCorrectAnswer(questionData.c);
+            }
+
+            // Отправляем пакет ответа на сервер для сверки со вторым устройством
+            if (socket) {
+                socket.emit('submit_answer', {
+                    roomCode: currentRoomCode,
+                    isCorrect: isCorrect,
+                    scoreAdded: 20
+                });
+            }
+        }
+
+        function highlightCorrectAnswer(correctText) {
+            const buttons = document.querySelectorAll(".arena-answer-button");
+            buttons.forEach(btn => {
+                if (btn.innerText.trim() === correctText) {
+                    btn.style.background = "var(--success-light)";
+                    btn.style.borderColor = "var(--success)";
+                }
+            });
+        }
+
+        function copyInvitationCode() {
+            const output = document.getElementById("invite-code-output").innerText;
+            if (output === "------") return alert("Алдымен кодты генерациялаңыз!");
+            navigator.clipboard.writeText(output);
+            alert("Шақыру коды көшірілді: " + output);
+        }
+
+        function returnToMainMenu() {
+            document.getElementById("screen-results").style.display = "none";
+            document.getElementById("screen-matchmaking").style.display = "none";
+            document.getElementById("screen-arena").style.display = "none";
+            document.getElementById("screen-welcome").style.display = "block";
+            
+            document.getElementById("invite-code-output").innerText = "------";
+            document.getElementById("invite-code-input-field").value = "";
+            document.getElementById("net-pulse").className = "network-status-pulse";
+            document.getElementById("network-status-text").innerText = "Желі күйі: Күту режимі";
+            currentRoomCode = "";
+        }
+    </script>
+</body>
+</html>
