@@ -829,34 +829,29 @@
            3. PERFECT MOBILE RESPONSIVE
            ========================================================================== */
         @media (max-width: 1024px) {
-            /* ТЕК ХИДЕР ЭЛЕМЕНТТЕРІ ӨЗГЕРТІЛДІ (ҮЛКЕЙТІЛДІ) */
             .premium-top-navigation-bar {
-                height: 64px; /* Биіктігі 56px-тен 64px-ке үлкейтілді */
+                height: 56px;
                 padding: 0 16px;
             }
 
             .header-branding-group {
-                gap: 14px;
+                gap: 12px;
             }
 
             .back-dashboard-anchor {
-                padding: 10px 14px; /* Басуға ыңғайлы болу үшін ішкі бос орындары үлкейтілді */
-                font-size: 13px;
-                border-radius: 10px;
+                padding: 6px 10px;
+                font-size: 11px;
+                border-radius: 8px;
             }
 
             .branding-meta-titles h1 {
-                font-size: 15px; /* Бас тақырып қаріпі үлкейтілді */
-                font-weight: 800;
-                display: flex;
-                align-items: center;
-                gap: 6px;
+                font-size: 13px;
+                gap: 4px;
             }
 
             .branding-meta-titles h1 span {
-                font-size: 10px; /* "Hronika" таңбасы үлкейтілді */
-                padding: 2px 6px;
-                border-radius: 6px;
+                font-size: 8px;
+                padding: 1px 4px;
             }
 
             .branding-meta-titles p {
@@ -864,14 +859,9 @@
             }
 
             .academic-reference-pill {
-                padding: 10px 14px; /* Батырманың өлшемі қолға қолайлы етіп үлкейтілді */
-                border-radius: 10px;
-                font-size: 12px; /* Мәтін толық өшпей, ықшам оқылатын күйде қалды */
-                gap: 6px;
-                height: 38px;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
+                padding: 6px;
+                border-radius: 8px;
+                font-size: 0;
             }
             .academic-reference-pill i {
                 font-size: 14px;
@@ -880,23 +870,9 @@
 
             .geographic-workspace-matrix {
                 flex-direction: column;
-                height: calc(100vh - 64px); /* Жаңа хидер биіктігіне сәйкес (-64px) етіп реттелді */
+                height: calc(100vh - 56px);
             }
 
-            /* Экран өлшемі өте кішкентай телефондар үшін (мысалы, 380px-тен төмен) */
-            @media (max-width: 380px) {
-                .academic-reference-pill {
-                    width: 38px;
-                    padding: 0;
-                    font-size: 0; /* Мәтін симай кетпеуі үшін тек белгіше (иконка) қалады */
-                }
-                .branding-meta-titles h1 {
-                    font-size: 13px;
-                }
-            }
-
-
-            /* БҰЛ ЭЛЕМЕНТТЕРГЕ ТИІСПЕДІМ (БАСТАПҚЫ ҚАЛПЫНДА САҚТАЛДЫ) */
             .map-viewport-wrapper {
                 height: 100%;
                 width: 100%;
