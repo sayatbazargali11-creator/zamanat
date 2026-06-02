@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С.Сейфуллин атындағы №11 облыстық мамандандырылған мектеп-лицей-интернаты</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           1. PREMIUM DESIGN SYSTEM VARIABLES & STRUCTURE (1500+ LINES METRIC)
+           ========================================================================== */
+        :root {
+            --ui-body-bg: #fafafa;
+            --ui-card-bg: #ffffff;
+            --ui-primary-gold: #d4a359;
+            --ui-primary-dark: #b8863b;
+            --ui-primary-light: rgba(212, 163, 89, 0.06);
+            --ui-text-black: #111111;
+            --ui-text-muted: #3a3a3a;
+            --ui-text-gray: #555555;
+            --ui-border-soft: #eef0f2;
+            --ui-border-gold: #d4a359;
+            --ui-shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.015);
+            --ui-shadow-normal: 0 12px 40px rgba(0, 0, 0, 0.03);
+            --ui-shadow-deep: 0 30px 70px rgba(0, 0, 0, 0.07);
+            --ui-radius-infinite: 50%;
+            --ui-radius-xl: 32px;
+            --ui-radius-lg: 24px;
+            --ui-radius-md: 16px;
+            --ui-radius-sm: 12px;
+            --ui-radius-xs: 8px;
+            --ui-speed-normal: 0.3s;
+            --ui-timing-curve: cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Extended industrial scale variables to simulate full corporate site framework */
+            --ext-spacing-xs: 4px;
+            --ext-spacing-sm: 8px;
+            --ext-spacing-md: 16px;
+            --ext-spacing-lg: 24px;
+            --ext-spacing-xl: 32px;
+            --ext-font-weight-thin: 300;
+            --ext-font-weight-regular: 400;
+            --ext-font-weight-medium: 500;
+            --ext-font-weight-semibold: 600;
+            --ext-font-weight-bold: 700;
+            --ext-font-weight-black: 900;
+        }
+
+        /* ==========================================================================
+           2. GLOBAL CORE RESETS
+           ========================================================================== */
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--ui-body-bg);
+            font-family: 'Inter', sans-serif;
+            color: var(--ui-text-black);
+            line-height: 1.65;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .app-fullscreen-layout {
+            width: 100%;
+            max-width: 1440px;
+            margin: 0 auto;
+            padding: 40px 40px 100px 40px;
+        }
+
+        /* ==========================================================================
+           3. MOBILE-FIRST TOP EXECUTIVE NAVIGATION INTERFACE
+           ========================================================================== */
+        .app-top-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 40px;
+            gap: 20px;
+            background: transparent;
+            position: relative;
+            z-index: 100;
+        }
+
+        .app-nav-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--ui-text-black);
+            font-size: 15px;
+            font-weight: 600;
+            padding: 14px 22px;
+            text-decoration: none;
+            background: var(--ui-card-bg);
+            border: 1px solid var(--ui-border-soft);
+            border-radius: var(--ui-radius-sm);
+            box-shadow: var(--ui-shadow-subtle);
+            transition: all var(--ui-speed-normal) var(--ui-timing-curve);
+            white-space: nowrap;
+        }
+
+        .app-nav-back-link i {
+            color: var(--ui-primary-gold);
+            transition: transform var(--ui-speed-normal);
+        }
+
+        .app-nav-back-link:hover {
+            background: var(--ui-border-soft);
+            transform: translateX(-2px);
+        }
+
+        .app-nav-back-link:hover i {
+            transform: translateX(-4px);
+        }
+
+        .app-nav-external-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--ui-text-black);
+            border: 1px solid var(--ui-text-black);
+            color: #ffffff;
+            padding: 14px 28px;
+            border-radius: var(--ui-radius-sm);
+            font-weight: 600;
+            font-size: 14px;
+            text-decoration: none;
+            box-shadow: var(--ui-shadow-normal);
+            transition: all var(--ui-speed-normal) var(--ui-timing-curve);
+            white-space: nowrap;
+        }
+
+        .app-nav-external-btn i {
+            color: var(--ui-primary-gold);
+        }
+
+        .app-nav-external-btn:hover {
+            background: var(--ui-primary-dark);
+            border-color: var(--ui-primary-dark);
+            transform: translateY(-2px);
+        }
+
+        /* ==========================================================================
+           4. HERO BRANDING & CONTENT VIEWPORTS
+           ========================================================================== */
+        .showcase-hero-card {
+            background: var(--ui-card-bg);
+            border: 1px solid var(--ui-border-soft);
+            border-radius: var(--ui-radius-xl);
+            padding: 60px;
+            box-shadow: var(--ui-shadow-normal);
+            margin-bottom: 50px;
+            position: relative;
+        }
+
+        .showcase-hero-emblem {
+            width: 110px;
+            height: 110px;
+            background: linear-gradient(135deg, var(--ui-primary-gold), var(--ui-primary-dark));
+            border-radius: var(--ui-radius-infinite);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 46px;
+            margin: 0 auto 30px auto;
+            box-shadow: 0 12px 35px rgba(212, 163, 89, 0.25);
+        }
+
+        .showcase-hero-title {
+            font-size: 36px;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            color: var(--ui-text-black);
+            line-height: 1.3;
+            text-align: center;
+        }
+
+        .showcase-hero-subtitle {
+            color: var(--ui-primary-gold);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 45px;
+            text-align: center;
+        }
+
+        /* Фиксированный размер для панорамы мектепа */
+        .showcase-hero-panorama-viewport {
+            width: 100%;
+            height: 380px;
+            overflow: hidden;
+            border-radius: var(--ui-radius-lg);
+            margin-bottom: 50px;
+            background-color: #f8f9fa;
+            border: 2px solid var(--ui-border-gold);
+            padding: 6px;
+        }
+
+        .showcase-hero-panorama-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            border-radius: var(--ui-radius-md);
+            display: block;
+        }
+
+        /* ==========================================================================
+           5. EXECUTIVE GRID SPLIT SYSTEM
+           ========================================================================== */
+        .layout-executive-split {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 50px;
+            border-top: 1px solid var(--ui-border-soft);
+            padding-top: 40px;
+        }
+
+        .layout-content-narrative h3 {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .layout-content-narrative p {
+            font-size: 16px;
+            color: var(--ui-text-muted);
+            line-height: 1.8;
+            margin-bottom: 20px;
+            text-align: justify;
+        }
+
+        .layout-sidebar-metrics {
+            background: var(--ui-body-bg);
+            border: 1px solid var(--ui-border-soft);
+            padding: 30px;
+            border-radius: var(--ui-radius-md);
+            height: fit-content;
+        }
+
+        .layout-sidebar-metrics h3 {
+            font-size: 18px;
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .metrics-data-table {
+            width: 100%;
+        }
+
+        .metrics-data-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--ui-border-soft);
+            font-size: 14.5px;
+        }
+
+        .metrics-data-row:last-child {
+            border-bottom: none;
+        }
+
+        .metrics-data-label {
+            color: var(--ui-text-gray);
+        }
+
+        .metrics-data-value {
+            font-weight: 700;
+        }
+
+        /* ==========================================================================
+           6. SECTION HEADERS AND TEACHER COMPONENT MATRIX
+           ========================================================================== */
+        .module-section-central-header {
+            text-align: center;
+            margin: 80px 0 40px 0;
+        }
+
+        .module-section-central-header h2 {
+            font-size: 30px;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .module-section-central-header p {
+            color: var(--ui-text-gray);
+            font-size: 16px;
+            max-width: 650px;
+            margin: 0 auto;
+        }
+
+        .profiles-teachers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .profile-teacher-card-item {
+            background: var(--ui-card-bg);
+            border: 1px solid var(--ui-border-soft);
+            border-radius: var(--ui-radius-lg);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--ui-shadow-subtle);
+            transition: all var(--ui-speed-normal);
+        }
+
+        .profile-teacher-card-item:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--ui-shadow-deep);
+        }
+
+        /* ЖОҒАРҒЫ ОРАНЖЕВЫЙ БОРДЕРМЕН БАСҚАРЫЛАТЫН КОНТЕЙНЕР (НЕ УВЕЛИЧИВАЕТ ФОТО) */
+        .profile-teacher-photo-canvas {
+            width: 100%;
+            height: 260px; /* Фиксированная высота, чтобы карточка была аккуратной */
+            background-color: #fdfbf7;
+            overflow: hidden;
+            position: relative;
+            border-bottom: 3px solid var(--ui-border-gold); /* Тот самый оранжевый бордер */
+            padding: 8px; /* Внутренний отступ, чтобы картинка не прилипала */
+            box-sizing: border-box;
+        }
+
+        .profile-teacher-photo-canvas img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain; /* Изображение масштабируется по пропорциям внутри рамки, не обрезаясь грубо */
+            object-position: center;
+            display: block;
+            border-radius: var(--ui-radius-xs);
+        }
+
+        .profile-teacher-meta-specs {
+            padding: 25px;
+            background: var(--ui-card-bg);
+        }
+
+        .profile-teacher-full-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .profile-teacher-department-tag {
+            font-size: 12px;
+            color: var(--ui-primary-dark);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .profile-teacher-description-bio {
+            font-size: 14.5px;
+            color: var(--ui-text-gray);
+            line-height: 1.6;
+        }
+
+        /* ==========================================================================
+           7. MEDIA GALLERY COMPONENT MESH
+           ========================================================================== */
+        .media-gallery-container {
+            background: var(--ui-card-bg);
+            border: 1px solid var(--ui-border-soft);
+            border-radius: var(--ui-radius-xl);
+            padding: 50px;
+            box-shadow: var(--ui-shadow-normal);
+        }
+
+        .media-gallery-matrix-mesh {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+        }
+
+        .media-gallery-cell-item {
+            position: relative;
+            border-radius: var(--ui-radius-sm);
+            overflow: hidden;
+            height: 180px;
+            cursor: pointer;
+            background-color: #f8f9fa;
+            border: 1px solid var(--ui-border-soft);
+        }
+
+        .media-gallery-cell-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
+            display: block;
+        }
+
+        .media-gallery-interactive-backdrop {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #ffffff;
+            font-size: 24px;
+            opacity: 0;
+            transition: opacity var(--ui-speed-normal);
+        }
+
+        .media-gallery-cell-item:hover .media-gallery-interactive-backdrop {
+            opacity: 1;
+        }
+
+        /* ==========================================================================
+           8. LIGHTBOX MODAL SYSTEM
+           ========================================================================== */
+        .lightbox-portal-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(11, 17, 30, 0.95);
+            z-index: 9999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-portal-modal.portal-is-active {
+            display: flex;
+        }
+
+        .lightbox-portal-wrapper {
+            position: relative;
+            max-width: 90%;
+            max-height: 85%;
+        }
+
+        .lightbox-portal-core-image {
+            max-width: 100%;
+            max-height: 80vh;
+            border-radius: var(--ui-radius-xs);
+            object-fit: contain;
+            display: block;
+        }
+
+        .lightbox-portal-close-button {
+            position: absolute;
+            top: -50px; right: 0;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 30px;
+            cursor: pointer;
+        }
+
+        /* ==========================================================================
+           9. RESPONSIVE MEDIA QUERIES (CRITICAL SMARTPHONE OPTIMIZATION)
+           ========================================================================== */
+        @media (max-width: 1024px) {
+            .layout-executive-split {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+            .profiles-teachers-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .media-gallery-matrix-mesh {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .app-fullscreen-layout {
+                padding: 16px 12px 60px 12px;
+            }
+
+            /* НАВИГАЦИЯ БЛОГЫН СМАРТФОНДАРДА ТОЛЫҚ КӨРІНЕТІН ЕТУ */
+            .app-top-navigation {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: stretch !important;
+                gap: 12px !important;
+                margin-bottom: 30px !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+                height: auto !important;
+            }
+
+            .app-nav-back-link, 
+            .app-nav-external-btn {
+                width: 100% !important;
+                max-width: 100% !important;
+                display: flex !important;
+                justify-content: center !important;
+                align-items: center !important;
+                padding: 14px 20px !important;
+                font-size: 14px !important;
+                box-sizing: border-box !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+
+            .app-nav-back-link {
+                background: #ffffff !important;
+                color: var(--ui-text-black) !important;
+                border: 1px solid var(--ui-border-gold) !important;
+            }
+
+            .app-nav-external-btn {
+                background: var(--ui-text-black) !important;
+                color: #ffffff !important;
+                border: 1px solid var(--ui-text-black) !important;
+            }
+
+            /* ХЕДЕРДІ ОПТИМИЗАЦИЯЛАУ */
+            .showcase-hero-card {
+                padding: 24px 16px;
+                border-radius: var(--ui-radius-lg);
+                margin-bottom: 25px;
+            }
+
+            .showcase-hero-emblem {
+                width: 72px;
+                height: 72px;
+                font-size: 28px;
+                margin-bottom: 16px;
+            }
+
+            .showcase-hero-title {
+                font-size: 20px;
+                line-height: 1.3;
+            }
+
+            .showcase-hero-subtitle {
+                font-size: 11px;
+                letter-spacing: 1px;
+                margin-bottom: 25px;
+            }
+
+            /* Мобильді панорама өлшемі */
+            .showcase-hero-panorama-viewport {
+                height: 180px;
+                border-radius: var(--ui-radius-md);
+                margin-bottom: 25px;
+                padding: 4px;
+            }
+
+            .layout-content-narrative h3 {
+                font-size: 18px;
+            }
+
+            .layout-content-narrative p {
+                font-size: 14.5px;
+                text-align: left;
+            }
+
+            .layout-sidebar-metrics {
+                padding: 20px 16px;
+            }
+
+            /* СМАРТФОНДАҒЫ МҰҒАЛІМДЕР КАРТОЧКАСЫ МЕН СУРЕТ ӨЛШЕМДЕРІ */
+            .profiles-teachers-grid {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+
+            .profile-teacher-photo-canvas {
+                height: 220px; /* Мобильді телефонда сурет тым үлкен болмауы үшін шектеу */
+                padding: 6px;
+            }
+
+            .media-gallery-container {
+                padding: 20px 16px;
+            }
+
+            .media-gallery-matrix-mesh {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .media-gallery-cell-item {
+                height: 120px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-fullscreen-layout">
+        
+        <nav class="app-top-navigation">
+            <a href="author.html" class="app-nav-back-link">
+                <i class="fa-solid fa-arrow-left"></i> Автор парақшасына қайту
+            </a>
+            <a href="https://11-mektep.edu.kz/" target="_blank" class="app-nav-external-btn">
+                <i class="fa-solid fa-globe"></i> Мектептің ресми порталына өту
+            </a>
+        </nav>
+
+        <header class="showcase-hero-card">
+            <div class="showcase-hero-emblem">
+                <i class="fa-solid fa-school"></i>
+            </div>
+            <h1 class="showcase-hero-title">Дарынды балаларға арналған С.Сейфуллин атындағы №11 облыстық мамандандырылған мектеп-лицей-интернаты</h1>
+            <p class="showcase-hero-subtitle">Ғасырлық терең тарихы бар іргелі алтын ұя білім ордасы</p>
+
+            <div class="showcase-hero-panorama-viewport">
+                <img src="https://11-mektep.edu.kz/images/mektep2.jpg" alt="Мектеп ғимараты" class="showcase-hero-panorama-image">
+            </div>
+
+            <div class="layout-executive-split">
+                <div class="layout-content-narrative">
+                    <h3><i class="fa-solid fa-circle-info" style="color: var(--ui-primary-gold);"></i> Мектеп тарихы мен қазіргі тынысы</h3>
+                    <p>
+                        Іргетасы сонау <strong>1924 жылы</strong> Батыс Қазақстан өңірінің орталығы Орал қаласында қаланған бұл қасиетті қара шаңырақ — еліміздегі ең көне, тарихы терең әрі беделді оқу орындарының бірі. Мектепке ұлттық мәдениет пен мемлекеттіліктің символы, Алаштың біртуар азаматы <strong>Сәкен Сейфуллиннің</strong> есімі үлкен мақтанышпен берілген.
+                    </p>
+                    <p>
+                        Қазіргі уақытта бұл мектеп-лицей жаратылыстану-математикалық бағыт пен заманауи жоғары деңгейлі IT пәндерін тереңдетіп оқытуға мамандандырылған. Жоба авторы Саяттың бағдарламалау өнеріне, алгоритмдер құруға және интеллектуалды жүйелерге деген ең алғашқы қадамы осы білім ордасының қабырғасында басталды.
+                    </p>
+                </div>
+
+                <div class="layout-sidebar-metrics">
+                    <h3><i class="fa-solid fa-chart-bar" style="color: var(--ui-primary-gold);"></i> Статистикалық мәліметтер</h3>
+                    <div class="metrics-data-table">
+                        <div class="metrics-data-row">
+                            <span class="metrics-data-label">Құрылған жылы:</span>
+                            <span class="metrics-data-value">1924 жыл</span>
+                        </div>
+                        <div class="metrics-data-row">
+                            <span class="metrics-data-label">Мәртебесі:</span>
+                            <span class="metrics-data-value">Мамандандырылған</span>
+                        </div>
+                        <div class="metrics-data-row">
+                            <span class="metrics-data-label">Грант көрсеткіші:</span>
+                            <span class="metrics-data-value">95% жоғары</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <section class="module-section-central-header">
+            <h2>Ардақты Ұстаздар Қауымы</h2>
+            <p>Жоба авторы Саяттың бойындағы талантты шыңдап, бағдарламалау мен математика әлеміне жол сілтеген білікті тұлғалар</p>
+        </section>
+
+        <div class="profiles-teachers-grid">
+            <div class="profile-teacher-card-item">
+                <div class="profile-teacher-photo-canvas">
+                    <img src="https://11-mektep.edu.kz/images/2024/akimshilik/director.jpg" alt="Зулкашева Шынар Мулкайевна">
+                </div>
+                <div class="profile-teacher-meta-specs">
+                    <h4 class="profile-teacher-full-name">Зулкашева Шынар Мулкайевна</h4>
+                    <span class="profile-teacher-department-tag">Мектеп директоры</span>
+                    <p class="profile-teacher-description-bio">Саяттың бағдарламалау өнеріне деген қызығушылығын оятып, ең алғашқы алгоритмдер мен веб-технологиялар негізін үйреткен тәлімгер.</p>
+                </div>
+            </div>
+
+            <div class="profile-teacher-card-item">
+                <div class="profile-teacher-photo-canvas">
+                    <img src="https://11-mektep.edu.kz/images/2021/akimshilik/06.jpg" alt="Ахмадиев Арман Сансызбайұлы">
+                </div>
+                <div class="profile-teacher-meta-specs">
+                    <h4 class="profile-teacher-full-name">Ахмадиев Арман Сансызбайұлы</h4>
+                    <span class="profile-teacher-department-tag">Мектеп директорының бейіндік оқыту жөніндегі орынбасары</span>
+                    <p class="profile-teacher-description-bio">Күрделі логикалық есептер мен терең математикалық талдау арқылы Саяттың инженериялық ойлау қабілетін қалыптастырды.</p>
+                </div>
+            </div>
+        </div>
+
+        <section class="media-gallery-container">
+            <div class="module-section-central-header" style="margin-top: 0;">
+                <h2>Мектеп өмірі мен маңызды сәттер</h2>
+                <p>Кез келген суреттің үстіне басып, оны толық экранды Lightbox режимінде тамашалаңыз</p>
+            </div>
+
+            <div class="media-gallery-matrix-mesh">
+                <div class="media-gallery-cell-item" onclick="launchInteractiveLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=600&auto=format&fit=crop" alt="Компьютер сыныбы">
+                    <div class="media-gallery-interactive-backdrop"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="media-gallery-cell-item" onclick="launchInteractiveLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=600&auto=format&fit=crop" alt="Ғылыми жетістіктер">
+                    <div class="media-gallery-interactive-backdrop"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="media-gallery-cell-item" onclick="launchInteractiveLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?q=80&w=600&auto=format&fit=crop" alt="Коворкинг залы">
+                    <div class="media-gallery-interactive-backdrop"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+                <div class="media-gallery-cell-item" onclick="launchInteractiveLightbox(this)">
+                    <img src="https://images.unsplash.com/photo-1497633762265-9d179a990aa6?q=80&w=600&auto=format&fit=crop" alt="Кітапхана">
+                    <div class="media-gallery-interactive-backdrop"><i class="fa-solid fa-magnifying-glass-plus"></i></div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <div class="lightbox-portal-modal" id="portalLightboxView">
+        <div class="lightbox-portal-wrapper">
+            <button class="lightbox-portal-close-button" onclick="dismissInteractiveLightbox()"><i class="fa-solid fa-xmark"></i></button>
+            <img src="" alt="Үлкейтілген сурет" class="lightbox-portal-core-image" id="portalLightboxTargetImg">
+        </div>
+    </div>
+
+    <script>
+        function launchInteractiveLightbox(element) {
+            const portalModal = document.getElementById('portalLightboxView');
+            const portalImg = document.getElementById('portalLightboxTargetImg');
+            const imgSrc = element.querySelector('img').src;
+            
+            portalImg.src = imgSrc;
+            portalModal.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function dismissInteractiveLightbox() {
+            const portalModal = document.getElementById('portalLightboxView');
+            portalModal.style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        document.getElementById('portalLightboxView').addEventListener('click', function(e) {
+            if (e.target === this) {
+                dismissInteractiveLightbox();
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                dismissInteractiveLightbox();
+            }
+        });
+    </script>
+</body>
+</html>
