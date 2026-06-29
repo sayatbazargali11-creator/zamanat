@@ -901,31 +901,35 @@
         }
     });
 
-
+// Функция триггера: Открытие / Закрытие полноэкранного исторического меню
 function toggleMobileMenu() {
-    const nav = document.getElementById('main-nav');
-    const toggleBtn = document.getElementById('menu-toggle'); // ID сәйкес келуі керек
-    
-    if (nav && toggleBtn) {
-        nav.classList.toggle('mobile-active');
-        toggleBtn.classList.toggle('open'); // Осы класс анимацияны қосады
+    const menuToggle = document.getElementById('menu-toggle');
+    const mainNav = document.getElementById('main-nav');
+    const body = document.body;
+
+    if (menuToggle && mainNav) {
+        // Переключаем анимацию крестика у кнопки гамбургера
+        menuToggle.classList.toggle('open');
+        
+        // Переключаем полноэкранную видимость самого блока навигации
+        mainNav.classList.toggle('mobile-active');
+        
+        // Замораживаем скролл основного контента сайта, чтобы фоны не дергались
+        body.classList.toggle('menu-opened');
     }
 }
 
-// Функция клика по пункту меню (переключает страницу и закрывает шторку)
+// Перехватчик нажатий элементов внутри мобильной навигации
 function handleNavMobile(pageId) {
-    // Вызов вашей основной функции смены страниц
+    // 1. Вызываем базовую систему роутинга страниц вашего приложения ZAMANAT
     if (typeof showPage === 'function') {
         showPage(pageId);
     }
     
-    // Закрываем мобильное меню автоматически
-    const nav = document.getElementById('main-nav');
-    const toggleBtn = document.getElementById('menu-toggle');
-    
-    if (nav && toggleBtn) {
-        nav.classList.remove('mobile-active');
-        toggleBtn.classList.remove('open');
+    // 2. Если меню открыто, производим деликатное автоматическое закрытие экрана
+    const mainNav = document.getElementById('main-nav');
+    if (mainNav && mainNav.classList.contains('mobile-active')) {
+        toggleMobileMenu();
     }
 }
 

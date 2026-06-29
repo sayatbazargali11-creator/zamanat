@@ -174,60 +174,363 @@ nav a:hover, nav a.active {
     background: var(--accent-color); 
 }
 
-/* МОБИЛЬДІ ҚҰРЫЛҒЫЛАРҒА АРНАЛҒАН АДАПТИВТІ СТИЛЬДЕР (RESPONSIVE) */
+/* ==========================================================================
+   ZAMANAT LIGHT GOLD PREMIUM: ПОЛНОЭКРАННАЯ ИСТОРИЧЕСКАЯ НАВИГАЦИЯ ДЛЯ СВЕТЛОГО ФОНА
+   ========================================================================== */
+
 @media (max-width: 920px) {
-    .menu-toggle { 
-        display: block; /* Телефонда үш сызық көрінеді */
+/* ----------------------------------------------------------------------
+       НОВАЯ ИСТОРИЧЕСКАЯ КНОПКА: ОТКАЗ ОТ ТРЕХ ПОЛОСОК
+       ---------------------------------------------------------------------- */
+    .menu-toggle {
+        display: flex !important;
+        position: relative;
+        z-index: 99999 !important;
+        width: 46px;
+        height: 46px;
+        background: #ffffff;
+        /* Вместо грубых линий делаем утонченное ювелирное обрамление */
+        border: 2px solid rgba(212, 163, 89, 0.3); 
+        border-radius: 50%; /* Идеальный круг — символ щита */
+        cursor: pointer;
+        transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+        padding: 0;
+        justify-content: center;
+        align-items: center;
+        box-shadow: 0 4px 14px rgba(160, 140, 110, 0.08);
+    }
+
+    /* Вместо трех линий создаем центральный сакральный элемент (золотое ядро) */
+    .menu-toggle::before {
+        content: '';
+        position: absolute;
+        width: 8px;
+        height: 8px;
+        background: linear-gradient(135deg, #ff9500, #ff6b00);
+        border-radius: 50%;
+        box-shadow: 0 0 8px rgba(255, 107, 0, 0.6);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* Внутреннее декоративное кольцо, которое проявится при наведении */
+    .menu-toggle::after {
+        content: '';
+        position: absolute;
+        width: 26px;
+        height: 26px;
+        border: 1px dashed rgba(255, 107, 0, 0);
+        border-radius: 50%;
+        transition: transform 0.6s ease, border-color 0.4s ease;
+    }
+
+    /* Эффект легкого вращения и раскрытия кольца при наведении */
+    .menu-toggle:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 6px 20px rgba(255, 107, 0, 0.18);
     }
     
-    nav {
-        position: fixed;
-        top: 0;
-        right: -100%; /* Мәзір оң жақта жасырулы тұрады */
-        width: 280px;
-        height: 100vh;
-        background: rgba(255, 255, 255, 0.98);
-        backdrop-filter: blur(20px);
-        -webkit-backdrop-filter: blur(20px);
-        box-shadow: -10px 0 30px rgba(0,0,0,0.05);
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 100px 40px;
-        gap: 24px;
-        z-index: 1050;
-        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    .menu-toggle:hover::after {
+        border-color: rgba(255, 107, 0, 0.4);
+        transform: rotate(45deg);
     }
-    
-    /* Мәзір ашылған кезде оң жақтан шығады */
-    nav.mobile-active {
-        right: 0;
+
+    /* Полностью скрываем старые внутренние теги span (три полоски больше не нужны) */
+    .menu-toggle span {
+        display: none !important;
     }
+
+    /* ----------------------------------------------------------------------
+       СОСТОЯНИЕ ОТКРЫТОГО МЕНЮ: ПРЕВРАЩЕНИЕ В АКАДЕМИЧЕСКИЙ КРЕСТИК
+       ---------------------------------------------------------------------- */
+    .menu-toggle.open {
+        background: var(--accent-color);
+        border-color: transparent;
+        transform: rotate(135deg); /* Поворачиваем всю кнопку для эффекта взрыва */
+        box-shadow: 0 4px 25px rgba(255, 107, 0, 0.35);
+    }
+
+    /* Превращаем центральную точку в изящную тонкую геометрию закрытия */
+    .menu-toggle.open::before {
+        width: 18px;
+        height: 2px;
+        background: #ffffff;
+        border-radius: 1px;
+        box-shadow: none;
+    }
+
+    .menu-toggle.open::after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 18px;
+        background: #ffffff;
+        border-radius: 1px;
+        border: none;
+        transform: none;
+    }
+    /* ----------------------------------------------------------------------
+       2. ХОЛСТ МЕНЮ: ЭФФЕКТ МУЗЕЙНОГО ГЛЯНЦА И МРАМОРНОЙ ТЕКСТУРЫ
+       ---------------------------------------------------------------------- */
+    nav#main-nav {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        
+        /* Роскошный сияющий светлый фон с легким кремово-архивным отливом */
+        background: radial-gradient(circle at 50% 30%, rgba(255, 255, 255, 0.98) 0%, rgba(247, 245, 240, 0.99) 100%) !important;
+        
+        /* Премиальное яблочное размытие заднего плана */
+        backdrop-filter: blur(25px) cubic-bezier(0.16, 1, 0.3, 1);
+        -webkit-backdrop-filter: blur(25px);
+        
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 22px !important;
+        padding: 80px 24px !important;
+        box-sizing: border-box !important;
+        
+        /* Начальное состояние скрытия: уход вглубь экрана и растворение */
+        opacity: 0 !important;
+        visibility: hidden !important;
+        transform: scale(0.94) translateY(15px);
+        pointer-events: none !important;
+        z-index: 99990 !important;
+        
+        transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                    visibility 0.5s cubic-bezier(0.16, 1, 0.3, 1),
+                    transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        overflow: hidden !important;
+    }
+
+    /* Активация полноэкранного светлого меню */
+    nav#main-nav.mobile-active {
+        opacity: 1 !important;
+        visibility: visible !important;
+        transform: scale(1) translateY(0) !important;
+        pointer-events: auto !important;
+    }
+
+
+    /* ----------------------------------------------------------------------
+       3. БОГАТЫЕ ДЕКОРАТИВНЫЕ АРТЕФАКТЫ: СУСАЛЬНОЕ ЗОЛОТО И ОРНАМЕНТЫ
+       ---------------------------------------------------------------------- */
     
-    nav a {
-        font-size: 16px;
+    /* Верхний золотой кант-оберег, переливающийся на свету */
+    nav#main-nav::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 5px;
+        background: linear-gradient(90deg, transparent, var(--gold-color), var(--accent-color), var(--gold-color), transparent);
+        box-shadow: 0 1px 10px rgba(255, 149, 0, 0.2);
+        z-index: 5;
+    }
+
+    /* Вращающийся солярный круг скифского щита на фоне (светло-золотой шелк) */
+    .historical-bg-shield {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90vw;
+        height: 90vw;
+        max-width: 520px;
+        max-height: 520px;
+        border: 1px dashed rgba(212, 163, 89, 0.15);
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        animation: lightShieldRotate 75s linear infinite;
+    }
+
+    .historical-bg-shield::before {
+        content: '';
+        position: absolute;
+        width: 75%;
+        height: 75%;
+        border: 1px solid rgba(255, 149, 0, 0.08);
+        border-radius: 50%;
+        box-shadow: inset 0 0 50px rgba(212, 163, 89, 0.04);
+    }
+
+    /* Центральный символ степного наследия (артефакт) */
+    .historical-bg-shield::after {
+        content: '\f512'; /* Иконка щита / Рунического знака */
+        font-family: 'Font Awesome 6 Free';
+        font-weight: 900;
+        font-size: 9rem;
+        color: rgba(212, 163, 89, 0.06); /* Нежный оттенок старого золота */
+        filter: blur(0.5px);
+        animation: lightShieldPulse 5s ease-in-out infinite;
+    }
+
+    /* Контейнер для парящих золотых частиц (эффект солнечной пыли в мавзолее) */
+    .sparkle-particles {
+        position: absolute;
         width: 100%;
-        padding: 10px 16px;
+        height: 100%;
+        top: 0; left: 0;
+        pointer-events: none;
+        z-index: 2;
+    }
+
+    .sparkle-particle {
+        position: absolute;
+        background: linear-gradient(135deg, #ffe259, #ffa751);
+        border-radius: 50%;
+        opacity: 0;
+        filter: drop-shadow(0 2px 4px rgba(212,163,89,0.2));
+        animation: lightGoldDust 9s infinite linear;
+    }
+
+    /* Параметры движения и задержки золотых пылинок */
+    .sparkle-particle:nth-child(1) { left: 12%; width: 5px; height: 5px; animation-delay: 0s; animation-duration: 8s; }
+    .sparkle-particle:nth-child(2) { left: 38%; width: 7px; height: 7px; animation-delay: 1.5s; animation-duration: 11s; }
+    .sparkle-particle:nth-child(3) { left: 68%; width: 4px; height: 4px; animation-delay: 3s; animation-duration: 7s; }
+    .sparkle-particle:nth-child(4) { left: 82%; width: 6px; height: 6px; animation-delay: 4.5s; animation-duration: 10s; }
+    .sparkle-particle:nth-child(5) { left: 50%; width: 5px; height: 5px; animation-delay: 6s; animation-duration: 9s; }
+
+
+    /* ----------------------------------------------------------------------
+       4. ПУНКТЫ МЕНЮ: ЭФФЕКТ ПРЕССОВАННОЙ БЕЛОЙ СЛОВОФОРМЫ С ТИСНЕНИЕМ
+       ---------------------------------------------------------------------- */
+    nav#main-nav a {
+        position: relative !important;
+        display: block !important;
+        width: 88% !important;
+        max-width: 325px !important;
+        padding: 18px 24px !important;
+        font-size: 17px !important;
+        font-weight: 600 !important;
+        color: #3a3a3c !important; /* Дорогой графитовый оттенок вместо грубого черного */
+        text-decoration: none !important;
+        text-transform: uppercase !important;
+        letter-spacing: 0.1em !important;
+        text-align: center !important;
+        
+        /* Белоснежная подложка с мягким объемом */
+        background: #ffffff !important;
+        border: 1px solid rgba(212, 163, 89, 0.15) !important;
+        border-radius: 18px !important;
+        
+        /* Сложная тень: создает иллюзию, что кнопка лежит на дорогой бумаге */
+        box-shadow: 0 4px 15px rgba(160, 140, 110, 0.05), 
+                    0 1px 3px rgba(0, 0, 0, 0.02) !important;
+        
+        overflow: hidden !important;
+        z-index: 10 !important;
+        
+        /* Анимация проявления: разворот из легкого трехмерного наклона */
+        opacity: 0 !important;
+        transform: translateY(35px) rotateX(12deg) scale(0.96);
+        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+                    opacity 0.5s ease,
+                    color 0.3s ease,
+                    background 0.3s ease,
+                    border-color 0.3s ease,
+                    box-shadow 0.3s ease !important;
+        transform-origin: center top;
+    }
+
+    /* Внутренний перламутровый блик при наведении */
+    nav#main-nav a::before {
+        content: '';
+        position: absolute;
+        top: 0; left: -100%; width: 100%; height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+        transition: all 0.5s ease;
+        z-index: 2;
+    }
+
+    /* Синхронное проявление пунктов при открытии */
+    nav#main-nav.mobile-active a {
+        opacity: 1 !important;
+        transform: translateY(0) rotateX(0deg) scale(1) !important;
+    }
+
+    /* Каскадные микро-задержки (Stagger) */
+    nav#main-nav.mobile-active a:nth-child(1) { transition-delay: 0.12s !important; }
+    nav#main-nav.mobile-active a:nth-child(2) { transition-delay: 0.20s !important; }
+    nav#main-nav.mobile-active a:nth-child(3) { transition-delay: 0.28s !important; }
+    nav#main-nav.mobile-active a:nth-child(4) { transition-delay: 0.36s !important; }
+    nav#main-nav.mobile-active a:nth-child(5) { transition-delay: 0.44s !important; }
+
+    /* ХОВЕР-ЭФФЕКТ И АКТИВНЫЙ РЕЖИМ: ИМПЕРАТОРСКИЙ ЗОЛОТОЙ КЛАСС */
+    nav#main-nav a:hover, 
+    nav#main-nav a.active {
+        color: #ffffff !important;
+        /* Роскошный благородный золотой градиент платформы */
+        background: linear-gradient(135deg, #ff9500, #ff6b00) !important;
+        border-color: transparent !important;
+        box-shadow: 0 10px 25px rgba(255, 107, 0, 0.28), 
+                    0 4px 10px rgba(255, 149, 0, 0.15) !important;
+        transform: translateY(-3px) scale(1.03) !important;
+    }
+
+    nav#main-nav a:hover::before {
+        left: 100%;
+    }
+
+    /* Микро-маркер (Тондык) под активным текстом */
+    nav#main-nav a.active::after {
+        content: '';
+        position: absolute;
+        bottom: 6px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 4px;
+        height: 4px;
+        background-color: #ffffff;
+        border-radius: 50%;
+    }
+
+
+    /* ----------------------------------------------------------------------
+       5. БЛОКИРОВКА ПРОВАЛОВ И СДВИГОВ ТЕЛА СТРАНИЦЫ
+       ---------------------------------------------------------------------- */
+    body.menu-opened {
+        overflow: hidden !important;
+        touch-action: none !important;
+    }
+
+
+    /* ----------------------------------------------------------------------
+       6. КИНЕМАТОГРАФИЧЕСКИЕ АНИМАЦИИ (KEYFRAMES)
+       ---------------------------------------------------------------------- */
+    @keyframes lightShieldRotate {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    @keyframes lightShieldPulse {
+        0%, 100% { transform: scale(1); opacity: 0.05; }
+        50% { transform: scale(1.04); opacity: 0.09; }
+    }
+
+    @keyframes lightGoldDust {
+        0% {
+            transform: translateY(105vh) translateX(0) scale(0.6) rotate(0deg);
+            opacity: 0;
+        }
+        15% {
+            opacity: 0.75;
+        }
+        85% {
+            opacity: 0.6;
+        }
+        100% {
+            transform: translateY(-10vh) translateX(45px) scale(1.3) rotate(180deg);
+            opacity: 0;
+        }
     }
 }
-
-        nav a:hover, nav a.active {
-            color: var(--accent-color);
-            background: rgba(255, 107, 0, 0.05);
-        }
-
-        .nav-cta {
-            background: var(--accent-color);
-            color: #ffffff !important;
-            padding: 10px 20px !important;
-            border-radius: 40px;
-            font-weight: 600 !important;
-            box-shadow: var(--shadow-sm);
-        }
-        .nav-cta:hover { 
-            background: var(--accent-hover); 
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
 
         /* ==========================================================================
            3. БАТЫРМАЛАР МЕН ИНТЕРФЕЙС ЭЛЕМЕНТТЕРІ
@@ -3568,6 +3871,64 @@ body.preloader-active {
             animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
 
+        .artifact-visual-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+.artifact-shield-widget {
+    position: relative;
+    width: 130px;
+    height: 130px;
+}
+.shield-layer {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+.outline-ring {
+    width: 110px;
+    height: 110px;
+    border: 2px dashed rgba(255, 149, 0, 0.4);
+    animation: rotateRing 20s linear infinite;
+}
+.inner-plate {
+    width: 85px;
+    height: 85px;
+    background: linear-gradient(135deg, #ffa751, #ff6b00);
+    box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3), inset 0 2px 5px rgba(255,255,255,0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: shieldPulse 3s ease-in-out infinite;
+}
+.artifact-center-icon {
+    font-size: 2.5rem;
+    color: white;
+}
+.sparkle {
+    position: absolute;
+    color: #ffe259;
+    font-size: 1.2rem;
+    text-shadow: 0 0 8px #ffa751;
+    animation: blinkSparkle 2s linear infinite;
+}
+.sp-1 { top: 10%; left: 15%; animation-delay: 0s; }
+.sp-2 { bottom: 15%; right: 10%; animation-delay: 1s; }
+
+@keyframes rotateRing {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+@keyframes shieldPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); box-shadow: 0 10px 25px rgba(255, 107, 0, 0.3); }
+    50% { transform: translate(-50%, -50%) scale(1.05); box-shadow: 0 15px 35px rgba(255, 107, 0, 0.5); }
+}
+@keyframes blinkSparkle {
+    0%, 100% { opacity: 0.3; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
 
 
         
